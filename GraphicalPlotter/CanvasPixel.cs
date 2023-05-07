@@ -17,14 +17,14 @@ namespace GraphicalPlotter
             }
             set
             {
-                if (value < 0)
-                {
-                    throw new ArgumentOutOfRangeException($"The distance from the x-Axis , in particular the {nameof(XAxisValue)} must be positiv integer or zero to be displayed onto the canvas!");
-                }
-                else
-                {
+                //if (value < 0)
+                //{
+                //    throw new ArgumentOutOfRangeException($"The distance from the x-Axis , in particular the {nameof(XAxisValue)} must be positiv integer or zero to be displayed onto the canvas!");
+                //}
+                //else
+                //{
                     this.xAxisValue = value;
-                }
+                //}
 
             }
         }
@@ -38,14 +38,14 @@ namespace GraphicalPlotter
             }
             set
             {
-                if (value < 0)
-                {
-                    throw new ArgumentOutOfRangeException($"The distance from the y-Axis , in particular the {nameof(YAxisValue)} must be positiv integer or zero to be displayed onto the canvas!");
-                }
-                else
-                {
+                //if (value < 0)
+                //{
+                //    throw new ArgumentOutOfRangeException($"The distance from the y-Axis , in particular the {nameof(YAxisValue)} must be positiv integer or zero to be displayed onto the canvas!");
+                //}
+                //else
+                //{
                     this.yAxisValue = value;
-                }
+                //}
 
             }
         }

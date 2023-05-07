@@ -21,6 +21,8 @@ namespace GraphicalPlotter
         }
 
         public abstract double CalculateItsOwnValue(double x);
+
+        public abstract string GetFunctionName();
     }
 }
 

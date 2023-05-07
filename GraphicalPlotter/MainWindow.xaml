@@ -5,8 +5,55 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GraphicalPlotter"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="MainWindow" Height="600" Width="800">
+
+    <Window.DataContext>
+        <local:MainViewModel />
+    </Window.DataContext>
+    
+    <TabControl>
+        <TabItem Header="Main" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="150"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="150"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <!--Here the usergram for the graphplotter-->
+                <Grid Grid.Row="0" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="200"></RowDefinition>
+                        <RowDefinition></RowDefinition>                        
+                        
+                        
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Input new Function" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16"></TextBlock>
+
+
+
+
+
+
+                    <ListView ItemsSource="">
+                        
+                    </ListView>
+                    
+                    
+                </Grid>
+                
+            </Grid>
+            
+            
+            
+        </TabItem>
+        <TabItem Header="Import/Export"></TabItem>
+
+    </TabControl>
+   
 </Window>

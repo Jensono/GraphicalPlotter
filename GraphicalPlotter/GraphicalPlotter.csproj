@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="MainViewModel.cs" />
     <Compile Include="Model\AxisInfo\AxisData.cs" />
     <Compile Include="Model\AxisInfo\AxisGridData.cs" />
     <Compile Include="Model\Functions\TrigometricalFunctions\CosineFunction.cs" />
