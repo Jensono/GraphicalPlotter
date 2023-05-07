@@ -15,30 +15,9 @@ namespace GraphicalPlotter
 
             return this.ConstantMulitplier * Math.Sin(angle * this.DegreeMultilplier);
         }
-        public override string GetFunctionName()
+        public override string GetFunctionCalling()
         {
-            string returnstring = string.Empty;
-            if (this.ConstantMulitplier > 0)
-            {
-                returnstring += "+";
-            }
-            else if (this.ConstantMulitplier == 0)
-            {
-                return string.Empty;
-            }
-
-
-            returnstring += $"{this.ConstantMulitplier}*sin";
-            if (DegreeMultilplier == 0)
-            {
-                returnstring += "(0)";
-            }
-            else
-            {
-                returnstring += $"({DegreeMultilplier}*x)";
-            }
-
-            return returnstring;
+            return "sin";
         }
     }
 }

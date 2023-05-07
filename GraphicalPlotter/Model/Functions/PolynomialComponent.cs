@@ -35,24 +35,48 @@ namespace GraphicalPlotter
         public override string GetFunctionName()
         {
             string returnstring = string.Empty;
-            if (this.ConstantMulitplier > 0)
-            {
-                returnstring += "+";
-            }
-            else if (this.ConstantMulitplier == 0)
+           
+            if (this.ConstantMulitplier == 0)
             {
                 return string.Empty;
             }
+            else if (this.ConstantMulitplier == -1)
+            {
+                returnstring += "-";
+            }
+            else if (this.ConstantMulitplier == 1)
+            {
+                returnstring += "+";
+            }
+            else 
+            {
+                if (this.ConstantMulitplier > 0)
+                {
+                    returnstring += "+";
+                }
+                returnstring += $"{this.ConstantMulitplier}";
+                if (this.ExponentDegree != 0)
+                {
+                    returnstring += "*";
+                }
+            }
+
 
 
             if (this.ExponentDegree == 0)
             {
-                returnstring += $"{this.ConstantMulitplier}";
+                returnstring += string.Empty;
             }
             else
             {
-                returnstring += $"{this.ConstantMulitplier}*x^{exponentDegree}";
-
+                if (ExponentDegree == 1)
+                {
+                    returnstring += "x";
+                }
+                else 
+                { 
+                returnstring += $"x^{exponentDegree}";
+                }
 
             }
            
