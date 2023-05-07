@@ -14,7 +14,7 @@ namespace GraphicalPlotter
             }
             set
             {
-                // can this handle negativ exponents? x^-2 Maybe later used for diffrentiation.
+                // can this handle negativ exponents? x^-2 Maybe later used for diffrentiation..
 
                 this.exponentDegree = value;
 
