@@ -10,6 +10,20 @@
     <Window.DataContext>
         <local:MainViewModel />
     </Window.DataContext>
+
+    <Window.Resources>
+        <local:CanvasPixelToPointCollectionConverter x:Key="CanvasPixelToPointConverter"></local:CanvasPixelToPointCollectionConverter>
+        <Style TargetType="Canvas">
+            <Style.Resources>
+                
+                <!--add the elemnt here that draws all the lines-->
+                
+            </Style.Resources>
+            
+        </Style>
+        
+        
+    </Window.Resources>
     
     <TabControl>
         <TabItem Header="Main" >
@@ -25,7 +39,54 @@
                 </Grid.RowDefinitions>
 
                 <!--Here the usergram for the graphplotter-->
-                <Canvas Grid.Row="0" Grid.Column="0" Grid.RowSpan="1"></Canvas>
+                <Canvas Grid.Row="0" Grid.Column="0" Grid.RowSpan="1">
+                    
+                    
+                    <ItemsControl ItemsSource="{Binding Path=DrawInformationForFunctions}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas>
+                                    
+                                </Canvas>                               
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate >
+                            <DataTemplate>
+
+                                <ItemsControl ItemsSource="{Binding Path=CanvasPixels}">
+
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <Canvas>
+
+                                            </Canvas>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Polyline Points="">
+                                                
+                                            </Polyline>
+                                            
+                                        </DataTemplate>
+                                                                             
+                                        
+                                    </ItemsControl.ItemTemplate>
+
+
+
+
+
+                                </ItemsControl>
+
+
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        
+                    </ItemsControl>    
+                </Canvas>
                 
                 
                 <!--All the textboxes for the axis and grid information-->
@@ -59,60 +120,58 @@
                     <TextBlock Text="X-Axis Information" Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" ></TextBlock>
                     
                     <TextBlock Text="min Value:" Grid.Row="0" Grid.Column="2"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
-                    <TextBox Grid.Row="0" Grid.Column="3"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="" MinWidth="50" MinHeight="15" MaxHeight="15"></TextBox> <!--needs binding to view model-->
+                    <TextBox Grid.Row="0" Grid.Column="3"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="{Binding Path=TextBoxXAxisMin}" MinWidth="50" MinHeight="15" MaxHeight="15"></TextBox>
 
                     <TextBlock Text="max Value:" Grid.Row="0" Grid.Column="4"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
-                    <TextBox Grid.Row="0" Grid.Column="5"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="" MinWidth="50" MinHeight="15" MaxHeight="15"></TextBox> <!--needs binding to view model-->
+                    <TextBox Grid.Row="0" Grid.Column="5"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="{Binding Path=TextBoxXAxisMax}" MinWidth="50" MinHeight="15" MaxHeight="15"></TextBox> 
 
                     <TextBlock Text="Color:" Grid.Row="0" Grid.Column="6"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
                     <TextBox Grid.Row="0" Grid.Column="7"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="" MinWidth="50" MinHeight="15" MaxHeight="15"></TextBox> <!--needs binding to view model ALSO waiting for forum post on colorpicker lib-->
                     <TextBlock Text="Visbibility:" Grid.Row="0" Grid.Column="8"  HorizontalAlignment="Center" VerticalAlignment="Bottom"> </TextBlock>
-                        <CheckBox Grid.Row="0" Grid.Column="9"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></CheckBox>       <!--needs binding to view model -->
+                        <CheckBox Grid.Row="0" Grid.Column="9"  HorizontalAlignment="Center" VerticalAlignment="Bottom" IsChecked="{Binding Path=CheckBoxXAxisVisibility}"></CheckBox>      
 
 
                     <TextBlock Grid.Column="0" Grid.Row="2"  Text="X-Axis Grid Information"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" ></TextBlock>
 
                     <TextBlock Text="Intervall:" Grid.Row="2" Grid.Column="4"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
-                    <TextBox Grid.Row="2" Grid.Column="5"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="" MinWidth="50" MinHeight="15" MaxHeight="15"></TextBox><!--needs binding to view model-->
-
+                    <TextBox Grid.Row="2" Grid.Column="5"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="{Binding Path=TextBoxXAxisGridIntervall}" MinWidth="50" MinHeight="15" MaxHeight="15"></TextBox>
+                    
                     <TextBlock Text="Color:" Grid.Row="2" Grid.Column="6"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
                     <TextBox Grid.Row="2" Grid.Column="7"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Text=""  MinWidth="50" MinHeight="15" MaxHeight="15"></TextBox><!--needs binding to view model ALSO waiting for forum post on colorpicker lib-->
       
                     <TextBlock Text="Visbibility:" Grid.Row="2" Grid.Column="8"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
-                    <CheckBox Grid.Row="2" Grid.Column="9"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></CheckBox><!--needs binding to view model -->
+                    <CheckBox Grid.Row="2" Grid.Column="9"  HorizontalAlignment="Center" VerticalAlignment="Bottom" IsChecked="{Binding Path=CheckBoxXAxisGridVisibility}"></CheckBox><!--needs binding to view model -->
 
 
                     <!--Y-AXIS INFORMATION-->
                     <TextBlock Text="Y-Axis Information" Grid.Row="4" Grid.Column="0"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" ></TextBlock>
 
                     <TextBlock Text="min Value:" Grid.Row="4" Grid.Column="2"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
-                    <TextBox Grid.Row="4" Grid.Column="3"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="" MinWidth="50" MinHeight="15" MaxHeight="15"></TextBox>
-                    <!--needs binding to view model-->
+                    <TextBox Grid.Row="4" Grid.Column="3"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="{Binding Path=TextBoxYAxisMin}" MinWidth="50" MinHeight="15" MaxHeight="15"></TextBox>
 
+                    
                     <TextBlock Text="max Value:" Grid.Row="4" Grid.Column="4"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
-                    <TextBox Grid.Row="4" Grid.Column="5"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="" MinWidth="50" MinHeight="15" MaxHeight="15"></TextBox>
-                    <!--needs binding to view model-->
+                    <TextBox Grid.Row="4" Grid.Column="5"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="{Binding Path=TextBoxYAxisMax}" MinWidth="50" MinHeight="15" MaxHeight="15"></TextBox>
 
+                    
                     <TextBlock Text="Color:" Grid.Row="4" Grid.Column="6"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
-                    <TextBox Grid.Row="4" Grid.Column="7"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="" MinWidth="50" MinHeight="15" MaxHeight="15"></TextBox>
-                    <!--needs binding to view model ALSO waiting for forum post on colorpicker lib-->
+                    <TextBox Grid.Row="4" Grid.Column="7"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="" MinWidth="50" MinHeight="15" MaxHeight="15"></TextBox> <!--needs binding to view model ALSO waiting for forum post on colorpicker lib-->
+                    
                     <TextBlock Text="Visbibility:" Grid.Row="4" Grid.Column="8"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
-                    <CheckBox Grid.Row="4" Grid.Column="9"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></CheckBox>
-                    <!--needs binding to view model -->
+                    <CheckBox Grid.Row="4" Grid.Column="9"  HorizontalAlignment="Center" VerticalAlignment="Bottom" IsChecked="{Binding Path=CheckBoxYAxisVisibility}"></CheckBox>
 
 
                     <TextBlock Grid.Column="0" Grid.Row="6"  Text="X-Axis Grid Information"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" ></TextBlock>
 
                     <TextBlock Text="Intervall:" Grid.Row="6" Grid.Column="4"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
-                    <TextBox Grid.Row="6" Grid.Column="5"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="" MinWidth="50" MinHeight="15" MaxHeight="15"></TextBox>
-                    <!--needs binding to view model-->
+                    <TextBox Grid.Row="6" Grid.Column="5"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="{Binding Path=TextBoxYAxisGridIntervall}" MinWidth="50" MinHeight="15" MaxHeight="15"></TextBox>
 
                     <TextBlock Text="Color:" Grid.Row="6" Grid.Column="6"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
-                    <TextBox Grid.Row="6" Grid.Column="7"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Text=""  MinWidth="50" MinHeight="15" MaxHeight="15"></TextBox>
-                    <!--needs binding to view model ALSO waiting for forum post on colorpicker lib-->
+                    <TextBox Grid.Row="6" Grid.Column="7"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Text=""  MinWidth="50" MinHeight="15" MaxHeight="15"></TextBox> <!--needs binding to view model ALSO waiting for forum post on colorpicker lib-->
 
+                    
                     <TextBlock Text="Visbibility:" Grid.Row="6" Grid.Column="8"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
-                    <CheckBox Grid.Row="6" Grid.Column="9"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></CheckBox>
+                    <CheckBox Grid.Row="6" Grid.Column="9"  HorizontalAlignment="Center" VerticalAlignment="Bottom" IsChecked="{Binding Path=CheckBoxYAxisGridVisibility}"></CheckBox>
                     <!--needs binding to view model -->
 
 
