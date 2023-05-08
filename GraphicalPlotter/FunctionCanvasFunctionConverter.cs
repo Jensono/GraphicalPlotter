@@ -55,7 +55,14 @@ namespace GraphicalPlotter
                 //Why isnt there a explixit method that just rounds to long???
                 int roundedYPixelPosition = (int)Math.Round(yPixelPosition);
 
-                PixelValuesForthisFunction.Add(new CanvasPixel(xPixelPosition, roundedYPixelPosition));
+
+                //only add the pixel if it is inside the y Axis
+                if (!(roundedYPixelPosition<0) &&  ! (roundedYPixelPosition>yPixels))
+                {
+                    PixelValuesForthisFunction.Add(new CanvasPixel(xPixelPosition, roundedYPixelPosition));
+                }
+                //else
+                //    PixelValuesForthisFunction.Add(new CanvasPixel(xPixelPosition, roundedYPixelPosition));
             }
             FunctionDrawInformation drawInformation = new FunctionDrawInformation(PixelValuesForthisFunction, function.FunctionColor);
             return drawInformation;
