@@ -47,12 +47,13 @@ namespace GraphicalPlotter
                 double yPixelPosition = yPixels - ((yValueForCurrentXValue - yMin) * yPixels / (yMax - yMin));
 
                 //TODO change the exeption message
-
+                // A function could, in theory have such a drastic change in the y axis that this problem could occur
+                //TODO find a fix that just draws the first few lines of the functions.
                 if (yPixelPosition < int.MinValue || yPixelPosition > int.MaxValue)
                 {
                     throw new ArgumentOutOfRangeException("Yo there is probably a problem in your function bro");
                 }
-                //Why isnt there a explixit method that just rounds to long???
+                //Why isnt there a explixit method that just rounds to int or long???
                 int roundedYPixelPosition = (int)Math.Round(yPixelPosition);
 
 
@@ -66,6 +67,12 @@ namespace GraphicalPlotter
             }
             FunctionDrawInformation drawInformation = new FunctionDrawInformation(PixelValuesForthisFunction, function.FunctionColor);
             return drawInformation;
+        }
+
+        public double CalculateYPixelPositionForYValue() 
+        {
+        
+        
         }
     }
 }
