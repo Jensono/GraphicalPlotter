@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Media;
 
@@ -181,29 +182,31 @@ namespace GraphicalPlotter
         public List<GraphicalFunction> CurrentGraphicalFunctions { get; set; }
 
         public List<FunctionDrawInformation> DrawInformationForFunctions { get; set; }
+
+        public List<FunctionDrawInformation> DrawInformationForAxis { get; set; }
         public MainViewModel()
         {
 
             // FOR THE X - AXIS
-            this.TextBoxXAxisMin = -10;
-            this.TextBoxXAxisMax = 10;
-            this.ColorPickerXAxisColor = Color.FromRgb(150, 150, 150);
+            this.TextBoxXAxisMin = -Math.PI;
+            this.TextBoxXAxisMax = Math.PI;
+            this.ColorPickerXAxisColor = Colors.DarkSlateBlue;
             this.CheckBoxXAxisVisibility = true;
 
 
-            this.TextBoxXAxisGridIntervall = 2;
+            this.TextBoxXAxisGridIntervall = 1;
             this.ColorPickerXAxisGridColor = Color.FromRgb(150, 150, 150);
             this.CheckBoxXAxisGridVisibility = true;
 
 
             // FOR THE Y - AXIS
-            this.TextBoxYAxisMin = -10;
-            this.TextBoxYAxisMax = 10;
-            this.ColorPickerYAxisColor = Color.FromRgb(150, 150, 150);
+            this.TextBoxYAxisMin = -2;
+            this.TextBoxYAxisMax = 2;
+            this.ColorPickerYAxisColor = Colors.DarkSlateBlue;
             this.CheckBoxYAxisVisibility = true;
 
 
-            this.TextBoxYAxisGridIntervall = 2;
+            this.TextBoxYAxisGridIntervall = 1;
             this.ColorPickerYAxisGridColor = Color.FromRgb(150, 150, 150);
             this.CheckBoxYAxisGridVisibility = true;
 
@@ -235,6 +238,7 @@ namespace GraphicalPlotter
             this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new TangentFunction(1, 1) }, Colors.Green));
 
             this.UpdateDrawInformationForFunctions();
+            this.UpdateDrawInformationForAxis();
 
 
             //here comes the complete logic for this application
@@ -254,6 +258,20 @@ namespace GraphicalPlotter
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.DrawInformationForFunctions)));
 
         }
+
+        public void UpdateDrawInformationForAxis()
+        {
+            List<FunctionDrawInformation> functionDrawInformation = this.CanvasFunctionConverter.CreateFunctionDrawInformationForAxis();
+
+
+
+            this.DrawInformationForAxis = functionDrawInformation;
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.DrawInformationForAxis)));
+
+
+        }
+
+
 
         public event PropertyChangedEventHandler PropertyChanged;
     }
