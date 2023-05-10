@@ -63,7 +63,7 @@ namespace GraphicalPlotter
             set
             {
                 // If the value is above 0 and when there arent more gridlines than the max amount , which is half of all the pixels
-                if (value != textBoxXAxisGridIntervall && value > 0 && (((this.TextBoxXAxisMax - this.TextBoxXAxisMin) / value) < (this.XPixelWidhtCanvas / 2)))
+                if (value != textBoxXAxisGridIntervall && value > 0 && (((this.TextBoxXAxisMax - this.TextBoxXAxisMin) / value) < (this.PixelWidhtCanvas / 2)))
                 {
                     
 
@@ -146,7 +146,7 @@ namespace GraphicalPlotter
             get { return textBoxYAxisGridIntervall; }
             set
             {
-                if (value != textBoxYAxisGridIntervall && value > 0 && (((this.TextBoxYAxisMax - this.TextBoxYAxisMin) / value) < (this.YPixelHeightCanvas / 2)))
+                if (value != textBoxYAxisGridIntervall && value > 0 && (((this.TextBoxYAxisMax - this.TextBoxYAxisMin) / value) < (this.PixelHeightCanvas / 2)))
                 {
                     textBoxYAxisGridIntervall = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxYAxisGridIntervall)));
@@ -179,15 +179,15 @@ namespace GraphicalPlotter
 
 
 
-        private int xPixelWidhtApp = 800;
-        public int XPixelWidhtApp
+        private int pixelWidhtApp = 800;
+        public int PixelWidhtApp
         {
-            get { return this.xPixelWidhtApp; }
+            get { return this.PixelWidhtApp; }
             set
             {
                 if (value > 0)
                 {
-                    xPixelWidhtApp = value;
+                    pixelWidhtApp = value;
                     //this.xPixelWidhtCanvas = (int)Math.Round((680d / 800d) * value);
                     //680
 
@@ -195,15 +195,15 @@ namespace GraphicalPlotter
             }
         }
 
-        private int yPixelHeightApp = 600;
-        public int YPixelHeightApp
+        private int pixelHeightApp = 600;
+        public int PixelHeightApp
         {
-            get { return this.yPixelHeightApp; }
+            get { return this.pixelHeightApp; }
             set
             {
                 if (value > 0)
                 {
-                    yPixelHeightApp = value;
+                    pixelHeightApp = value;
                     //380
                     //this.YPixelHeightCanvas = (int)Math.Round((380d / 600d) * value);
 
@@ -214,30 +214,30 @@ namespace GraphicalPlotter
 
 
 
-        private int xPixelWidhtCanvas = 380;
-        public int XPixelWidhtCanvas
+        private int pixelWidhtCanvas = 630;
+        public int PixelWidhtCanvas
         {
-            get { return this.xPixelWidhtCanvas; }
+            get { return this.pixelWidhtCanvas; }
             set
             {
                 if (value > 0)
                 {
-                    xPixelWidhtCanvas = value;
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.XPixelWidhtCanvas)));
+                    pixelWidhtCanvas = value;
+                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.PixelWidhtCanvas)));
                 }
             }
         }
 
-        private int yPixelHeightCanvas = 650;
-        public int YPixelHeightCanvas
+        private int pixelHeightCanvas = 360;
+        public int PixelHeightCanvas
         {
-            get { return this.yPixelHeightCanvas; }
+            get { return this.pixelHeightCanvas; }
             set
             {
                 if (value > 0)
                 {
-                    yPixelHeightCanvas = value;
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.YPixelHeightCanvas)));
+                    pixelHeightCanvas = value;
+                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.PixelHeightCanvas)));
                 }
             }
         }
