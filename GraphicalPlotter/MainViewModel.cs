@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows.Data;
 using System.Windows.Media;
 
 namespace GraphicalPlotter
@@ -20,6 +21,7 @@ namespace GraphicalPlotter
                 {
                     textBoxXAxisMin = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxXAxisMin)));
+                    this.UpdateFullCanvas();
                 }
             }
         }
@@ -35,11 +37,12 @@ namespace GraphicalPlotter
                 {
                     textBoxXAxisMax = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxXAxisMax)));
+                    this.UpdateFullCanvas();
                 }
             }
         }
 
-        public bool checkBoxXAxisVisibility;
+        public bool checkBoxXAxisVisibility = true;
 
         public bool CheckBoxXAxisVisibility
         {
@@ -49,15 +52,28 @@ namespace GraphicalPlotter
                 if (value != checkBoxXAxisVisibility)
                 {
                     checkBoxXAxisVisibility = value;
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CheckBoxXAxisVisibility)));
+                    this.UpdateFullCanvas();
                 }
             }
         }
 
         //TDOD fields and such for colors after i figure out how to best do this
-        public Color ColorPickerXAxisColor { get; set; }
+        private Color colorPickerXAxisColor = Colors.DarkSlateBlue;
 
-        private double textBoxXAxisGridIntervall = 1;
+        public Color ColorPickerXAxisColor
+        {
+            get { return colorPickerXAxisColor; }
+            set
+            {
+                if (value != colorPickerXAxisColor)
+                {
+                    colorPickerXAxisColor = value;
+                    this.UpdateDrawInformationForAxis();
+                }
+            }
+        }
+
+        private double textBoxXAxisGridIntervall = 2;
 
         public double TextBoxXAxisGridIntervall
         {
@@ -68,14 +84,27 @@ namespace GraphicalPlotter
                 if (value != textBoxXAxisGridIntervall && value > 0 && (((this.TextBoxXAxisMax - this.TextBoxXAxisMin) / value) < (this.PixelWidhtCanvas / 2)))
                 {
                     textBoxXAxisGridIntervall = value;
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxXAxisGridIntervall)));
+                    //HERE
                 }
             }
         }
 
-        public Color ColorPickerXAxisGridColor { get; set; }
+        private Color colorPickerXAxisGridColor = Colors.LightGray;
 
-        public bool checkBoxXAxisGridVisibility;
+        public Color ColorPickerXAxisGridColor
+        {
+            get { return colorPickerXAxisGridColor; }
+            set
+            {
+                if (value != colorPickerXAxisGridColor)
+                {
+                    colorPickerXAxisGridColor = value;
+                    this.UpdateDrawInformationForGridLines();
+                }
+            }
+        }
+
+        public bool checkBoxXAxisGridVisibility = true;
 
         public bool CheckBoxXAxisGridVisibility
         {
@@ -85,7 +114,7 @@ namespace GraphicalPlotter
                 if (value != checkBoxXAxisGridVisibility)
                 {
                     checkBoxXAxisGridVisibility = value;
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CheckBoxXAxisGridVisibility)));
+                    //HERE
                 }
             }
         }
@@ -100,7 +129,7 @@ namespace GraphicalPlotter
                 if (value != textBoxYAxisMin && value < this.TextBoxYAxisMax)
                 {
                     textBoxYAxisMin = value;
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxYAxisMin)));
+                    //HERE
                 }
             }
         }
@@ -115,12 +144,12 @@ namespace GraphicalPlotter
                 if (value != textBoxYAxisMax && value > this.TextBoxXAxisMin)
                 {
                     textBoxYAxisMax = value;
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxYAxisMax)));
+                    //HERE
                 }
             }
         }
 
-        public bool checkBoxYAxisVisibility;
+        public bool checkBoxYAxisVisibility = true;
 
         public bool CheckBoxYAxisVisibility
         {
@@ -130,14 +159,27 @@ namespace GraphicalPlotter
                 if (value != checkBoxYAxisVisibility)
                 {
                     checkBoxYAxisVisibility = value;
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CheckBoxYAxisVisibility)));
+                    //HERE
                 }
             }
         }
 
-        public Color ColorPickerYAxisColor { get; set; }
+        private Color colorPickerYAxisColor = Colors.DarkSlateBlue;
 
-        private double textBoxYAxisGridIntervall = 1;
+        public Color ColorPickerYAxisColor
+        {
+            get { return colorPickerYAxisColor; }
+            set
+            {
+                if (value != colorPickerYAxisColor)
+                {
+                    colorPickerYAxisColor = value;
+                    this.UpdateDrawInformationForAxis();
+                }
+            }
+        }
+
+        private double textBoxYAxisGridIntervall = 2;
 
         public double TextBoxYAxisGridIntervall
         {
@@ -147,14 +189,27 @@ namespace GraphicalPlotter
                 if (value != textBoxYAxisGridIntervall && value > 0 && (((this.TextBoxYAxisMax - this.TextBoxYAxisMin) / value) < (this.PixelHeightCanvas / 2)))
                 {
                     textBoxYAxisGridIntervall = value;
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxYAxisGridIntervall)));
+                    //HERE
                 }
             }
         }
 
-        public Color ColorPickerYAxisGridColor { get; set; }
+        private Color colorPickerYAxisGridColor = Colors.LightGray;
 
-        public bool checkBoxYAxisGridVisibility;
+        public Color ColorPickerYAxisGridColor
+        {
+            get { return colorPickerYAxisGridColor; }
+            set
+            {
+                if (value != colorPickerYAxisGridColor)
+                {
+                    colorPickerYAxisGridColor = value;
+                    this.UpdateDrawInformationForGridLines();
+                }
+            }
+        }
+
+        public bool checkBoxYAxisGridVisibility = true;
 
         public bool CheckBoxYAxisGridVisibility
         {
@@ -164,7 +219,7 @@ namespace GraphicalPlotter
                 if (value != checkBoxYAxisGridVisibility)
                 {
                     checkBoxYAxisGridVisibility = value;
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CheckBoxYAxisGridVisibility)));
+                    //HERE
                 }
             }
         }
@@ -179,8 +234,8 @@ namespace GraphicalPlotter
                 if (value > 0)
                 {
                     pixelWidhtApp = value;
-                    //this.xPixelWidhtCanvas = (int)Math.Round((680d / 800d) * value);
-                    //680
+                    this.PixelWidhtCanvas = (int)Math.Round((630d / 800d) * value);
+                    //630
                 }
             }
         }
@@ -196,7 +251,7 @@ namespace GraphicalPlotter
                 {
                     pixelHeightApp = value;
                     //380
-                    //this.YPixelHeightCanvas = (int)Math.Round((380d / 600d) * value);
+                    this.PixelHeightCanvas = (int)Math.Round((380d / 600d) * value);
                 }
             }
         }
@@ -211,7 +266,7 @@ namespace GraphicalPlotter
                 if (value > 0)
                 {
                     pixelWidhtCanvas = value;
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.PixelWidhtCanvas)));
+                    //HERE
                 }
             }
         }
@@ -226,7 +281,7 @@ namespace GraphicalPlotter
                 if (value > 0)
                 {
                     pixelHeightCanvas = value;
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.PixelHeightCanvas)));
+                    //HERE
                 }
             }
         }
@@ -235,43 +290,123 @@ namespace GraphicalPlotter
 
         public FunctionToCanvasFunctionConverter CanvasFunctionConverter { get; set; }
 
-        public List<GraphicalFunction> CurrentGraphicalFunctions { get; set; }
+        //TODO do i actually need the lock here???
+        private List<GraphicalFunction> currentGraphicalFunctions;
 
-        public List<FunctionDrawInformation> DrawInformationForFunctions { get; set; }
+        public List<GraphicalFunction> CurrentGraphicalFunctions
+        {
+            get
+            {
+                lock (this.lockObjectFunctions)
+                {
+                    return this.currentGraphicalFunctions;
+                }
+            }
 
-        public List<FunctionDrawInformation> DrawInformationForAxis { get; set; }
+            set
+            {
+                if (value is null)
+                {
+                    throw new ArgumentNullException($"{nameof(CurrentGraphicalFunctions)} can not be null");
+                }
+                else
+                {
+                    lock (this.lockObjectFunctions)
+                    {
+                        this.currentGraphicalFunctions = value;
+                    }
+                }
+            }
+        }
 
-        public List<FunctionDrawInformation> DrawInformationForGridLines { get; set; }
+        private List<FunctionDrawInformation> drawInformationForFunctions;
+
+        public List<FunctionDrawInformation> DrawInformationForFunctions
+        {
+            get
+            {
+                lock (this.lockObjectFunctions)
+                {
+                    return this.drawInformationForFunctions;
+                }
+            }
+
+            set
+            {
+                if (value is null)
+                {
+                    throw new ArgumentNullException($"{nameof(DrawInformationForFunctions)} can not be null");
+                }
+                else
+                {
+                    lock (this.lockObjectFunctions)
+                    {
+                        this.drawInformationForFunctions = value;
+                    }
+                }
+            }
+        }
+
+        private List<FunctionDrawInformation> drawInformationForAxis;
+
+        public List<FunctionDrawInformation> DrawInformationForAxis
+        {
+            get
+            {
+                lock (this.lockObjectFunctions)
+                {
+                    return this.drawInformationForAxis;
+                }
+            }
+
+            set
+            {
+                if (value is null)
+                {
+                    throw new ArgumentNullException($"{nameof(DrawInformationForAxis)} can not be null");
+                }
+                else
+                {
+                    lock (this.lockObjectFunctions)
+                    {
+                        this.drawInformationForAxis = value;
+                    }
+                }
+            }
+        }
+
+        private List<FunctionDrawInformation> drawInformationForGridLines;
+
+        public List<FunctionDrawInformation> DrawInformationForGridLines
+        {
+            get
+            {
+                lock (this.lockObjectFunctions)
+                {
+                    return this.drawInformationForGridLines;
+                }
+            }
+
+            set
+            {
+                if (value is null)
+                {
+                    throw new ArgumentNullException($"{nameof(drawInformationForGridLines)} can not be null");
+                }
+                else
+                {
+                    lock (this.lockObjectFunctions)
+                    {
+                        this.drawInformationForGridLines = value;
+                    }
+                }
+            }
+        }
+
+        private object lockObjectFunctions = new object();
 
         public MainViewModel()
         {
-            //these values need to be instanct before the grid intervalls or else grid lines will be zero
-
-            // FOR THE X - AXIS
-            
-            this.TextBoxXAxisMax = 9;
-            this.TextBoxXAxisMin = -9;
-
-            this.ColorPickerXAxisColor = Colors.DarkSlateBlue;
-            this.CheckBoxXAxisVisibility = true;
-
-            this.TextBoxXAxisGridIntervall = Math.PI / 2;
-            this.ColorPickerXAxisGridColor = Colors.Black;
-            this.CheckBoxXAxisGridVisibility = true;
-
-            // FOR THE Y - AXIS
-            this.TextBoxYAxisMax = 2;
-            this.TextBoxYAxisMin = -2;
-
-            this.ColorPickerYAxisColor = Colors.DarkSlateBlue;
-            this.CheckBoxYAxisVisibility = true;
-
-            this.TextBoxYAxisGridIntervall = 1;
-            this.ColorPickerYAxisGridColor = Colors.Black;
-            this.CheckBoxYAxisGridVisibility = true;
-
-            //maybe move them to properties and fields
-
             var xAxisData = new AxisData(this.TextBoxXAxisMin, this.TextBoxXAxisMax, this.ColorPickerXAxisColor, this.checkBoxXAxisVisibility);
             var yAxisData = new AxisData(this.TextBoxYAxisMin, this.TextBoxYAxisMax, this.ColorPickerYAxisColor, this.checkBoxYAxisVisibility);
             var xAxisGrid = new AxisGridData(this.TextBoxXAxisGridIntervall, this.ColorPickerXAxisGridColor, this.CheckBoxXAxisGridVisibility);
@@ -296,7 +431,18 @@ namespace GraphicalPlotter
             this.UpdateDrawInformationForAxis();
             this.UpdateDrawInformationForGridLines();
 
+            BindingOperations.EnableCollectionSynchronization(this.CurrentGraphicalFunctions, this.lockObjectFunctions);
+            BindingOperations.EnableCollectionSynchronization(this.DrawInformationForAxis, this.lockObjectFunctions);
+            BindingOperations.EnableCollectionSynchronization(this.DrawInformationForGridLines, this.lockObjectFunctions);
+
             //here comes the complete logic for this application
+        }
+
+        public void UpdateFullCanvas()
+        {
+            this.UpdateDrawInformationForFunctions();
+            this.UpdateDrawInformationForAxis();
+            this.UpdateDrawInformationForGridLines();
         }
 
         //TODO

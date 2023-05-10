@@ -26,7 +26,8 @@ namespace GraphicalPlotter
             return functionsDrawInformation;
         }
 
-        //PRIVATE ?
+        //PRIVATE 
+        // 
         public FunctionDrawInformation ConvertFunctionIntoDrawInformation(GraphicalFunction function)
         {
             int xPixels = this.GraphicalCanvas.WidthInPixel;
@@ -92,12 +93,14 @@ namespace GraphicalPlotter
             double xMin = this.GraphicalCanvas.XAxisData.MinVisibleValue;
             double yMax = this.GraphicalCanvas.YAxisData.MaxVisibleValue;
             double yMin = this.GraphicalCanvas.YAxisData.MinVisibleValue;
+            bool xAxisVisbility = this.GraphicalCanvas.XAxisData.Visibility;
+            bool yAxisVisbility = this.GraphicalCanvas.YAxisData.Visibility;
 
             //First we add the x axis, obv the x-axis needs to go from the left most x pixel to the last one. For where it is placed on the y axis we just find that out by
             //using the function to calculate a y pixel for a y value, for the x-axis the y value is zero.
             //only if the axis are visible we will calculate them , otherwise , weird things will happen
 
-            if (yMax >= 0 && yMin <= 0)
+            if (yMax >= 0 && yMin <= 0 && xAxisVisbility)
             {
                 int yPixelValueForXAxis = this.CalculateYPixelPositionForYValue(yPixels, 0, yMin, yMax);
                 //only if the x-axis is visible we add it to be displayed
@@ -110,7 +113,7 @@ namespace GraphicalPlotter
             }
             //only if the axis are visible we will calculate them , otherwise , weird things will happen
 
-            if (xMax >= 0 && xMin <= 0)
+            if (xMax >= 0 && xMin <= 0  && yAxisVisbility)
             {
                 int xPixelValueForYAxis = this.CalculateXPixelPositionForXValue(xPixels, 0, xMin, xMax);
                 //only if the y-axis is visible we add it to be displayed
@@ -138,6 +141,8 @@ namespace GraphicalPlotter
             double yGridInterval = this.GraphicalCanvas.YAxisGridData.IntervallBetweenLines;
             Color xGridColor = this.GraphicalCanvas.XAxisGridData.GridColor;
             Color yGridColor = this.GraphicalCanvas.YAxisGridData.GridColor;
+            bool xGridVisbility = this.GraphicalCanvas.XAxisGridData.Visibility;
+            bool yGridVisbility = this.GraphicalCanvas.YAxisGridData.Visibility;
 
             //for the grid lines lying on the x-axis
 
@@ -147,7 +152,8 @@ namespace GraphicalPlotter
             List<FunctionDrawInformation> gridLines = new List<FunctionDrawInformation>();
 
             // ONYL FOR THE Y AXIS GRID
-            if (numberOfGridLinesForYAxis > 0 && numberOfGridLinesForYAxis < yPixels / 2)
+            //maybe need to flip the visbility paramters
+            if (numberOfGridLinesForYAxis > 0 && numberOfGridLinesForYAxis < yPixels / 2 && yGridVisbility )
             {
                 
 
@@ -181,7 +187,7 @@ namespace GraphicalPlotter
             }
 
             // ONYL FOR THE X AXIS GRID
-            if (numberOfGridLinesForXAxis > 0 && numberOfGridLinesForXAxis < xPixels / 2)
+            if (numberOfGridLinesForXAxis > 0 && numberOfGridLinesForXAxis < xPixels / 2 && xGridVisbility)
             {
                 
 

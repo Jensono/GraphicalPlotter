@@ -23,8 +23,7 @@ namespace GraphicalPlotter
         public MainWindow()
         {
             InitializeComponent();
-
-           
+                  
 
         }
 
