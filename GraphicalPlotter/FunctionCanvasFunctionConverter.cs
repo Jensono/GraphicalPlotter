@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Media;
 
 namespace GraphicalPlotter
 {
@@ -94,30 +95,38 @@ namespace GraphicalPlotter
 
             //First we add the x axis, obv the x-axis needs to go from the left most x pixel to the last one. For where it is placed on the y axis we just find that out by
             //using the function to calculate a y pixel for a y value, for the x-axis the y value is zero.
+            //only if the axis are visible we will calculate them , otherwise , weird things will happen
 
-            int yPixelValueForXAxis = this.CalculateYPixelPositionForYValue(yPixels, 0, yMin, yMax);
-            //only if the x-axis is visible we add it to be displayed
-            if (yPixelValueForXAxis >= 0 && yPixelValueForXAxis <= yPixels)
+            if (yMax >= 0 && yMin <= 0)
             {
+                int yPixelValueForXAxis = this.CalculateYPixelPositionForYValue(yPixels, 0, yMin, yMax);
+                //only if the x-axis is visible we add it to be displayed
+                //if (yPixelValueForXAxis >= 0 && yPixelValueForXAxis <= yPixels)
+                //{
                 List<CanvasPixel> axisPoints = new List<CanvasPixel>() { new CanvasPixel(0, yPixelValueForXAxis), new CanvasPixel(xPixels, yPixelValueForXAxis) };
                 FunctionDrawInformation DrawInformationXAxis = new FunctionDrawInformation(axisPoints, this.GraphicalCanvas.XAxisData.AxisColor);
                 axisLines.Add(DrawInformationXAxis);
+                //}
             }
+            //only if the axis are visible we will calculate them , otherwise , weird things will happen
 
-            int xPixelValueForYAxis = this.CalculateXPixelPositionForXValue(xPixels, 0, xMin, xMax);
-
-            //only if the y-axis is visible we add it to be displayed
-            int correctedXPixelValueForYAxis = xPixels - xPixelValueForYAxis;
-            if (correctedXPixelValueForYAxis >= 0 && correctedXPixelValueForYAxis <= xPixels)
+            if (xMax >= 0 && xMin <= 0)
             {
-                List<CanvasPixel> axisPoints = new List<CanvasPixel>() { new CanvasPixel(correctedXPixelValueForYAxis, 0), new CanvasPixel(correctedXPixelValueForYAxis, yPixels) };
+                int xPixelValueForYAxis = this.CalculateXPixelPositionForXValue(xPixels, 0, xMin, xMax);
+                //only if the y-axis is visible we add it to be displayed
+
+                //if (correctedXPixelValueForYAxis >= 0 && correctedXPixelValueForYAxis <= xPixels)
+                //{
+                List<CanvasPixel> axisPoints = new List<CanvasPixel>() { new CanvasPixel(xPixelValueForYAxis, 0), new CanvasPixel(xPixelValueForYAxis, yPixels) };
                 FunctionDrawInformation DrawInformationXAxis = new FunctionDrawInformation(axisPoints, this.GraphicalCanvas.XAxisData.AxisColor);
                 axisLines.Add(DrawInformationXAxis);
+                //}
             }
+
             return axisLines;
         }
 
-        public List<FunctionDrawInformation> CreateGridDrawInformation()        
+        public List<FunctionDrawInformation> CreateGridDrawInformation()
         {
             int xPixels = this.GraphicalCanvas.WidthInPixel;
             int yPixels = this.GraphicalCanvas.HeightInPixel;
@@ -127,27 +136,259 @@ namespace GraphicalPlotter
             double yMin = this.GraphicalCanvas.YAxisData.MinVisibleValue;
             double xGridInterval = this.GraphicalCanvas.XAxisGridData.IntervallBetweenLines;
             double yGridInterval = this.GraphicalCanvas.YAxisGridData.IntervallBetweenLines;
-
+            Color xGridColor = this.GraphicalCanvas.XAxisGridData.GridColor;
+            Color yGridColor = this.GraphicalCanvas.YAxisGridData.GridColor;
 
             //for the grid lines lying on the x-axis
 
             double numberOfGridLinesForXAxis = (xMax - xMin) / xGridInterval;
+            double numberOfGridLinesForYAxis = (yMax - yMin) / yGridInterval;
 
             List<FunctionDrawInformation> gridLines = new List<FunctionDrawInformation>();
-            if (numberOfGridLinesForXAxis > 0)
+
+            // ONYL FOR THE Y AXIS GRID
+            if (numberOfGridLinesForYAxis > 0 && numberOfGridLinesForYAxis < yPixels / 2)
             {
-               
-                int roundingPosition = Math.lo 
+                
+
+                double howManyGridsAwayFromXAxis = yMin / yGridInterval;
+                int yAxisGridStartIndex;
+
+                //if it is less then zero we still need to round up but to the next smaller number, so we use floor
+                if (howManyGridsAwayFromXAxis < 0)
+                {
+                    //we move one full number down
+                    yAxisGridStartIndex = (int)Math.Floor(howManyGridsAwayFromXAxis);
+                }
+                else
+                {
+                    yAxisGridStartIndex = (int)Math.Ceiling(howManyGridsAwayFromXAxis);
+                }
+                
 
 
+
+                //as long as we havent reached yMax yet we still nee to add more intervalls
+                for (double i = yAxisGridStartIndex; (i * yGridInterval) < yMax; i+=1)
+                {
+                    double currentYValue = i * yGridInterval;
+                    int yPixelForThisGridLine = this.CalculateYPixelPositionForYValue(yPixels, currentYValue, yMin, yMax);
+                    var topPixelThisGridLine = new CanvasPixel(0, yPixelForThisGridLine);
+                    var bottomPixelThisGridLine = new CanvasPixel(xPixels, yPixelForThisGridLine);
+
+                    gridLines.Add(new FunctionDrawInformation(new List<CanvasPixel>() { topPixelThisGridLine, bottomPixelThisGridLine }, yGridColor));
+                }
             }
 
+            // ONYL FOR THE X AXIS GRID
+            if (numberOfGridLinesForXAxis > 0 && numberOfGridLinesForXAxis < xPixels / 2)
+            {
+                
 
+
+
+
+                double howManyGridsAwayFromYAxis = xMin / xGridInterval;
+
+                int xAxisGridStartIndex;
+
+                //if it is less then zero we still need to round up but to the next smaller number, so we use floor
+                if (howManyGridsAwayFromYAxis < 0)
+                {
+                    //we move one full number down
+                    xAxisGridStartIndex = (int)Math.Floor(howManyGridsAwayFromYAxis);
+                }
+                else
+                {
+                    xAxisGridStartIndex = (int)Math.Ceiling(howManyGridsAwayFromYAxis);
+                }
+                //if it is less then zero we still need to round up but to the next smaller number, so we use floor
+
+                //as long as we havent reached yMax yet we still nee to add more intervalls
+                for (double i = xAxisGridStartIndex; (i * xGridInterval) < xMax; i+=1)
+                {
+                    double currentXValue = i * xGridInterval;
+                    int xPixelForThisGridLine = this.CalculateXPixelPositionForXValue(xPixels, currentXValue, xMin, xMax);
+                    var topPixelThisGridLine = new CanvasPixel(xPixelForThisGridLine, 0);
+                    var bottomPixelThisGridLine = new CanvasPixel(xPixelForThisGridLine, yPixels);
+
+                    gridLines.Add(new FunctionDrawInformation(new List<CanvasPixel>() { topPixelThisGridLine, bottomPixelThisGridLine }, xGridColor));
+                }
+            }
+            return gridLines;
 
 
         }
 
-        // TODO ; THIS CALCULATION IS MAYBE wrong AND I NEED TO ADD (xPixel- n) , n beeing the result i have right now at the end.
+        ////VERSION 2 of grid
+        //public List<FunctionDrawInformation> CreateGridDrawInformation()
+        //{
+        //    int xPixels = this.GraphicalCanvas.WidthInPixel;
+        //    int yPixels = this.GraphicalCanvas.HeightInPixel;
+        //    double xMax = this.GraphicalCanvas.XAxisData.MaxVisibleValue;
+        //    double xMin = this.GraphicalCanvas.XAxisData.MinVisibleValue;
+        //    double yMax = this.GraphicalCanvas.YAxisData.MaxVisibleValue;
+        //    double yMin = this.GraphicalCanvas.YAxisData.MinVisibleValue;
+        //    double xGridInterval = this.GraphicalCanvas.XAxisGridData.IntervallBetweenLines;
+        //    double yGridInterval = this.GraphicalCanvas.YAxisGridData.IntervallBetweenLines;
+        //    Color xGridColor = this.GraphicalCanvas.XAxisGridData.GridColor;
+        //    Color yGridColor = this.GraphicalCanvas.YAxisGridData.GridColor;
+
+        //    //for the grid lines lying on the x-axis
+
+        //    double numberOfGridLinesForXAxis = (xMax - xMin) / xGridInterval;
+        //    double numberOfGridLinesForYAxis = (yMax - yMin) / yGridInterval;
+
+        //    List<FunctionDrawInformation> gridLines = new List<FunctionDrawInformation>();
+
+        //    // ONYL FOR THE Y AXIS GRID
+        //    if (numberOfGridLinesForYAxis > 0 && numberOfGridLinesForYAxis < yPixels / 2)
+        //    {
+        //        int yAxisGridStartIndex;
+
+        //        double howManyGridsAwayFromXAxis = yMin / yGridInterval;
+        //        //if it is less then zero we still need to round up but to the next smaller number, so we use floor
+        //        if (howManyGridsAwayFromXAxis < 0)
+        //        {
+        //            yAxisGridStartIndex = (int)Math.Floor(howManyGridsAwayFromXAxis);
+        //        }
+        //        else
+        //        {
+        //            yAxisGridStartIndex = (int)Math.Ceiling(howManyGridsAwayFromXAxis);
+        //        }
+
+
+        //        //as long as we havent reached yMax yet we still nee to add more intervalls
+        //        for (int i = yAxisGridStartIndex; yAxisGridStartIndex + (i * yGridInterval) < yMax; i++)
+        //        {
+        //            double currentYValue = yAxisGridStartIndex + (i * yGridInterval);
+        //            int yPixelForThisGridLine = this.CalculateYPixelPositionForYValue(yPixels, currentYValue, yMin, yMax);
+        //            var topPixelThisGridLine = new CanvasPixel(0, yPixelForThisGridLine);
+        //            var bottomPixelThisGridLine = new CanvasPixel(xPixels, yPixelForThisGridLine);
+
+        //            gridLines.Add(new FunctionDrawInformation(new List<CanvasPixel>() { topPixelThisGridLine, bottomPixelThisGridLine }, yGridColor));
+        //        }
+        //    }
+
+        //    // ONYL FOR THE X AXIS GRID
+        //    if (numberOfGridLinesForXAxis > 0 && numberOfGridLinesForXAxis < xPixels / 2)
+        //    {
+        //        int xAxisGridStartIndex;
+
+        //        double howManyGridsAwayFromYAxis = xMin / xGridInterval;
+        //        //if it is less then zero we still need to round up but to the next smaller number, so we use floor
+        //        if (howManyGridsAwayFromYAxis < 0)
+        //        {
+        //            xAxisGridStartIndex = (int)Math.Floor(howManyGridsAwayFromYAxis);
+        //        }
+        //        else
+        //        {
+        //            xAxisGridStartIndex = (int)Math.Ceiling(howManyGridsAwayFromYAxis);
+        //        }
+        //        //as long as we havent reached yMax yet we still nee to add more intervalls
+        //        for (int i = xAxisGridStartIndex; xAxisGridStartIndex + (i* xGridInterval) < xMax; i++)
+        //        {
+        //            double currentXValue = xAxisGridStartIndex + (i * xGridInterval);
+        //            int xPixelForThisGridLine = this.CalculateXPixelPositionForXValue(xPixels, currentXValue, xMin, xMax);
+        //            var topPixelThisGridLine = new CanvasPixel(xPixelForThisGridLine,0 );
+        //            var bottomPixelThisGridLine = new CanvasPixel(xPixelForThisGridLine, yPixels);
+
+        //            gridLines.Add(new FunctionDrawInformation(new List<CanvasPixel>() { topPixelThisGridLine, bottomPixelThisGridLine }, xGridColor));
+        //        }
+        //    }
+        //    return gridLines;
+
+
+        //}
+
+        //public List<FunctionDrawInformation> CreateGridDrawInformation()
+        //{
+        //    int xPixels = this.GraphicalCanvas.WidthInPixel;
+        //    int yPixels = this.GraphicalCanvas.HeightInPixel;
+        //    double xMax = this.GraphicalCanvas.XAxisData.MaxVisibleValue;
+        //    double xMin = this.GraphicalCanvas.XAxisData.MinVisibleValue;
+        //    double yMax = this.GraphicalCanvas.YAxisData.MaxVisibleValue;
+        //    double yMin = this.GraphicalCanvas.YAxisData.MinVisibleValue;
+        //    double xGridInterval = this.GraphicalCanvas.XAxisGridData.IntervallBetweenLines;
+        //    double yGridInterval = this.GraphicalCanvas.YAxisGridData.IntervallBetweenLines;
+        //    Color xGridColor = this.GraphicalCanvas.XAxisGridData.GridColor;
+        //    Color yGridColor = this.GraphicalCanvas.YAxisGridData.GridColor;
+        //    bool isMinAndMaxXSmallerthenZero = xMin < 0 && xMax < 0;
+        //    bool isMinAndMaxYSmallerthenZero = yMin < 0 && yMax < 0;
+
+        //    //for the grid lines lying on the x-axis
+
+        //    double numberOfGridLinesForXAxis = (xMax - xMin) / xGridInterval;
+
+        //    List<FunctionDrawInformation> gridLines = new List<FunctionDrawInformation>();
+
+        //    //WHY IS this so hard , or am i just overthinking stuff?
+        //    if (numberOfGridLinesForXAxis > 0)
+        //    {
+        //        double currentGridPointX = this.GetGridStartingPostionForGridIntervalAndMinValue(xMin,xGridInterval,isMinAndMaxXSmallerthenZero);
+
+        //        //now we just start adding gridlines from the min value that was converted and go until we reach xmax
+        //        while (currentGridPointX < xMax)
+        //        {
+        //            int RightXPixel = this.CalculateXPixelPositionForXValue(xPixels,currentGridPointX,xMin,xMax);
+        //            CanvasPixel topPoint = new CanvasPixel(RightXPixel,0);
+        //            CanvasPixel bottomPoint = new CanvasPixel(RightXPixel, yPixels);
+        //            FunctionDrawInformation thisGridLine = new FunctionDrawInformation(new List<CanvasPixel>() { topPoint, bottomPoint },xGridColor) ;
+        //            gridLines.Add(thisGridLine);
+        //            currentGridPointX += xGridInterval;
+        //        }
+
+        //        double currentGridPointY = this.GetGridStartingPostionForGridIntervalAndMinValue(yMin, yGridInterval,isMinAndMaxYSmallerthenZero);
+
+        //        while (currentGridPointY < yMax)
+        //        {
+        //            int RightYPixel = this.CalculateYPixelPositionForYValue(yPixels, currentGridPointY, yMin, yMax);
+        //            CanvasPixel topPoint = new CanvasPixel(0, RightYPixel);
+        //            CanvasPixel bottomPoint = new CanvasPixel(xPixels, RightYPixel);
+        //            FunctionDrawInformation thisGridLine = new FunctionDrawInformation(new List<CanvasPixel>() { topPoint, bottomPoint }, xGridColor);
+        //            gridLines.Add(thisGridLine);
+        //            currentGridPointY += yGridInterval;
+        //        }
+
+        //    }
+
+        //    return gridLines;
+
+        //}
+
+        private double GetGridStartingPostionForGridIntervalAndMinValue(double MinValue, double GridInterval, bool isMinAndMaxSmallerThanZero)
+        {
+            double logExponendForGridIntervall = Math.Log10(GridInterval);
+            double roundedStartingValue;
+
+            //log is bigger then zero
+            if (logExponendForGridIntervall >= 1)
+            {
+                double newGridLog = Math.Ceiling(logExponendForGridIntervall);
+                double startingValueForXnotRounded = Math.Abs(MinValue) / Math.Pow(10, newGridLog);
+                roundedStartingValue = Math.Ceiling(startingValueForXnotRounded) * Math.Pow(10, newGridLog);
+            }
+            //else if bigger then zero but smaller then one
+            else if (logExponendForGridIntervall >= 0)
+            {
+                double newGridLog = 0;
+                double startingValueForXnotRounded = Math.Abs(MinValue) / Math.Pow(10, newGridLog);
+                roundedStartingValue = Math.Ceiling(startingValueForXnotRounded) * Math.Pow(10, newGridLog);
+            }
+            //if the log is negativ but smaller then -1
+            else
+            {
+                int newGridLog = (int)Math.Ceiling(Math.Abs(logExponendForGridIntervall));
+                roundedStartingValue = Math.Round(MinValue, newGridLog);
+            }
+
+            if (MinValue < 0 && !isMinAndMaxSmallerThanZero)
+            {
+                roundedStartingValue *= -1;
+            }
+            return roundedStartingValue;
+        }
+
         public int CalculateXPixelPositionForXValue(int xPixels, double xValue, double xMin, double xMax)
         {
             double xPixelPosition = xPixels - ((xValue - xMin) * xPixels / (xMax - xMin)); //Changed minus to plus
@@ -160,7 +401,8 @@ namespace GraphicalPlotter
                 throw new ArgumentOutOfRangeException("Yo there is probably a problem in your function bro");
             }
             //Why isnt there a explixit method that just rounds to int or long???
-            return (int)Math.Round(xPixelPosition);
+
+            return xPixels - (int)Math.Round(xPixelPosition);
         }
     }
 }

@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GraphicalPlotter"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800" MinHeight="600" MinWidth="800">
+        Title="MainWindow" Height="{Binding YPixelHeightApp}" Width="{Binding XPixelWidhtApp}" MinHeight="600" MinWidth="800">
 
     <Window.DataContext>
-        <local:MainViewModel />
+        <local:MainViewModel/>
     </Window.DataContext>
 
     <Window.Resources>
@@ -38,9 +38,9 @@
                     <RowDefinition></RowDefinition>
                     <RowDefinition Height="150"></RowDefinition>
                 </Grid.RowDefinitions>
-
+                
                 <!--Here the usergram for the graphplotter-->
-                <Canvas Grid.Row="0" Grid.Column="0" Grid.RowSpan="1">
+                <Canvas Grid.Row="0" Grid.Column="0" Grid.RowSpan="1" Height="{Binding Path =YPixelHeightCanvas}" Width="{Binding Path =XPixelWidhtCanvas}">
                     
                     <!--Draw ItemControl for Functions-->
                     <ItemsControl ItemsSource="{Binding Path=DrawInformationForFunctions}">
@@ -55,7 +55,7 @@
                         <ItemsControl.ItemTemplate >
                             <DataTemplate>
 
-                                <Polyline Points="{Binding Path=CanvasPixels,Converter={StaticResource CanvasPixelToPointConverter}}" Stroke="{Binding FunctionColor, Converter={StaticResource ColorToSolidBrushConverter}}">
+                                <Polyline Points="{Binding Path=CanvasPixels,Converter={StaticResource CanvasPixelToPointConverter}}" Stroke="{Binding FunctionColor, Converter={StaticResource ColorToSolidBrushConverter}}" StrokeThickness="2">
                                    
                                     
 
@@ -68,9 +68,12 @@
                         
                     </ItemsControl>
                     
-                    <!--Draw information for the axis-->
+                   
+                    
+                    
+                    <!--Draw information for the Grid-->
 
-                    <ItemsControl ItemsSource="{Binding Path=DrawInformationForAxis}">
+                    <ItemsControl ItemsSource="{Binding Path=DrawInformationForGridLines}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <Canvas>
@@ -85,6 +88,33 @@
                                 <Polyline Points="{Binding Path=CanvasPixels,Converter={StaticResource CanvasPixelToPointConverter}}" Stroke="{Binding FunctionColor, Converter={StaticResource ColorToSolidBrushConverter}}">
 
 
+                                </Polyline>
+
+
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+
+                    </ItemsControl>
+
+
+
+                    <!--Draw information for the axis-->
+
+                    <ItemsControl ItemsSource="{Binding Path=DrawInformationForAxis}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas>
+
+                                </Canvas>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate >
+                            <DataTemplate>
+
+                                <Polyline Points="{Binding Path=CanvasPixels,Converter={StaticResource CanvasPixelToPointConverter}}" Stroke="{Binding FunctionColor, Converter={StaticResource ColorToSolidBrushConverter}}" StrokeThickness="3">
+
+
 
 
                                 </Polyline>
@@ -94,6 +124,7 @@
                         </ItemsControl.ItemTemplate>
 
                     </ItemsControl>
+
                 </Canvas>
                 
                 

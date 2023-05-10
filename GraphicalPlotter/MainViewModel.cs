@@ -10,7 +10,7 @@ namespace GraphicalPlotter
 
         //add more checks to the properties
 
-        private double textBoxXAxisMin;
+        private double textBoxXAxisMin = -10;
         public double TextBoxXAxisMin
         {
             get { return textBoxXAxisMin; }
@@ -24,7 +24,7 @@ namespace GraphicalPlotter
             }
         }
 
-        private double textBoxXAxisMax;
+        private double textBoxXAxisMax = 10;
         public double TextBoxXAxisMax
         {
             get { return textBoxXAxisMax; }
@@ -56,14 +56,17 @@ namespace GraphicalPlotter
 
 
 
-        private double textBoxXAxisGridIntervall;
+        private double textBoxXAxisGridIntervall = 1;
         public double TextBoxXAxisGridIntervall
         {
             get { return textBoxXAxisGridIntervall; }
             set
             {
-                if (value != textBoxXAxisGridIntervall && value > 0)
+                // If the value is above 0 and when there arent more gridlines than the max amount , which is half of all the pixels
+                if (value != textBoxXAxisGridIntervall && value > 0 && (((this.TextBoxXAxisMax - this.TextBoxXAxisMin) / value) < (this.XPixelWidhtCanvas / 2)))
                 {
+                    
+
                     textBoxXAxisGridIntervall = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxXAxisGridIntervall)));
                 }
@@ -88,7 +91,7 @@ namespace GraphicalPlotter
         }
 
       
-        private double textBoxYAxisMin;
+        private double textBoxYAxisMin = -10;
         public double TextBoxYAxisMin
         {
             get { return textBoxYAxisMin; }
@@ -102,7 +105,7 @@ namespace GraphicalPlotter
             }
         }
 
-        private double textBoxYAxisMax;
+        private double textBoxYAxisMax = 10;
         public double TextBoxYAxisMax
         {
             get { return textBoxYAxisMax; }
@@ -137,13 +140,13 @@ namespace GraphicalPlotter
 
 
 
-        private double textBoxYAxisGridIntervall;
+        private double textBoxYAxisGridIntervall = 1;
         public double TextBoxYAxisGridIntervall
         {
             get { return textBoxYAxisGridIntervall; }
             set
             {
-                if (value != textBoxYAxisGridIntervall && value > 0)
+                if (value != textBoxYAxisGridIntervall && value > 0 && (((this.TextBoxYAxisMax - this.TextBoxYAxisMin) / value) < (this.YPixelHeightCanvas / 2)))
                 {
                     textBoxYAxisGridIntervall = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxYAxisGridIntervall)));
@@ -175,6 +178,70 @@ namespace GraphicalPlotter
 
 
 
+
+        private int xPixelWidhtApp = 800;
+        public int XPixelWidhtApp
+        {
+            get { return this.xPixelWidhtApp; }
+            set
+            {
+                if (value > 0)
+                {
+                    xPixelWidhtApp = value;
+                    //this.xPixelWidhtCanvas = (int)Math.Round((680d / 800d) * value);
+                    //680
+
+                }
+            }
+        }
+
+        private int yPixelHeightApp = 600;
+        public int YPixelHeightApp
+        {
+            get { return this.yPixelHeightApp; }
+            set
+            {
+                if (value > 0)
+                {
+                    yPixelHeightApp = value;
+                    //380
+                    //this.YPixelHeightCanvas = (int)Math.Round((380d / 600d) * value);
+
+                }
+            }
+        }
+
+
+
+
+        private int xPixelWidhtCanvas = 380;
+        public int XPixelWidhtCanvas
+        {
+            get { return this.xPixelWidhtCanvas; }
+            set
+            {
+                if (value > 0)
+                {
+                    xPixelWidhtCanvas = value;
+                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.XPixelWidhtCanvas)));
+                }
+            }
+        }
+
+        private int yPixelHeightCanvas = 650;
+        public int YPixelHeightCanvas
+        {
+            get { return this.yPixelHeightCanvas; }
+            set
+            {
+                if (value > 0)
+                {
+                    yPixelHeightCanvas = value;
+                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.YPixelHeightCanvas)));
+                }
+            }
+        }
+
         public TwoDimensionalGraphCanvas MainGraphCanvas {get;set;}
 
         public FunctionToCanvasFunctionConverter CanvasFunctionConverter { get; set; }
@@ -184,32 +251,39 @@ namespace GraphicalPlotter
         public List<FunctionDrawInformation> DrawInformationForFunctions { get; set; }
 
         public List<FunctionDrawInformation> DrawInformationForAxis { get; set; }
+
+        public List<FunctionDrawInformation> DrawInformationForGridLines { get; set; }
         public MainViewModel()
         {
+            //these values need to be instanct before the grid intervalls or else grid lines will be zero
+           
 
             // FOR THE X - AXIS
-            this.TextBoxXAxisMin = -Math.PI;
-            this.TextBoxXAxisMax = Math.PI;
+            this.TextBoxXAxisMax = 9;
+            this.TextBoxXAxisMin = -9;
+         
             this.ColorPickerXAxisColor = Colors.DarkSlateBlue;
             this.CheckBoxXAxisVisibility = true;
 
 
-            this.TextBoxXAxisGridIntervall = 1;
-            this.ColorPickerXAxisGridColor = Color.FromRgb(150, 150, 150);
+            this.TextBoxXAxisGridIntervall = Math.PI/2;
+            this.ColorPickerXAxisGridColor = Colors.Black;
             this.CheckBoxXAxisGridVisibility = true;
 
 
             // FOR THE Y - AXIS
-            this.TextBoxYAxisMin = -2;
             this.TextBoxYAxisMax = 2;
+            this.TextBoxYAxisMin = -2;
+            
             this.ColorPickerYAxisColor = Colors.DarkSlateBlue;
             this.CheckBoxYAxisVisibility = true;
 
 
             this.TextBoxYAxisGridIntervall = 1;
-            this.ColorPickerYAxisGridColor = Color.FromRgb(150, 150, 150);
+            this.ColorPickerYAxisGridColor = Colors.Black;
             this.CheckBoxYAxisGridVisibility = true;
 
+           
 
             //maybe move them to properties and fields
 
@@ -232,13 +306,18 @@ namespace GraphicalPlotter
             this.CanvasFunctionConverter = new FunctionToCanvasFunctionConverter(this.MainGraphCanvas);
 
             this.CurrentGraphicalFunctions = new List<GraphicalFunction>();
-            this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new PolynomialComponent(2, 1) }, Colors.Aquamarine))  ;
+            //x^2
+            //this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new PolynomialComponent(2, 1) }, Colors.Aquamarine))  ;
+
             this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new SineFunction(1, 1) }, Colors.Black));
-            this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new CosineFunction(1, 1) },Colors.Red));
-            this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new TangentFunction(1, 1) }, Colors.Green));
+            //COS
+            this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new CosineFunction(1, 1) }, Colors.Red));
+            //TAN
+            //this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new TangentFunction(1, 1) }, Colors.Green));
 
             this.UpdateDrawInformationForFunctions();
             this.UpdateDrawInformationForAxis();
+            this.UpdateDrawInformationForGridLines();
 
 
             //here comes the complete logic for this application
@@ -267,6 +346,18 @@ namespace GraphicalPlotter
 
             this.DrawInformationForAxis = functionDrawInformation;
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.DrawInformationForAxis)));
+
+
+        }
+
+        public void UpdateDrawInformationForGridLines()
+        {
+            List<FunctionDrawInformation> functionDrawInformation = this.CanvasFunctionConverter.CreateGridDrawInformation();
+
+
+
+            this.DrawInformationForGridLines = functionDrawInformation;
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.DrawInformationForGridLines)));
 
 
         }
