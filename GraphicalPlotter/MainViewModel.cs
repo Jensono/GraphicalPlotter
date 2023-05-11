@@ -432,16 +432,6 @@ namespace GraphicalPlotter
         {
 
 
-            //TESTING
-            StringToFunctionConverter userFunctionConverter = new StringToFunctionConverter();
-
-            
-            userFunctionConverter.IsValidSinusFunction()
-
-
-            //Testing end
-
-
             this.XAxisData = new AxisData(this.textBoxXAxisMin, this.TextBoxXAxisMax, this.ColorPickerXAxisColor, this.CheckBoxXAxisVisibility);
             this.YAxisData = new AxisData(this.TextBoxYAxisMin, this.TextBoxYAxisMax, this.ColorPickerYAxisColor, this.CheckBoxYAxisVisibility);
             this.XAxisGrid = new AxisGridData(this.TextBoxXAxisGridIntervall, this.ColorPickerXAxisGridColor, this.CheckBoxXAxisGridVisibility);
