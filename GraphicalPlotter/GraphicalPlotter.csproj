@@ -68,6 +68,7 @@
     <Compile Include="Model\Functions\TrigometricalFunctions\SineFunction.cs" />
     <Compile Include="Model\Functions\TrigometricalFunctions\TangentFunction.cs" />
     <Compile Include="Model\Functions\TrigometricalFunctions\TrigonometricFunctions.cs" />
+    <Compile Include="StringToFunctionConverter.cs" />
     <Compile Include="TwoDimensionalGraphCanvas.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

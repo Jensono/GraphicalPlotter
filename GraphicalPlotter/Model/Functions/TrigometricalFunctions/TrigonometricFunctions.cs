@@ -2,9 +2,9 @@
 {
     public abstract class TrigonometricFunctions : FunctionParts
     {
-        public int DegreeMultilplier { get; set; }
+        public double DegreeMultilplier { get; set; }
 
-        public TrigonometricFunctions(int constantMultiplier, int degreeMultiplier) : base(constantMultiplier)
+        public TrigonometricFunctions(double constantMultiplier, double degreeMultiplier) : base(constantMultiplier)
         {
             this.DegreeMultilplier = degreeMultiplier;
         }

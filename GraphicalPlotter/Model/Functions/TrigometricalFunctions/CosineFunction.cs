@@ -4,7 +4,7 @@ namespace GraphicalPlotter
 {
     public class CosineFunction : TrigonometricFunctions
     {
-        public CosineFunction(int constantMultiplier, int degreeMultiplier) : base(constantMultiplier, degreeMultiplier)
+        public CosineFunction(double constantMultiplier, double degreeMultiplier) : base(constantMultiplier, degreeMultiplier)
         {
         }
 

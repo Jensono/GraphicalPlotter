@@ -15,7 +15,7 @@ namespace GraphicalPlotter
         public double ConstantMulitplier { get; set; }
 
         // right now the multiplier can also be null
-        public FunctionParts(long constantMultiplier)
+        public FunctionParts(double constantMultiplier)
         {
             this.ConstantMulitplier = constantMultiplier;
         }

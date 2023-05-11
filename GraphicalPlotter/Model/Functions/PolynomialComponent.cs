@@ -5,8 +5,8 @@ namespace GraphicalPlotter
     public class PolynomialComponent : FunctionParts
     {
         // The degree for the exponent for x,eg. 2 would create x^2.
-        public int exponentDegree;
-        public int ExponentDegree
+        public double exponentDegree;
+        public double ExponentDegree
         {
             get
             {

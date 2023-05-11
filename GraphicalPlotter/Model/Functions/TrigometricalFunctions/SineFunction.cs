@@ -9,7 +9,7 @@ namespace GraphicalPlotter
     public class SineFunction : TrigonometricFunctions
     {
 
-        public SineFunction(int constantMultiplier, int degreeMultiplier) : base(constantMultiplier, degreeMultiplier) { }
+        public SineFunction(double constantMultiplier, double degreeMultiplier) : base(constantMultiplier, degreeMultiplier) { }
         public override double CalculateItsOwnValue(double angle)
         {
 

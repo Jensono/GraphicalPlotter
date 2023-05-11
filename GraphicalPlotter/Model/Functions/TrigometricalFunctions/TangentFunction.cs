@@ -9,7 +9,7 @@ namespace GraphicalPlotter
     public class TangentFunction : TrigonometricFunctions
     {
 
-        public TangentFunction(int constantMultiplier, int degreeMultiplier) : base(constantMultiplier, degreeMultiplier) { }
+        public TangentFunction(double constantMultiplier, double degreeMultiplier) : base(constantMultiplier, degreeMultiplier) { }
         public override double CalculateItsOwnValue(double angle)
         {
             return this.ConstantMulitplier * Math.Tan(angle * this.DegreeMultilplier);
