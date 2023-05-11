@@ -17,11 +17,11 @@ namespace GraphicalPlotter
                 // can this handle negativ exponents? x^-2 Maybe later used for diffrentiation..
 
                 this.exponentDegree = value;
-
+                
             }
         }
 
-        public PolynomialComponent(int exponentenDegree, long constantMultiplier) : base(constantMultiplier)
+        public PolynomialComponent(double exponentenDegree, double constantMultiplier) : base(constantMultiplier)
         {
             this.ExponentDegree = exponentenDegree;
         }

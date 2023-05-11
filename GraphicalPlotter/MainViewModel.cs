@@ -430,6 +430,18 @@ namespace GraphicalPlotter
 
         public MainViewModel()
         {
+
+
+            //TESTING
+            StringToFunctionConverter userFunctionConverter = new StringToFunctionConverter();
+
+            
+            userFunctionConverter.IsValidSinusFunction()
+
+
+            //Testing end
+
+
             this.XAxisData = new AxisData(this.textBoxXAxisMin, this.TextBoxXAxisMax, this.ColorPickerXAxisColor, this.CheckBoxXAxisVisibility);
             this.YAxisData = new AxisData(this.TextBoxYAxisMin, this.TextBoxYAxisMax, this.ColorPickerYAxisColor, this.CheckBoxYAxisVisibility);
             this.XAxisGrid = new AxisGridData(this.TextBoxXAxisGridIntervall, this.ColorPickerXAxisGridColor, this.CheckBoxXAxisGridVisibility);
@@ -443,12 +455,16 @@ namespace GraphicalPlotter
             this.CurrentGraphicalFunctions = new List<GraphicalFunction>();
             //x^2
             this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new PolynomialComponent(2, 1) }, Colors.Aquamarine));
+            this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new PolynomialComponent(3, 1) }, Colors.Orange));
 
-            this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new SineFunction(1, 1) }, Colors.Black));
+            this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new PolynomialComponent(2.5846, -1) }, Colors.Purple));
+
+            this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new PolynomialComponent(-2, 1) }, Colors.GreenYellow));
+            //this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new SineFunction(1, 1) }, Colors.Black));
             //COS
-            this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new CosineFunction(1, 1) }, Colors.Red));
+            //this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new CosineFunction(1, 1) }, Colors.Red));
             //TAN
-            this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new TangentFunction(1, 1) }, Colors.Green));
+            //this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new TangentFunction(1, 1) }, Colors.Green));
 
             this.UpdateDrawInformationForFunctions();
             this.UpdateDrawInformationForAxis();
