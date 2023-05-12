@@ -64,6 +64,7 @@
     <Compile Include="ColorPicker\ColorPickeViewModel.cs" />
     <Compile Include="Converter\ColorToSolidBrushConverter.cs" />
     <Compile Include="Converter\CanvasPixelToPointCollectionConverter.cs" />
+    <Compile Include="GraphicalFunctionViewModel.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Model\AxisInfo\AxisData.cs" />
     <Compile Include="Model\AxisInfo\AxisGridData.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Model\Functions\TrigometricalFunctions\TrigonometricFunctions.cs" />
     <Compile Include="StringToFunctionConverter.cs" />
     <Compile Include="TwoDimensionalGraphCanvas.cs" />
+    <Compile Include="UserInputFunctionChangedEventArgs.cs" />
     <Compile Include="WindowCommand.cs" />
     <Page Include="ColorPicker\ColorPickerRGB.xaml">
       <SubType>Designer</SubType>

@@ -239,7 +239,7 @@ namespace GraphicalPlotter
             }
         }
 
-        private int pixelWidhtApp = 800;
+        private int pixelWidhtApp = 880;
 
         public int PixelWidhtApp
         {
@@ -249,7 +249,7 @@ namespace GraphicalPlotter
                 if (value > 0)
                 {
                     pixelWidhtApp = value;
-                    this.PixelWidhtCanvas = (int)Math.Round((630d / 800d) * value);
+                    this.PixelWidhtCanvas = (int)Math.Ceiling((630d / 880d) * value);
                     //630
                 }
             }
@@ -266,7 +266,7 @@ namespace GraphicalPlotter
                 {
                     pixelHeightApp = value;
                     //380
-                    this.PixelHeightCanvas = (int)Math.Round((380d / 600d) * value);
+                    this.PixelHeightCanvas = (int)Math.Ceiling((380d / 600d) * value);
                 }
             }
         }
@@ -308,9 +308,9 @@ namespace GraphicalPlotter
         public FunctionToCanvasFunctionConverter CanvasFunctionConverter { get; set; }
 
         //TODO do i actually need the lock here???
-        private ObservableCollection<GraphicalFunction> currentGraphicalFunctions;
+        private ObservableCollection<GraphicalFunctionViewModel> currentGraphicalFunctions;
 
-        public ObservableCollection<GraphicalFunction> CurrentGraphicalFunctions
+        public ObservableCollection<GraphicalFunctionViewModel> CurrentGraphicalFunctions
         {
             get
             {
@@ -429,7 +429,8 @@ namespace GraphicalPlotter
         public AxisGridData YAxisGrid { get; set; }
         public StringToFunctionConverter UserInputFunctionConverter { get; set; }
 
-        private string textBoxUserInputFunction = "5*x^2+5";
+        //just to give the user a hint how a correctly formated function looks.
+        private string textBoxUserInputFunction = "5*x^2-sin(3x)+5";
 
         public string TextBoxUserInputFunction
         {
@@ -461,7 +462,11 @@ namespace GraphicalPlotter
                     {
                         if (this.UserInputFunctionConverter.ConvertStringToGraphicalFunction(this.TextBoxUserInputFunction, out graphicalFunction))
                         {
-                            this.CurrentGraphicalFunctions.Add(graphicalFunction);
+                            GraphicalFunctionViewModel functionVM = new GraphicalFunctionViewModel(graphicalFunction);
+                            this.CurrentGraphicalFunctions.Add(functionVM);
+
+                            functionVM.OnUserFunctionChanged += new EventHandler<UserInputFunctionChangedEventArgs> (this.UpdateDrawInformationForFunctions);
+
                             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CurrentGraphicalFunctions)));
                             this.UpdateDrawInformationForFunctions();
                         }
@@ -482,7 +487,6 @@ namespace GraphicalPlotter
                     },
                     (obj) =>
                     {
-                     
                         ColorPickerWindow colorPickerWindow = new ColorPickerWindow();
                         colorPickerWindow.ShowDialog();
                         // If a color is selected and the ok button is pressed
@@ -548,19 +552,44 @@ namespace GraphicalPlotter
             this.CanvasFunctionConverter = new FunctionToCanvasFunctionConverter(this.MainGraphCanvas);
             this.UserInputFunctionConverter = new StringToFunctionConverter();
 
-            this.CurrentGraphicalFunctions = new ObservableCollection<GraphicalFunction>();
-            //x^2
-            this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new PolynomialComponent(2, 1) }, Colors.Aquamarine));
-            this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new PolynomialComponent(3, 1) }, Colors.Orange));
+            this.CurrentGraphicalFunctions = new ObservableCollection<GraphicalFunctionViewModel>();
 
-            this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new PolynomialComponent(2.5846, -1) }, Colors.Purple));
 
-            this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new PolynomialComponent(-2, 1) }, Colors.GreenYellow));
+
+            //TODO TODO TODO TODO REMOVE THESE ARE JUST TESTING FUNCTIONS********************************
+
+
+            ////var testfunc1 = new GraphicalFunctionViewModel(new GraphicalFunction(new List<FunctionParts>() { new PolynomialComponent(2, 1) }, Colors.Aquamarine));
+            ////testfunc1.OnUserFunctionChanged += new EventHandler<UserInputFunctionChangedEventArgs>(this.UpdateDrawInformationForFunctions);
+
+            ////var testfunc2 = new GraphicalFunctionViewModel(new GraphicalFunction(new List<FunctionParts>() { new PolynomialComponent(3, 1) }, Colors.Orange));
+
+            ////testfunc2.OnUserFunctionChanged += new EventHandler<UserInputFunctionChangedEventArgs>(this.UpdateDrawInformationForFunctions);
+            ////var testfunc3 = new GraphicalFunctionViewModel(new GraphicalFunction(new List<FunctionParts>() { new PolynomialComponent(2.5846, -1) }, Colors.Purple));
+            ////testfunc3.OnUserFunctionChanged += new EventHandler<UserInputFunctionChangedEventArgs>(this.UpdateDrawInformationForFunctions);
+            ////var testfunc4 = new GraphicalFunctionViewModel(new GraphicalFunction(new List<FunctionParts>() { new PolynomialComponent(-2, 1) }, Colors.GreenYellow));
+            ////testfunc4.OnUserFunctionChanged += new EventHandler<UserInputFunctionChangedEventArgs>(this.UpdateDrawInformationForFunctions);
+
+            //////x^2
+            ////this.CurrentGraphicalFunctions.Add(testfunc1);
+            ////this.CurrentGraphicalFunctions.Add(testfunc2);
+
+            ////this.CurrentGraphicalFunctions.Add(testfunc3);
+
+            ////this.CurrentGraphicalFunctions.Add(testfunc4);
+
+
+
             //this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new SineFunction(1, 1) }, Colors.Black));
             //COS
             //this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new CosineFunction(1, 1) }, Colors.Red));
             //TAN
             //this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new TangentFunction(1, 1) }, Colors.Green));
+
+
+
+
+            //TODO TODO TODO TODO REMOVE THESE ARE JUST TESTING FUNCTIONS^^^^^^^^^^^^^^^^^^^^
 
             this.UpdateDrawInformationForFunctions();
             this.UpdateDrawInformationForAxis();
@@ -571,6 +600,7 @@ namespace GraphicalPlotter
             BindingOperations.EnableCollectionSynchronization(this.DrawInformationForGridLines, this.lockObjectFunctions);
 
             this.PropertyChanged += UpdateCanvasAttributes;
+            
 
             //here comes the complete logic for this application
         }
@@ -669,9 +699,30 @@ namespace GraphicalPlotter
         {
             List<FunctionDrawInformation> functionDrawInformation = new List<FunctionDrawInformation>();
 
-            foreach (GraphicalFunction function in this.CurrentGraphicalFunctions)
+            foreach (GraphicalFunctionViewModel functionVM in this.CurrentGraphicalFunctions)
             {
-                functionDrawInformation.Add(this.CanvasFunctionConverter.ConvertFunctionIntoDrawInformation(function));
+                if (functionVM.FunctionVisibility == true)
+                {
+                    functionDrawInformation.Add(this.CanvasFunctionConverter.ConvertFunctionViewModelIntoDrawInformation(functionVM));
+                }
+            }
+
+            this.DrawInformationForFunctions = functionDrawInformation;
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.DrawInformationForFunctions)));
+        }
+
+        //yeah i know every function gets updated, but for now this is good enough 
+        //TODO fix, only the function that has changed needs updates to its information.
+        public void UpdateDrawInformationForFunctions(object sender,UserInputFunctionChangedEventArgs e)
+        {
+            List<FunctionDrawInformation> functionDrawInformation = new List<FunctionDrawInformation>();
+
+            foreach (GraphicalFunctionViewModel functionVM in this.CurrentGraphicalFunctions)
+            {
+                if (functionVM.FunctionVisibility == true)
+                {
+                    functionDrawInformation.Add(this.CanvasFunctionConverter.ConvertFunctionViewModelIntoDrawInformation(functionVM));
+                }
             }
 
             this.DrawInformationForFunctions = functionDrawInformation;

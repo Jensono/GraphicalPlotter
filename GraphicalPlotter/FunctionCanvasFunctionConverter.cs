@@ -60,6 +60,38 @@ namespace GraphicalPlotter
             return drawInformation;
         }
 
+        public FunctionDrawInformation ConvertFunctionViewModelIntoDrawInformation(GraphicalFunctionViewModel function)
+        {
+            int xPixels = this.GraphicalCanvas.WidthInPixel;
+            int yPixels = this.GraphicalCanvas.HeightInPixel;
+            double xMax = this.GraphicalCanvas.XAxisData.MaxVisibleValue;
+            double xMin = this.GraphicalCanvas.XAxisData.MinVisibleValue;
+            double yMax = this.GraphicalCanvas.YAxisData.MaxVisibleValue;
+            double yMin = this.GraphicalCanvas.YAxisData.MinVisibleValue;
+
+            List<CanvasPixel> PixelValuesForthisFunction = new List<CanvasPixel>();
+
+            for (int xPixelPosition = 0; xPixelPosition < xPixels; xPixelPosition++)
+            {
+                double xCalculationIntervall = (xMax - xMin) / xPixels;
+                double xValueForCurrentPixel = xMin + (xPixelPosition * xCalculationIntervall);
+                double yValueForCurrentXValue = function.CalculateSumOfAllPartsForValue(xValueForCurrentPixel);
+
+                int roundedYPixelPosition = this.CalculateYPixelPositionForYValue(yPixels, yValueForCurrentXValue, yMin, yMax);
+                //only add the pixel if it is inside the y Axis
+
+                //if (!(roundedYPixelPosition<0) &&  ! (roundedYPixelPosition>yPixels))
+                //{
+                PixelValuesForthisFunction.Add(new CanvasPixel(xPixelPosition, roundedYPixelPosition));
+                //}
+
+                //else
+                //    PixelValuesForthisFunction.Add(new CanvasPixel(xPixelPosition, roundedYPixelPosition));
+            }
+            FunctionDrawInformation drawInformation = new FunctionDrawInformation(PixelValuesForthisFunction, function.FunctionColor);
+            return drawInformation;
+        }
+
         public int CalculateYPixelPositionForYValue(int yPixels, double yValue, double yMin, double yMax)
         {
             //it took me 2 hours to come up with this function, i fucking hope it works

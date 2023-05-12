@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GraphicalPlotter"
         mc:Ignorable="d"
         Title="GraphicalPlotter" 
-        MinHeight="600" MinWidth="800"   Height="{Binding Path=PixelHeightApp, Mode=TwoWay}" Width="{Binding Path=PixelWidhtApp, Mode=TwoWay}">
+        MinHeight="600" MinWidth="900"   Height="{Binding Path=PixelHeightApp, Mode=TwoWay}" Width="{Binding Path=PixelWidhtApp, Mode=TwoWay}">
     <Window.DataContext>
         <local:MainViewModel />
     </Window.DataContext>
@@ -21,7 +21,7 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition ></ColumnDefinition>
-                    <ColumnDefinition Width="150"></ColumnDefinition>
+                    <ColumnDefinition Width="240"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
 
@@ -192,16 +192,16 @@
                         <RowDefinition MinHeight="315" ></RowDefinition>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition  MinWidth="150" MaxWidth="150"></ColumnDefinition>
+                        <ColumnDefinition  MinWidth="250" MaxWidth="250"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <TextBlock  Grid.Row="0" Text="Input new Function" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" Background="Ivory" Padding="15"></TextBlock>
                     
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="190"/>
                             <ColumnDefinition Width="30"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox Grid.Row="0" Grid.Column="0" Text="{Binding Path=TextBoxUserInputFunction}" TextAlignment="Center"  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12"   Width="120" Height="20" ToolTipService.ShowOnDisabled="True" ToolTip="{Binding Path=TextBoxUserInputFunctionToolTip}"></TextBox>
+                        <TextBox Grid.Row="0" Grid.Column="0" Text="{Binding Path=TextBoxUserInputFunction}" TextAlignment="Center"  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12"   Width="185" Height="20" ToolTipService.ShowOnDisabled="True" ToolTip="{Binding Path=TextBoxUserInputFunctionToolTip}"></TextBox>
                         <Button Grid.Row="0" Grid.Column="1" Content="Add" Command="{Binding Path=AddFunctionCommand}"  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12"   Width="30" Height="20" ToolTipService.ShowOnDisabled="True" ToolTip="{Binding Path=TextBoxUserInputFunctionToolTip}"></Button>
                     </Grid>
                     
@@ -214,11 +214,28 @@
                                 <!-- maybe at a color selection in a later stage-->
                                 <Grid>
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition MinWidth="30"></ColumnDefinition>
                                         <ColumnDefinition MinWidth="120"></ColumnDefinition>
-                                        <ColumnDefinition ></ColumnDefinition>
+                                        <ColumnDefinition MinWidth="50"></ColumnDefinition>
+                                        <ColumnDefinition MinWidth="30"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Text="{Binding Path = FunctionDisplayName}" FontSize="10" Grid.Column="0"  Foreground="{Binding FunctionColor,Converter={StaticResource ColorToSolidBrushConverter}}"></TextBlock>
-                                    <CheckBox IsChecked="{Binding Path=Visibility}" Grid.Column="1" HorizontalAlignment="Right">
+                                    <TextBox Text="{Binding Path = CustomUserSetName}" FontSize="10" Grid.Column="0" Width="30"></TextBox>
+                                    <TextBlock Text="{Binding Path = FunctionDisplayName}" FontSize="10" Grid.Column="1" TextAlignment="Center"   >
+
+                                        <TextBlock.TextDecorations>
+                                            <TextDecoration Location="Underline">
+                                                <TextDecoration.Pen>
+                                                    <Pen Brush="{Binding FunctionColor, Converter={StaticResource ColorToSolidBrushConverter}}"></Pen>
+                                                </TextDecoration.Pen>
+                                            </TextDecoration>
+                                        </TextBlock.TextDecorations>
+                                    </TextBlock>
+                                    
+                                    <Button Grid.Column="2"  HorizontalAlignment="Center" VerticalAlignment="Bottom"  MinWidth="50" MinHeight="15" MaxHeight="15"  
+                            Background="{Binding FunctionColor, Converter={StaticResource ColorToSolidBrushConverter}}" Command="{Binding OpenColorPicker}" ></Button>
+                                    <!--CommandParameter="ColorPickerXAxisColor"-->
+
+                                    <CheckBox IsChecked="{Binding Path=FunctionVisibility}" Grid.Column="3" HorizontalAlignment="Right">
                                     </CheckBox>
                                 </Grid>
                             </DataTemplate>
