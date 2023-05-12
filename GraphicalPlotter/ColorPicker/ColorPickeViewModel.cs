@@ -41,10 +41,10 @@ namespace GraphicalPlotter
             }
         }
         
-        public SolidColorBrush SelectedColor { 
+        public Color SelectedColor { 
             get 
             {
-                return new SolidColorBrush(Color.FromRgb(RedValue, GreenValue, BlueValue));
+                return  Color.FromRgb(RedValue, GreenValue, BlueValue);
             }           
         }
 

@@ -464,9 +464,33 @@ namespace GraphicalPlotter
                             this.CurrentGraphicalFunctions.Add(graphicalFunction);
                             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CurrentGraphicalFunctions)));
                             this.UpdateDrawInformationForFunctions();
-                            
                         }
-                       
+                    }
+
+                    );
+            }
+        }
+
+        public ICommand OpenColorPicker
+        {
+            get
+            {
+                return new WindowCommand(
+                    (obj) =>
+                    {
+                        return true;
+                    },
+                    (obj) =>
+                    {
+                    ColorPickerWindow colorPickerWindow = new ColorPickerWindow();
+                    // If a color is selected and the ok button is pressed
+                    //maybe add a result bool to the window or the colorpickerrgb
+                    if (result == true)
+                    {
+                            Color selectedColor = colorPickerWindow.SelectedColor;
+
+                        // Set the selected color to the ColorPickerXAxisColor property in the main view model
+                        ColorPickerXAxisColor = selectedColor;
                     }
 
                     );
@@ -519,10 +543,9 @@ namespace GraphicalPlotter
         public void UpdateFullCanvas()
         {
             this.UpdateDrawInformationForAxis();
-           
+
             this.UpdateDrawInformationForFunctions();
             this.UpdateDrawInformationForGridLines();
-
         }
 
         // this is utterly retarded but i dont have enough time to think about a better solution

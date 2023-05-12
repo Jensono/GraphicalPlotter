@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GraphicalPlotter"
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="160">
+             d:DesignHeight="100" d:DesignWidth="160" MaxHeight="100" MaxWidth="160">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"/>

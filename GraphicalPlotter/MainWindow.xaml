@@ -126,7 +126,9 @@
                     <TextBox Grid.Row="0" Grid.Column="5"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="{Binding Path=TextBoxXAxisMax}" MinWidth="50" MinHeight="15" MaxHeight="15"></TextBox>
 
                     <TextBlock Text="Color:" Grid.Row="0" Grid.Column="6"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
-                    <TextBox Grid.Row="0" Grid.Column="7"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="" MinWidth="50" MinHeight="15" MaxHeight="15"></TextBox>
+                    <Button Grid.Row="0" Grid.Column="7"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Content="Pick Color" MinWidth="50" MinHeight="15" MaxHeight="15" 
+                            Foreground="{Binding ColorPickerXAxisColor, Converter={StaticResource ColorToSolidBrushConverter}}"></Button>
+                    
                     <!--needs binding to view model ALSO waiting for forum post on colorpicker lib-->
                     <TextBlock Text="Visbibility:" Grid.Row="0" Grid.Column="8"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
                     <CheckBox Grid.Row="0" Grid.Column="9"  HorizontalAlignment="Center" VerticalAlignment="Bottom" IsChecked="{Binding Path=CheckBoxXAxisVisibility}"></CheckBox>
