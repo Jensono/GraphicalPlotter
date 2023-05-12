@@ -464,6 +464,7 @@ namespace GraphicalPlotter
                             this.CurrentGraphicalFunctions.Add(graphicalFunction);
                             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CurrentGraphicalFunctions)));
                             this.UpdateDrawInformationForFunctions();
+                            
                         }
                        
                     }
