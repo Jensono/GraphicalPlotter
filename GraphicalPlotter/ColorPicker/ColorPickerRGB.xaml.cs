@@ -15,15 +15,17 @@ using System.Windows.Shapes;
 
 namespace GraphicalPlotter
 {
+
+    // TODO OBSOLETE !!!!
     /// <summary>
-    /// Interaktionslogik für ColorPickerRGB.xaml
+    /// OBSOLETE !!!!
     /// </summary>
     public partial class ColorPickerRGB : UserControl
     {
         public ColorPickerRGB()
         {
             InitializeComponent();
-            DataContext = new ColorPickeViewModel();
+            //DataContext = new ColorPickerViewModel();
         }
     }
 }

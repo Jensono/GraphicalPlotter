@@ -482,15 +482,50 @@ namespace GraphicalPlotter
                     },
                     (obj) =>
                     {
-                    ColorPickerWindow colorPickerWindow = new ColorPickerWindow();
-                    // If a color is selected and the ok button is pressed
-                    //maybe add a result bool to the window or the colorpickerrgb
-                    if (result == true)
-                    {
-                            Color selectedColor = colorPickerWindow.SelectedColor;
+                     
+                        ColorPickerWindow colorPickerWindow = new ColorPickerWindow();
+                        colorPickerWindow.ShowDialog();
+                        // If a color is selected and the ok button is pressed
+                        if (colorPickerWindow.isColorPicked == true)
+                        {
+                            //UNSAFE AS FUCK PLEASE FIX TODO TODO TODO
+                            string propertyName = (string)obj;
 
-                        // Set the selected color to the ColorPickerXAxisColor property in the main view model
-                        ColorPickerXAxisColor = selectedColor;
+                            //i know that i could use the propertyInfo for this, but im not sure if we are allowed to use it.
+                            //PropertyInfo property = this.GetType().GetProperty(propertyName);
+                            //if (property != null && property.CanWrite)
+                            //{
+                            //    property.SetValue(this, selectedColor.Color);
+                            //}
+
+                            // dumb design that i need to convert 2 times but not enough time to fix this TODO
+                            Color selectedColor = colorPickerWindow.SelectedColor.Color;
+
+                            switch (propertyName)
+                            {
+                                case "ColorPickerXAxisColor":
+                                    this.ColorPickerXAxisColor = selectedColor;
+                                    break;
+
+                                case "ColorPickerYAxisColor":
+                                    this.ColorPickerYAxisColor = selectedColor;
+                                    break;
+
+                                case "ColorPickerXAxisGridColor":
+                                    this.ColorPickerXAxisGridColor = selectedColor;
+                                    break;
+
+                                case "ColorPickerYAxisGridColor":
+                                    this.ColorPickerYAxisGridColor = selectedColor;
+                                    break;
+
+                                default:
+                                    break;
+                            }
+
+                            // Set the selected color to the ColorPickerXAxisColor property in the main view model
+                            //this.ColorPickerXAxisColor =  selectedColor.Color;
+                        }
                     }
 
                     );

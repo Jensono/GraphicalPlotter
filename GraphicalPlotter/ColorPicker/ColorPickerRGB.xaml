@@ -22,7 +22,7 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <TextBlock Text="Red Value" Grid.Row="0"/>
-            <Slider Minimum="0" Maximum="255" Value="{Binding RedValue}" Grid.Row="1" Width="100" Foreground="red"/>
+            <Slider Minimum="0" Maximum="255" Value="{Binding RedValue}" Grid.Row="1" Width="100" Foreground="red"  />
             <TextBlock Text="Green Value" Grid.Row="2"/>
             <Slider Minimum="0" Maximum="255" Value="{Binding GreenValue}" Grid.Row="3" Width="100"/>
             <TextBlock Text="Blue Value" Grid.Row="4"/>

@@ -19,18 +19,25 @@ namespace GraphicalPlotter
     /// </summary>
     public partial class ColorPickerWindow : Window
     {
-        public Color SelectedColor { get; set; }
+        public SolidColorBrush SelectedColor { get; set; }
+        public bool isColorPicked { get; set; }
+
+        //need to change this to whatever color object is given TODO TODO
+        ColorPickerViewModel colorPickerViewModel = new ColorPickerViewModel(Color.FromRgb(127,127,127));
         public ColorPickerWindow()
         {
             InitializeComponent();
             //maybe only set the datacontext for the colorpicker?
-           DataContext = colorPickerViewModel;
+            DataContext = colorPickerViewModel;
         }
 
-        ColorPickeViewModel colorPickerViewModel = new ColorPickeViewModel();
+        
         private void OKButton_Click(object sender,RoutedEventArgs e)
         {
             SelectedColor = colorPickerViewModel.SelectedColor;
+            isColorPicked = true;
+            // when using show, we also need to inform the window that there is a dialog result
+            DialogResult = true;
             Close();
         }
     }

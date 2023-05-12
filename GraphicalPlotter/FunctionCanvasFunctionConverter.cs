@@ -121,7 +121,7 @@ namespace GraphicalPlotter
                 //if (correctedXPixelValueForYAxis >= 0 && correctedXPixelValueForYAxis <= xPixels)
                 //{
                 List<CanvasPixel> axisPoints = new List<CanvasPixel>() { new CanvasPixel(xPixelValueForYAxis, 0), new CanvasPixel(xPixelValueForYAxis, yPixels) };
-                FunctionDrawInformation DrawInformationXAxis = new FunctionDrawInformation(axisPoints, this.GraphicalCanvas.XAxisData.AxisColor);
+                FunctionDrawInformation DrawInformationXAxis = new FunctionDrawInformation(axisPoints, this.GraphicalCanvas.YAxisData.AxisColor);
                 axisLines.Add(DrawInformationXAxis);
                 //}
             }
