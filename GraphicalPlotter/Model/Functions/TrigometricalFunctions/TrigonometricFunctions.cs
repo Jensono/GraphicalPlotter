@@ -29,7 +29,7 @@
             }
             else if (this.ConstantMulitplier > 0)
             {
-                returnstring += "+";
+                returnstring += "+" + $"{this.ConstantMulitplier}*{this.GetFunctionCalling()}";
             }
             else
             {

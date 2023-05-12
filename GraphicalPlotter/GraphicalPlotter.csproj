@@ -70,6 +70,7 @@
     <Compile Include="Model\Functions\TrigometricalFunctions\TrigonometricFunctions.cs" />
     <Compile Include="StringToFunctionConverter.cs" />
     <Compile Include="TwoDimensionalGraphCanvas.cs" />
+    <Compile Include="WindowCommand.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

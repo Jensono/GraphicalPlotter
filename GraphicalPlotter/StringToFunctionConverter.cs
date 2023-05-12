@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Media;
 
@@ -9,12 +10,15 @@ namespace GraphicalPlotter
     {
         public StringToFunctionConverter()
         {
+
+            //why do i have to set a culture for a double conversion??? If your a fucking multimillion dollar business WHY WHY WHY can you just fucking write a method that works with a point and also a comma. godamnit.
+
         }
 
         //Returns null if the given string was not a function in the right format.
         public bool ConvertStringToGraphicalFunction(string input,out GraphicalFunction graphicalFunction)
         {
-            if (this.DoesFunctionContainInvalidChracters(input))
+            if (!this.DoesFunctionContainOnlyValidChracters(input))
             {
                 graphicalFunction = null;
                 return false;
@@ -39,6 +43,10 @@ namespace GraphicalPlotter
                 else if (functionPart.Contains("tan"))
                 {
                     this.TryParseTangentFunction(functionPart, out currentFunctionPart);
+                }
+                else if (functionPart == string.Empty)
+                {
+                    continue;
                 }
                 else
                 {
@@ -100,7 +108,8 @@ namespace GraphicalPlotter
                 return false;
             }
 
-            string degreeMultiplierAsString = insideBrackets.Replace('x', ' ').Replace('*', ' ');
+            string degreeMultiplierAsString = insideBrackets.Replace('x', ' ').Replace('*', ' ').Replace(" ","");
+            //HERE
             if (degreeMultiplierAsString == "" || degreeMultiplierAsString == "+")
             {
                 degreeMultiplier = 1;
@@ -205,7 +214,7 @@ namespace GraphicalPlotter
                 return false;
             }
 
-            string degreeMultiplierAsString = insideBrackets.Replace('x', ' ').Replace('*', ' ');
+            string degreeMultiplierAsString = insideBrackets.Replace('x', ' ').Replace('*', ' ').Replace(" ", ""); 
             if (degreeMultiplierAsString == "" || degreeMultiplierAsString == "+")
             {
                 degreeMultiplier = 1;
@@ -261,7 +270,7 @@ namespace GraphicalPlotter
                 return false;
             }
 
-            string degreeMultiplierAsString = insideBrackets.Replace('x', ' ').Replace('*', ' ');
+            string degreeMultiplierAsString = insideBrackets.Replace('x', ' ').Replace('*', ' ').Replace(" ", "");
             if (degreeMultiplierAsString == "" || degreeMultiplierAsString == "+")
             {
                 degreeMultiplier = 1;
@@ -303,7 +312,9 @@ namespace GraphicalPlotter
             //constants like -4*3 will not be parsed, and well if the user cant calculate that in his head or calculater i guess its his own fault. 
             //Can not just be 4* or *3 becouse of the second and term in this if statement, and also needs to be a parseable number, then we just take this string and convert it into a normal function , at this point the string could be anything like -4*8*-9 etc
             // and does not have a defined lenght, so we will just split at the "*" mark and try to sum up all parts, if the split does not work there maybe is another problem in the function.
-            else if (constantMultiplierString.Split('*').Length >= 2 && constantMultiplierString.Split('*')[1].Length < 0 && double.TryParse(constantMultiplierString.Split('*')[1], out double secondmultiplier))
+            else if (constantMultiplierString.Split('*').Length >= 2 
+                && constantMultiplierString.Split('*')[1].Length < 0
+                && double.TryParse(constantMultiplierString.Split('*')[1], out double secondmultiplier))
             {
 
                 if (this.ParseAStringWithMultituteOfSimpleMultiplication(constantMultiplierString, out double sumOfCalculation))
@@ -324,24 +335,40 @@ namespace GraphicalPlotter
                 rightFunction = null;
                 return false;
             }
-            //function needs an x or else it would not be a function
-            string afterExponentMark = polyFunction.Split('^')[1];
 
-      
-            if (afterExponentMark == "")
+            //at this point it must be a constant
+            if (!polyFunction.Contains('x'))
+            {
+                rightFunction = new PolynomialComponent(0, constantMultiplier);
+                return true;
+            }
+            else if (!polyFunction.Contains('^'))
             {
                 exponentenDegree = 1;
             }
-            else if (!double.TryParse(afterExponentMark, out exponentenDegree))
+            else
             {
-                rightFunction = null;
-                return false;
+                string afterExponentMark = polyFunction.Split('^')[1];
+
+
+                if (afterExponentMark == "")
+                {
+                    exponentenDegree = 1;
+                }
+                else if (!double.TryParse(afterExponentMark, out exponentenDegree))
+                {
+                    rightFunction = null;
+                    return false;
+                }
+                if (!(exponentenDegree <= 10))
+                {
+                    rightFunction = null;
+                    return false;
+                }
             }
-            if (!(exponentenDegree <= 10))
-            {
-                rightFunction = null;
-                return false;
-            }
+            
+
+           
             rightFunction = new PolynomialComponent(exponentenDegree, constantMultiplier);
             return true;
         }
@@ -375,6 +402,7 @@ namespace GraphicalPlotter
 
         private string[] SplitFunctionStringIntoArray(string input)
         {
+            input = input.Replace(" ", "");
             char lastCharacter = ' ';
             string newStringToSplit = "";
             foreach (char currentCharacter in input)
@@ -391,9 +419,9 @@ namespace GraphicalPlotter
         }
 
         //for the current implementation this is enough
-        public bool DoesFunctionContainInvalidChracters(string input)
+        public bool DoesFunctionContainOnlyValidChracters(string input)
         {
-            char[] allowedSymbols = new char[] { '-', '+', '(', ')', '*', /*'/',*/ 's', 'i', 'n', 'c', 'o', 't', 'x', '^', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+            char[] allowedSymbols = new char[] { '-', '+', '(', ')', '*',',' ,/*'/',*/ 's', 'i', 'n', 'c', 'o', 't', 'x','a', '^', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',' '};
 
             // it would return a "relative complement" which i had to look up because ive never seen that in english.
             var invalidCharacters = input.Except(allowedSymbols);

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace GraphicalPlotter
@@ -20,7 +22,7 @@ namespace GraphicalPlotter
                 if (value != textBoxXAxisMin && value < this.TextBoxXAxisMax)
                 {
                     textBoxXAxisMin = value;
-                   
+
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxXAxisMin)));
                     this.UpdateFullCanvas();
                 }
@@ -306,9 +308,9 @@ namespace GraphicalPlotter
         public FunctionToCanvasFunctionConverter CanvasFunctionConverter { get; set; }
 
         //TODO do i actually need the lock here???
-        private List<GraphicalFunction> currentGraphicalFunctions;
+        private ObservableCollection<GraphicalFunction> currentGraphicalFunctions;
 
-        public List<GraphicalFunction> CurrentGraphicalFunctions
+        public ObservableCollection<GraphicalFunction> CurrentGraphicalFunctions
         {
             get
             {
@@ -423,14 +425,57 @@ namespace GraphicalPlotter
         public AxisData XAxisData { get; set; }
         public AxisData YAxisData { get; set; }
 
-        
-
         public AxisGridData XAxisGrid { get; set; }
         public AxisGridData YAxisGrid { get; set; }
+        public StringToFunctionConverter UserInputFunctionConverter { get; set; }
+
+        private string textBoxUserInputFunction = "5*x^2+5";
+
+        public string TextBoxUserInputFunction
+        {
+            get { return textBoxUserInputFunction; }
+            set
+            {
+                if (value != textBoxUserInputFunction)
+                {
+                    textBoxUserInputFunction = value;
+
+                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxUserInputFunction)));
+                }
+            }
+        }
+
+        public string TextBoxUserInputFunctionToolTip { get; set; }
+
+        public ICommand AddFunctionCommand
+        {
+            get
+            {
+                GraphicalFunction graphicalFunction;
+                return new WindowCommand(
+                    (obj) =>
+                    {
+                        return true;
+                    },
+                    (obj) =>
+                    {
+                        if (this.UserInputFunctionConverter.ConvertStringToGraphicalFunction(this.TextBoxUserInputFunction, out graphicalFunction))
+                        {
+                            this.CurrentGraphicalFunctions.Add(graphicalFunction);
+                            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CurrentGraphicalFunctions)));
+                            this.UpdateDrawInformationForFunctions();
+                        }
+                       
+                    }
+
+                    );
+            }
+        }
 
         public MainViewModel()
         {
-
+            this.TextBoxUserInputFunctionToolTip = "To Input a Function use the right format shown here. Using other formats will yield wrong inputs.\r\n PLEASE NOTE THAT THE NOTATION FOR DECIMALS IS BOUND TO YOUR LOCALICATION! \r\n Supported Functions are : sin,cos,tan and polynomial function up to a exponent degree of 10." +
+                                                    "\r\n a3*x^3+a2*x^2+a1*x+c \r\n a*sin(b*x)+c \r\n a*cos(b*x)+c\r\n a*tan(b*x)+c";
 
             this.XAxisData = new AxisData(this.textBoxXAxisMin, this.TextBoxXAxisMax, this.ColorPickerXAxisColor, this.CheckBoxXAxisVisibility);
             this.YAxisData = new AxisData(this.TextBoxYAxisMin, this.TextBoxYAxisMax, this.ColorPickerYAxisColor, this.CheckBoxYAxisVisibility);
@@ -439,10 +484,11 @@ namespace GraphicalPlotter
 
             //Setting the properties to the start values, also binding them by refernc i hope, i could also try to first initialzie the properties and then make a grid of them
 
-            this.MainGraphCanvas = new TwoDimensionalGraphCanvas(this.PixelWidhtCanvas, this.PixelHeightCanvas, this.XAxisData,this.YAxisData, this.XAxisGrid, this.YAxisGrid);
+            this.MainGraphCanvas = new TwoDimensionalGraphCanvas(this.PixelWidhtCanvas, this.PixelHeightCanvas, this.XAxisData, this.YAxisData, this.XAxisGrid, this.YAxisGrid);
             this.CanvasFunctionConverter = new FunctionToCanvasFunctionConverter(this.MainGraphCanvas);
+            this.UserInputFunctionConverter = new StringToFunctionConverter();
 
-            this.CurrentGraphicalFunctions = new List<GraphicalFunction>();
+            this.CurrentGraphicalFunctions = new ObservableCollection<GraphicalFunction>();
             //x^2
             this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new PolynomialComponent(2, 1) }, Colors.Aquamarine));
             this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new PolynomialComponent(3, 1) }, Colors.Orange));
@@ -464,21 +510,23 @@ namespace GraphicalPlotter
             BindingOperations.EnableCollectionSynchronization(this.DrawInformationForAxis, this.lockObjectFunctions);
             BindingOperations.EnableCollectionSynchronization(this.DrawInformationForGridLines, this.lockObjectFunctions);
 
-            this.PropertyChanged += UpdateAxisData;
+            this.PropertyChanged += UpdateCanvasAttributes;
 
             //here comes the complete logic for this application
         }
 
         public void UpdateFullCanvas()
         {
-            this.UpdateDrawInformationForFunctions();
             this.UpdateDrawInformationForAxis();
+           
+            this.UpdateDrawInformationForFunctions();
             this.UpdateDrawInformationForGridLines();
+
         }
 
         // this is utterly retarded but i dont have enough time to think about a better solution
         //omg this is like prp the worst code i have written to date, what else would you use?? Methods for each function?? somekind of Observer class? i dont know please help
-        private void UpdateAxisData(object sender, PropertyChangedEventArgs eventArgs)
+        private void UpdateCanvasAttributes(object sender, PropertyChangedEventArgs eventArgs)
         {
             switch (eventArgs.PropertyName)
             {
@@ -486,12 +534,15 @@ namespace GraphicalPlotter
                 case nameof(TextBoxXAxisMin):
                     this.XAxisData.MinVisibleValue = this.TextBoxXAxisMin;
                     break;
+
                 case nameof(TextBoxXAxisMax):
                     this.XAxisData.MaxVisibleValue = this.TextBoxXAxisMax;
                     break;
+
                 case nameof(CheckBoxXAxisVisibility):
                     this.XAxisData.Visibility = this.CheckBoxXAxisVisibility;
                     break;
+
                 case nameof(ColorPickerXAxisColor):
                     this.XAxisData.AxisColor = this.ColorPickerXAxisColor;
                     break;
@@ -500,12 +551,15 @@ namespace GraphicalPlotter
                 case nameof(TextBoxYAxisMin):
                     this.YAxisData.MinVisibleValue = this.TextBoxYAxisMin;
                     break;
+
                 case nameof(TextBoxYAxisMax):
                     this.YAxisData.MaxVisibleValue = this.TextBoxYAxisMax;
                     break;
+
                 case nameof(CheckBoxYAxisVisibility):
                     this.YAxisData.Visibility = this.CheckBoxYAxisVisibility;
                     break;
+
                 case nameof(ColorPickerYAxisColor):
                     this.YAxisData.AxisColor = this.ColorPickerYAxisColor;
                     break;
@@ -542,19 +596,16 @@ namespace GraphicalPlotter
                 case nameof(PixelHeightCanvas):
                     this.MainGraphCanvas.HeightInPixel = this.PixelHeightCanvas;
                     break;
+
                 case nameof(PixelWidhtCanvas):
                     this.MainGraphCanvas.WidthInPixel = this.PixelWidhtCanvas;
                     break;
-
-
 
                 default:
                     break;
             }
         }
 
-       
-        
         public void UpdateDrawInformationForFunctions()
         {
             List<FunctionDrawInformation> functionDrawInformation = new List<FunctionDrawInformation>();
