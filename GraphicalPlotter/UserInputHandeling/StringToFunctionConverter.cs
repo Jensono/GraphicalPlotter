@@ -15,9 +15,29 @@ namespace GraphicalPlotter
         //Returns null if the given string was not a function in the right format.
         public bool ConvertStringToGraphicalFunction(string input, out GraphicalFunction graphicalFunction)
         {
-            if (!this.DoesFunctionContainOnlyValidChracters(input))
+            List<FunctionParts> functionsCombined;
+
+            if (this.TryParseStringToFunctionPartsList(input, out functionsCombined))
+            {
+                graphicalFunction = new GraphicalFunction(functionsCombined, Colors.Black);
+                return true;
+            }
+
+            else
             {
                 graphicalFunction = null;
+                return false;
+            }
+            
+        }
+
+
+        public bool TryParseStringToFunctionPartsList(string input, out List<FunctionParts> functionComponents)
+        {
+
+            if (!this.DoesFunctionContainOnlyValidChracters(input))
+            {
+                functionComponents = null;
                 return false;
             }
 
@@ -53,7 +73,7 @@ namespace GraphicalPlotter
                     //if there is no right conversion or if any of the functions returned null no function will be generated, if there
                     if (currentFunctionPart == null)
                     {
-                        graphicalFunction = null;
+                        functionComponents = null;
                         return false;
                     }
                     else
@@ -63,12 +83,12 @@ namespace GraphicalPlotter
                 }
                 catch (Exception)
                 {
-                    graphicalFunction = null;
+                    functionComponents = null;
                     return false;
                 }
             }
 
-            graphicalFunction = new GraphicalFunction(functionsCombined, Colors.Black);
+            functionComponents = functionsCombined;
             return true;
         }
 

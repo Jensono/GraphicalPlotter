@@ -38,5 +38,7 @@ namespace GraphicalPlotter
             this.AxisName = axisname;
 
         }
+
+        public AxisSaveData() { }
     }
 }

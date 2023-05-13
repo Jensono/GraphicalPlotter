@@ -67,6 +67,7 @@
     <Compile Include="Converter\ColorToSolidBrushConverter.cs" />
     <Compile Include="Converter\CanvasPixelToPointCollectionConverter.cs" />
     <Compile Include="GraphicalFunctionDisplayNameForSerialization.cs" />
+    <Compile Include="PlotterFullSaveData.cs" />
     <Compile Include="ViewModel\GraphicalFunctionViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="Model\AxisInfo\AxisData.cs" />

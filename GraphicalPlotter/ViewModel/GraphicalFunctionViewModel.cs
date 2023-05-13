@@ -31,7 +31,7 @@ namespace GraphicalPlotter
                 
             }
         }
-
+        
 
         private Color functionColor;
         public Color FunctionColor { 
@@ -122,8 +122,19 @@ namespace GraphicalPlotter
             this.FunctionColor = graphicalFunction.FunctionColor;
             this.FunctionDisplayName = graphicalFunction.FunctionDisplayName;
             this.FunctionParts = graphicalFunction.FunctionComponentns;
+            this.FunctionVisibility = graphicalFunction.Visibility;
         }
 
+        public GraphicalFunctionViewModel(List<FunctionParts> functionPartList, Color functionColor, string customUserSetName,string displayName, bool visibility) 
+        {
+
+            this.CustomUserSetName = customUserSetName;
+            this.FunctionColor = functionColor;
+            this.FunctionDisplayName = displayName;
+            this.FunctionParts = functionPartList;
+            this.FunctionVisibility = visibility;
+
+        }
         public ICommand OpenColorPicker
         {
             get

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -466,9 +467,7 @@ namespace GraphicalPlotter
                         if (this.StringToFunctionConverter.ConvertStringToGraphicalFunction(this.TextBoxUserInputFunction, out graphicalFunction))
                         {
                             GraphicalFunctionViewModel functionVM = new GraphicalFunctionViewModel(graphicalFunction);
-                            this.CurrentGraphicalFunctions.Add(functionVM);
-
-                            functionVM.OnUserFunctionChanged += new EventHandler<UserInputFunctionChangedEventArgs>(this.UpdateDrawInformationForFunctions);
+                            this.AddFunctionToCurrentFunction(functionVM);
 
                             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CurrentGraphicalFunctions)));
                             this.UpdateDrawInformationForFunctions();
@@ -477,6 +476,13 @@ namespace GraphicalPlotter
 
                     );
             }
+        }
+
+        private void AddFunctionToCurrentFunction(GraphicalFunctionViewModel functionVM)
+        {
+            this.CurrentGraphicalFunctions.Add(functionVM);
+
+            functionVM.OnUserFunctionChanged += new EventHandler<UserInputFunctionChangedEventArgs>(this.UpdateDrawInformationForFunctions);
         }
 
         public ICommand OpenColorPicker
@@ -646,65 +652,78 @@ namespace GraphicalPlotter
             this.CurrentGraphicalFunctions = new ObservableCollection<GraphicalFunctionViewModel>();
             foreach (GraphicalFunctionDisplayNameForSerialization deserializedFunction in deserializedFunctions)
             {
-                GraphicalFunction currentGraphicalFunction;
-                if (this.StringToFunctionConverter.ConvertStringToGraphicalFunction(deserializedFunction.FunctionName,out currentGraphicalFunction))
-                { GraphicalFunctionViewModel graphicalFunctionVM = new GraphicalFunctionViewModel(currentGraphicalFunction);
-                    graphicalFunctionVM.FunctionColor = deserializedFunction.FunctionColor;
-                    graphicalFunctionVM.CustomUserSetName = deserializedFunction.UserSetNameForFunction;
 
-                    this.CurrentGraphicalFunctions.Add(graphicalFunctionVM);
+                List<FunctionParts> functionParts;
+
+                if (this.StringToFunctionConverter.TryParseStringToFunctionPartsList(deserializedFunction.FunctionName,out functionParts))
+                {
+
+
+
+                    GraphicalFunctionViewModel graphicalFunctionVM = new GraphicalFunctionViewModel(
+                        functionParts,
+                        deserializedFunction.FunctionColor,
+                        deserializedFunction.UserSetNameForFunction,
+                        deserializedFunction.FunctionName,
+                        deserializedFunction.FunctionVisibility);
+
+
+                    // TESTTING IF THIS WORKS WITHOUT;
+                    //////graphicalFunctionVM.FunctionColor = deserializedFunction.FunctionColor;
+                    //////graphicalFunctionVM.CustomUserSetName = deserializedFunction.UserSetNameForFunction;
+                    //////graphicalFunctionVM.FunctionVisibility = deserializedFunction.FunctionVisibility;
+
+                    this.AddFunctionToCurrentFunction(graphicalFunctionVM);
                 }
                 
                 
             }
         }
 
+        //FIELD todo
+        public ApplicationStatusSaveDataHandler SaveDataHandler { get; set; }
+
         public MainViewModel()
         {
+
+            //Application.Current.MainWindow.Closing better alternative?? 
+
+
+            this.SaveDataHandler = new ApplicationStatusSaveDataHandler();
+
+            this.StringToFunctionConverter = new StringToFunctionConverter();
+            Application.Current.Exit += OnWindowClosing;
+
             this.TextBoxUserInputFunctionToolTip = "To Input a Function use the right format shown here. Using other formats will yield wrong inputs.\r\n PLEASE NOTE THAT THE NOTATION FOR DECIMALS IS BOUND TO YOUR LOCALICATION! \r\n Supported Functions are : sin,cos,tan and polynomial function up to a exponent degree of 10." +
                                                     "\r\n a3*x^3+a2*x^2+a1*x+c \r\n a*sin(b*x)+c \r\n a*cos(b*x)+c\r\n a*tan(b*x)+c";
 
-            this.XAxisData = new AxisData(this.textBoxXAxisMin, this.TextBoxXAxisMax, this.ColorPickerXAxisColor, this.CheckBoxXAxisVisibility);
-            this.YAxisData = new AxisData(this.TextBoxYAxisMin, this.TextBoxYAxisMax, this.ColorPickerYAxisColor, this.CheckBoxYAxisVisibility);
-            this.XAxisGrid = new AxisGridData(this.TextBoxXAxisGridIntervall, this.ColorPickerXAxisGridColor, this.CheckBoxXAxisGridVisibility);
-            this.YAxisGrid = new AxisGridData(this.TextBoxYAxisGridIntervall, this.ColorPickerYAxisGridColor, this.CheckBoxYAxisGridVisibility);
+            if (this.SaveDataHandler.TryToExtractBackupDataForApplication(out AxisData savedXAxisData, out AxisData savedYAxisData, out AxisGridData savedXAxisGrid, out AxisGridData savedYAxisGrid, out List<GraphicalFunctionDisplayNameForSerialization> savedFunctions))
+            {
+                this.XAxisData = savedXAxisData;
+                this.YAxisData = savedYAxisData;
+                this.XAxisGrid = savedXAxisGrid;
+                this.YAxisGrid = savedYAxisGrid;
+                //maybe i just need to set a list, so i have to change this method.
+                this.ReconstructFunctionsFromFileInport(savedFunctions);
+            }
+            else
+            {
+                this.XAxisData = new AxisData(this.textBoxXAxisMin, this.TextBoxXAxisMax, this.ColorPickerXAxisColor, this.CheckBoxXAxisVisibility);
+                this.YAxisData = new AxisData(this.TextBoxYAxisMin, this.TextBoxYAxisMax, this.ColorPickerYAxisColor, this.CheckBoxYAxisVisibility);
+                this.XAxisGrid = new AxisGridData(this.TextBoxXAxisGridIntervall, this.ColorPickerXAxisGridColor, this.CheckBoxXAxisGridVisibility);
+                this.YAxisGrid = new AxisGridData(this.TextBoxYAxisGridIntervall, this.ColorPickerYAxisGridColor, this.CheckBoxYAxisGridVisibility);
+                this.CurrentGraphicalFunctions = new ObservableCollection<GraphicalFunctionViewModel>();
+            }
+
+
+           
 
             //Setting the properties to the start values, also binding them by refernc i hope, i could also try to first initialzie the properties and then make a grid of them
 
             this.MainGraphCanvas = new TwoDimensionalGraphCanvas(this.PixelWidhtCanvas, this.PixelHeightCanvas, this.XAxisData, this.YAxisData, this.XAxisGrid, this.YAxisGrid);
             this.CanvasFunctionConverter = new FunctionToCanvasFunctionConverter(this.MainGraphCanvas);
-            this.StringToFunctionConverter = new StringToFunctionConverter();
-
-            this.CurrentGraphicalFunctions = new ObservableCollection<GraphicalFunctionViewModel>();
-
-            //TODO TODO TODO TODO REMOVE THESE ARE JUST TESTING FUNCTIONS********************************
-
-            ////var testfunc1 = new GraphicalFunctionViewModel(new GraphicalFunction(new List<FunctionParts>() { new PolynomialComponent(2, 1) }, Colors.Aquamarine));
-            ////testfunc1.OnUserFunctionChanged += new EventHandler<UserInputFunctionChangedEventArgs>(this.UpdateDrawInformationForFunctions);
-
-            ////var testfunc2 = new GraphicalFunctionViewModel(new GraphicalFunction(new List<FunctionParts>() { new PolynomialComponent(3, 1) }, Colors.Orange));
-
-            ////testfunc2.OnUserFunctionChanged += new EventHandler<UserInputFunctionChangedEventArgs>(this.UpdateDrawInformationForFunctions);
-            ////var testfunc3 = new GraphicalFunctionViewModel(new GraphicalFunction(new List<FunctionParts>() { new PolynomialComponent(2.5846, -1) }, Colors.Purple));
-            ////testfunc3.OnUserFunctionChanged += new EventHandler<UserInputFunctionChangedEventArgs>(this.UpdateDrawInformationForFunctions);
-            ////var testfunc4 = new GraphicalFunctionViewModel(new GraphicalFunction(new List<FunctionParts>() { new PolynomialComponent(-2, 1) }, Colors.GreenYellow));
-            ////testfunc4.OnUserFunctionChanged += new EventHandler<UserInputFunctionChangedEventArgs>(this.UpdateDrawInformationForFunctions);
-
-            //////x^2
-            ////this.CurrentGraphicalFunctions.Add(testfunc1);
-            ////this.CurrentGraphicalFunctions.Add(testfunc2);
-
-            ////this.CurrentGraphicalFunctions.Add(testfunc3);
-
-            ////this.CurrentGraphicalFunctions.Add(testfunc4);
-
-            //this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new SineFunction(1, 1) }, Colors.Black));
-            //COS
-            //this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new CosineFunction(1, 1) }, Colors.Red));
-            //TAN
-            //this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new TangentFunction(1, 1) }, Colors.Green));
-
-            //TODO TODO TODO TODO REMOVE THESE ARE JUST TESTING FUNCTIONS^^^^^^^^^^^^^^^^^^^^
+           
+            
 
             this.UpdateDrawInformationForFunctions();
             this.UpdateDrawInformationForAxis();
@@ -717,6 +736,13 @@ namespace GraphicalPlotter
             this.PropertyChanged += UpdateCanvasAttributes;
 
             //here comes the complete logic for this application
+        }
+
+        
+
+        private void OnWindowClosing(object sender, ExitEventArgs e)
+        {
+            this.SaveDataHandler.CreateApplicationSaveData(this.XAxisData,this.XAxisGrid,this.YAxisData,this.YAxisGrid,this.CreateSerialiationObjectsFromCurrentFunctions());
         }
 
         public void UpdateFullCanvas()
