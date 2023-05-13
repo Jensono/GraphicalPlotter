@@ -552,14 +552,12 @@ namespace GraphicalPlotter
                     {
                         if (this.CurrentGraphicalFunctions.Count >= 1)
                         {
-                            List<GraphicalFunctionDisplayNameForSerialization> functionsForSerialization = new List<GraphicalFunctionDisplayNameForSerialization>();
+                            
 
                             XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<GraphicalFunctionDisplayNameForSerialization>));
 
-                            foreach (GraphicalFunctionViewModel functionVM in this.CurrentGraphicalFunctions)
-                            {
-                                functionsForSerialization.Add(new GraphicalFunctionDisplayNameForSerialization(functionVM));
-                            }
+                            List<GraphicalFunctionDisplayNameForSerialization> functionsForSerialization = this.CreateSerialiationObjectsFromCurrentFunctions();
+                          
 
                             //TODO TEST THIS SHIT
                             SaveFileDialog dialog = new SaveFileDialog();
@@ -581,6 +579,18 @@ namespace GraphicalPlotter
 
                     );
             }
+        }
+
+        private List<GraphicalFunctionDisplayNameForSerialization> CreateSerialiationObjectsFromCurrentFunctions()
+        {
+            List<GraphicalFunctionDisplayNameForSerialization> functionsForSerialization = new List<GraphicalFunctionDisplayNameForSerialization>();
+            foreach (GraphicalFunctionViewModel functionVM in this.CurrentGraphicalFunctions)
+            {
+                functionsForSerialization.Add(new GraphicalFunctionDisplayNameForSerialization(functionVM));
+
+                
+            }
+            return functionsForSerialization;
         }
 
         public ICommand InportFunctionsFromFile
