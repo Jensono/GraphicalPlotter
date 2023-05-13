@@ -128,7 +128,7 @@
                     <TextBlock Text="select Color:" Grid.Row="0" Grid.Column="6"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
                     <Button Grid.Row="0" Grid.Column="7"  HorizontalAlignment="Center" VerticalAlignment="Bottom"  MinWidth="50" MinHeight="15" MaxHeight="15" 
                             Background="{Binding ColorPickerXAxisColor, Converter={StaticResource ColorToSolidBrushConverter}}" Command="{Binding OpenColorPicker}" CommandParameter="ColorPickerXAxisColor"></Button>
-                    
+
                     <!--needs binding to view model ALSO waiting for forum post on colorpicker lib-->
                     <TextBlock Text="Visbibility:" Grid.Row="0" Grid.Column="8"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
                     <CheckBox Grid.Row="0" Grid.Column="9"  HorizontalAlignment="Center" VerticalAlignment="Bottom" IsChecked="{Binding Path=CheckBoxXAxisVisibility}"></CheckBox>
@@ -158,7 +158,7 @@
                     <TextBox Grid.Row="4" Grid.Column="5"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="{Binding Path=TextBoxYAxisMax}" MinWidth="50" MinHeight="15" MaxHeight="15"></TextBox>
 
                     <TextBlock Text="select Color:" Grid.Row="4" Grid.Column="6"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
-                    
+
                     <Button Grid.Row="4" Grid.Column="7"  HorizontalAlignment="Center" VerticalAlignment="Bottom"  MinWidth="50" MinHeight="15" MaxHeight="15" 
                             Background="{Binding ColorPickerYAxisColor, Converter={StaticResource ColorToSolidBrushConverter}}" Command="{Binding OpenColorPicker}" CommandParameter="ColorPickerYAxisColor"></Button>
                     <!--needs binding to view model ALSO waiting for forum post on colorpicker lib-->
@@ -187,15 +187,17 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30"></RowDefinition >
                         <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="20"></RowDefinition>
                         <RowDefinition Height="100"></RowDefinition>
-                        
-                        <RowDefinition MinHeight="315" ></RowDefinition>
+                        <RowDefinition MinHeight="315"  Height="315"></RowDefinition>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition  MinWidth="250" MaxWidth="250"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <TextBlock  Grid.Row="0" Text="Input new Function" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" Background="Ivory" Padding="15"></TextBlock>
-                    
+
+
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="190"/>
@@ -204,11 +206,25 @@
                         <TextBox Grid.Row="0" Grid.Column="0" Text="{Binding Path=TextBoxUserInputFunction}" TextAlignment="Center"  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12"   Width="185" Height="20" ToolTipService.ShowOnDisabled="True" ToolTip="{Binding Path=TextBoxUserInputFunctionToolTip}"></TextBox>
                         <Button Grid.Row="0" Grid.Column="1" Content="Add" Command="{Binding Path=AddFunctionCommand}"  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12"   Width="30" Height="20" ToolTipService.ShowOnDisabled="True" ToolTip="{Binding Path=TextBoxUserInputFunctionToolTip}"></Button>
                     </Grid>
-                    
+
 
                     <TextBlock Grid.Row="2" Text="Current Functions" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" Background="Ivory" Padding="10"  ></TextBlock>
 
-                    <ListView Grid.Row="3"  ItemsSource="{Binding Path=CurrentGraphicalFunctions}" Background="OldLace">
+                    <Grid Grid.Row="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60"></ColumnDefinition>
+                            <ColumnDefinition Width="80"></ColumnDefinition>
+                            <ColumnDefinition Width="58"></ColumnDefinition>
+                            <ColumnDefinition Width="42"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="Function Name" FontSize="9" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                        <TextBlock Grid.Column="1" Text="Function" FontSize="9" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                        <TextBlock Grid.Column="2" Text="Function Color" FontSize="9" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                        <TextBlock Grid.Column="3" Text="Visibility" FontSize="9" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                    </Grid>
+
+                    <ListView Grid.Row="4" Grid.RowSpan="2"  ItemsSource="{Binding Path=CurrentGraphicalFunctions}" Background="OldLace" >
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <!-- maybe at a color selection in a later stage-->
@@ -230,7 +246,7 @@
                                             </TextDecoration>
                                         </TextBlock.TextDecorations>
                                     </TextBlock>
-                                    
+
                                     <Button Grid.Column="2"  HorizontalAlignment="Center" VerticalAlignment="Bottom"  MinWidth="50" MinHeight="15" MaxHeight="15"  
                             Background="{Binding FunctionColor, Converter={StaticResource ColorToSolidBrushConverter}}" Command="{Binding OpenColorPicker}" ></Button>
                                     <!--CommandParameter="ColorPickerXAxisColor"-->
@@ -244,6 +260,28 @@
                 </Grid>
             </Grid>
         </TabItem>
-        <TabItem Header="Import/Export"></TabItem>
+        <TabItem Header="Import/Export">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="19*"/>
+                    <ColumnDefinition Width="276*"/>
+                    <ColumnDefinition Width="296*"/>
+                    <ColumnDefinition Width="295*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Button Content="Save Current Functions" Command="{Binding SaveFunctionsToFile}" Grid.ColumnSpan="2"></Button>
+                <Button Grid.Column="2" Content="Import Functions From File" Command="{Binding InportFunctionsFromFile}"></Button>
+            </Grid>
+
+
+
+
+        </TabItem>
     </TabControl>
 </Window>

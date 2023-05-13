@@ -64,22 +64,23 @@
     <Compile Include="ColorPicker\ColorPickeViewModel.cs" />
     <Compile Include="Converter\ColorToSolidBrushConverter.cs" />
     <Compile Include="Converter\CanvasPixelToPointCollectionConverter.cs" />
-    <Compile Include="GraphicalFunctionViewModel.cs" />
-    <Compile Include="MainViewModel.cs" />
+    <Compile Include="GraphicalFunctionDisplayNameForSerialization.cs" />
+    <Compile Include="ViewModel\GraphicalFunctionViewModel.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="Model\AxisInfo\AxisData.cs" />
     <Compile Include="Model\AxisInfo\AxisGridData.cs" />
     <Compile Include="Model\Functions\TrigometricalFunctions\CosineFunction.cs" />
-    <Compile Include="FunctionDrawInformation.cs" />
+    <Compile Include="Model\GraphCanvasModels\FunctionDrawInformation.cs" />
     <Compile Include="Model\Functions\FunctionParts.cs" />
     <Compile Include="Model\Functions\GraphicalFunction.cs" />
     <Compile Include="Model\Functions\PolynomialComponent.cs" />
     <Compile Include="Model\Functions\TrigometricalFunctions\SineFunction.cs" />
     <Compile Include="Model\Functions\TrigometricalFunctions\TangentFunction.cs" />
     <Compile Include="Model\Functions\TrigometricalFunctions\TrigonometricFunctions.cs" />
-    <Compile Include="StringToFunctionConverter.cs" />
-    <Compile Include="TwoDimensionalGraphCanvas.cs" />
-    <Compile Include="UserInputFunctionChangedEventArgs.cs" />
-    <Compile Include="WindowCommand.cs" />
+    <Compile Include="UserInputHandeling\StringToFunctionConverter.cs" />
+    <Compile Include="Model\GraphCanvasModels\TwoDimensionalGraphCanvas.cs" />
+    <Compile Include="EventArguments\UserInputFunctionChangedEventArgs.cs" />
+    <Compile Include="ColorPicker\WindowCommand.cs" />
     <Page Include="ColorPicker\ColorPickerRGB.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -96,14 +97,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CanvasPixel.cs" />
+    <Compile Include="Model\GraphCanvasModels\CanvasPixel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FunctionCanvasFunctionConverter.cs" />
+    <Compile Include="Model\GraphCanvasModels\FunctionCanvasFunctionConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

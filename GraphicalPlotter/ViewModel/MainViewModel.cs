@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Xml.Serialization;
 
 namespace GraphicalPlotter
 {
@@ -239,7 +242,7 @@ namespace GraphicalPlotter
             }
         }
 
-        private int pixelWidhtApp = 880;
+        private int pixelWidhtApp = 900;
 
         public int PixelWidhtApp
         {
@@ -249,8 +252,8 @@ namespace GraphicalPlotter
                 if (value > 0)
                 {
                     pixelWidhtApp = value;
-                    this.PixelWidhtCanvas = (int)Math.Ceiling((630d / 880d) * value);
-                    //630
+                    //900-630
+                    this.PixelWidhtCanvas = value - 270;
                 }
             }
         }
@@ -265,8 +268,8 @@ namespace GraphicalPlotter
                 if (value > 0)
                 {
                     pixelHeightApp = value;
-                    //380
-                    this.PixelHeightCanvas = (int)Math.Ceiling((380d / 600d) * value);
+                    //600-380
+                    this.PixelHeightCanvas = value - 220;
                 }
             }
         }
@@ -427,7 +430,7 @@ namespace GraphicalPlotter
 
         public AxisGridData XAxisGrid { get; set; }
         public AxisGridData YAxisGrid { get; set; }
-        public StringToFunctionConverter UserInputFunctionConverter { get; set; }
+        public StringToFunctionConverter StringToFunctionConverter { get; set; }
 
         //just to give the user a hint how a correctly formated function looks.
         private string textBoxUserInputFunction = "5*x^2-sin(3x)+5";
@@ -460,12 +463,12 @@ namespace GraphicalPlotter
                     },
                     (obj) =>
                     {
-                        if (this.UserInputFunctionConverter.ConvertStringToGraphicalFunction(this.TextBoxUserInputFunction, out graphicalFunction))
+                        if (this.StringToFunctionConverter.ConvertStringToGraphicalFunction(this.TextBoxUserInputFunction, out graphicalFunction))
                         {
                             GraphicalFunctionViewModel functionVM = new GraphicalFunctionViewModel(graphicalFunction);
                             this.CurrentGraphicalFunctions.Add(functionVM);
 
-                            functionVM.OnUserFunctionChanged += new EventHandler<UserInputFunctionChangedEventArgs> (this.UpdateDrawInformationForFunctions);
+                            functionVM.OnUserFunctionChanged += new EventHandler<UserInputFunctionChangedEventArgs>(this.UpdateDrawInformationForFunctions);
 
                             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CurrentGraphicalFunctions)));
                             this.UpdateDrawInformationForFunctions();
@@ -536,6 +539,116 @@ namespace GraphicalPlotter
             }
         }
 
+        public ICommand SaveFunctionsToFile
+        {
+            get
+            {
+                return new WindowCommand(
+                    (obj) =>
+                    {
+                        return true;
+                    },
+                    (obj) =>
+                    {
+                        if (this.CurrentGraphicalFunctions.Count >= 1)
+                        {
+                            List<GraphicalFunctionDisplayNameForSerialization> functionsForSerialization = new List<GraphicalFunctionDisplayNameForSerialization>();
+
+                            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<GraphicalFunctionDisplayNameForSerialization>));
+
+                            foreach (GraphicalFunctionViewModel functionVM in this.CurrentGraphicalFunctions)
+                            {
+                                functionsForSerialization.Add(new GraphicalFunctionDisplayNameForSerialization(functionVM));
+                            }
+
+                            //TODO TEST THIS SHIT
+                            SaveFileDialog dialog = new SaveFileDialog();
+
+                            dialog.Filter = "XML Files (*.xml)|*.xml";
+                            dialog.FileName = "functions";
+
+                            if (dialog.ShowDialog() == true)
+                            {
+                                using (FileStream fileStream = new FileStream(dialog.FileName, FileMode.Create))
+                                {
+                                    
+                                        xmlSerializer.Serialize(fileStream, functionsForSerialization);
+                                   
+                                }
+                            }
+                        }
+                    }
+
+                    );
+            }
+        }
+
+        public ICommand InportFunctionsFromFile
+        {
+            get
+            {
+                return new WindowCommand(
+                    (obj) =>
+                    {
+                        return true;
+                    },
+                    (obj) =>
+                    {
+                        List<GraphicalFunctionDisplayNameForSerialization> deserializedFunctions = new List<GraphicalFunctionDisplayNameForSerialization>();
+
+                        XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<GraphicalFunctionDisplayNameForSerialization>));
+
+                        //TODO TEST THIS SHIT
+                        OpenFileDialog dialog = new OpenFileDialog();
+
+                        dialog.Filter = "XML Files (*.xml)|*.xml";
+
+                        if (dialog.ShowDialog() == true)
+                        {
+                            using (FileStream fileStream = new FileStream(dialog.FileName, FileMode.Open))
+                            {
+                                try
+                                {
+                                    // TODO I for sure need to check if this is even serializable or something else right? just the try catch block isnt the kind of panacea that i think it is.
+                                    deserializedFunctions = (List<GraphicalFunctionDisplayNameForSerialization>)xmlSerializer.Deserialize(fileStream);
+                                }
+                                //TODO REMOVE , just for testing and finding out what can go wrong
+                                catch (Exception e)
+                                {
+
+                                    throw e;
+                                }
+                            }
+
+                            this.ReconstructFunctionsFromFileInport(deserializedFunctions);
+                            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CurrentGraphicalFunctions)));
+                            this.UpdateDrawInformationForFunctions();
+
+                        }
+                    }
+
+                    );
+            }
+        }
+
+        private void ReconstructFunctionsFromFileInport(List<GraphicalFunctionDisplayNameForSerialization> deserializedFunctions)
+        {
+            this.CurrentGraphicalFunctions = new ObservableCollection<GraphicalFunctionViewModel>();
+            foreach (GraphicalFunctionDisplayNameForSerialization deserializedFunction in deserializedFunctions)
+            {
+                GraphicalFunction currentGraphicalFunction;
+                if (this.StringToFunctionConverter.ConvertStringToGraphicalFunction(deserializedFunction.FunctionName,out currentGraphicalFunction))
+                { GraphicalFunctionViewModel graphicalFunctionVM = new GraphicalFunctionViewModel(currentGraphicalFunction);
+                    graphicalFunctionVM.FunctionColor = deserializedFunction.FunctionColor;
+                    graphicalFunctionVM.CustomUserSetName = deserializedFunction.UserSetNameForFunction;
+
+                    this.CurrentGraphicalFunctions.Add(graphicalFunctionVM);
+                }
+                
+                
+            }
+        }
+
         public MainViewModel()
         {
             this.TextBoxUserInputFunctionToolTip = "To Input a Function use the right format shown here. Using other formats will yield wrong inputs.\r\n PLEASE NOTE THAT THE NOTATION FOR DECIMALS IS BOUND TO YOUR LOCALICATION! \r\n Supported Functions are : sin,cos,tan and polynomial function up to a exponent degree of 10." +
@@ -550,14 +663,11 @@ namespace GraphicalPlotter
 
             this.MainGraphCanvas = new TwoDimensionalGraphCanvas(this.PixelWidhtCanvas, this.PixelHeightCanvas, this.XAxisData, this.YAxisData, this.XAxisGrid, this.YAxisGrid);
             this.CanvasFunctionConverter = new FunctionToCanvasFunctionConverter(this.MainGraphCanvas);
-            this.UserInputFunctionConverter = new StringToFunctionConverter();
+            this.StringToFunctionConverter = new StringToFunctionConverter();
 
             this.CurrentGraphicalFunctions = new ObservableCollection<GraphicalFunctionViewModel>();
 
-
-
             //TODO TODO TODO TODO REMOVE THESE ARE JUST TESTING FUNCTIONS********************************
-
 
             ////var testfunc1 = new GraphicalFunctionViewModel(new GraphicalFunction(new List<FunctionParts>() { new PolynomialComponent(2, 1) }, Colors.Aquamarine));
             ////testfunc1.OnUserFunctionChanged += new EventHandler<UserInputFunctionChangedEventArgs>(this.UpdateDrawInformationForFunctions);
@@ -578,16 +688,11 @@ namespace GraphicalPlotter
 
             ////this.CurrentGraphicalFunctions.Add(testfunc4);
 
-
-
             //this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new SineFunction(1, 1) }, Colors.Black));
             //COS
             //this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new CosineFunction(1, 1) }, Colors.Red));
             //TAN
             //this.CurrentGraphicalFunctions.Add(new GraphicalFunction(new List<FunctionParts>() { new TangentFunction(1, 1) }, Colors.Green));
-
-
-
 
             //TODO TODO TODO TODO REMOVE THESE ARE JUST TESTING FUNCTIONS^^^^^^^^^^^^^^^^^^^^
 
@@ -600,7 +705,6 @@ namespace GraphicalPlotter
             BindingOperations.EnableCollectionSynchronization(this.DrawInformationForGridLines, this.lockObjectFunctions);
 
             this.PropertyChanged += UpdateCanvasAttributes;
-            
 
             //here comes the complete logic for this application
         }
@@ -711,9 +815,9 @@ namespace GraphicalPlotter
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.DrawInformationForFunctions)));
         }
 
-        //yeah i know every function gets updated, but for now this is good enough 
+        //yeah i know every function gets updated, but for now this is good enough
         //TODO fix, only the function that has changed needs updates to its information.
-        public void UpdateDrawInformationForFunctions(object sender,UserInputFunctionChangedEventArgs e)
+        public void UpdateDrawInformationForFunctions(object sender, UserInputFunctionChangedEventArgs e)
         {
             List<FunctionDrawInformation> functionDrawInformation = new List<FunctionDrawInformation>();
 
