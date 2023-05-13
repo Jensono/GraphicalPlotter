@@ -9,8 +9,32 @@ using System.Windows.Media;
 
 namespace GraphicalPlotter
 {
+  
+
     public class GraphicalFunctionViewModel : INotifyPropertyChanged
     {
+
+
+        //This is so dumb i fucking hate events in C# WHY WHY do i need  a callback to call an event please microsoft 
+        private bool isInitialized = false;
+        private bool IsInitialized
+        {
+            get
+            {
+                return this.isInitialized;
+            }
+            set
+            {
+                if (this.isInitialized != value)
+                {
+                    this.isInitialized = value;                                    
+
+                }
+
+
+            }
+        }
+
         public event EventHandler<UserInputFunctionChangedEventArgs> OnUserFunctionChanged;
         private bool functionVisibility = true;
         public bool FunctionVisibility
@@ -24,7 +48,13 @@ namespace GraphicalPlotter
                 if (this.functionVisibility != value)
                 {
                     this.functionVisibility = value;
-                    this.OnUserFunctionChanged(this, new UserInputFunctionChangedEventArgs());
+
+                    if (this.IsInitialized)
+                    {
+                        this.OnUserFunctionChanged(this, new UserInputFunctionChangedEventArgs());
+                    }
+                 
+
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.FunctionVisibility)));
                 }
                 
@@ -123,6 +153,7 @@ namespace GraphicalPlotter
             this.FunctionDisplayName = graphicalFunction.FunctionDisplayName;
             this.FunctionParts = graphicalFunction.FunctionComponentns;
             this.FunctionVisibility = graphicalFunction.Visibility;
+            this.IsInitialized = true;
         }
 
         public GraphicalFunctionViewModel(List<FunctionParts> functionPartList, Color functionColor, string customUserSetName,string displayName, bool visibility) 
@@ -133,6 +164,7 @@ namespace GraphicalPlotter
             this.FunctionDisplayName = displayName;
             this.FunctionParts = functionPartList;
             this.FunctionVisibility = visibility;
+            this.IsInitialized = true;
 
         }
         public ICommand OpenColorPicker

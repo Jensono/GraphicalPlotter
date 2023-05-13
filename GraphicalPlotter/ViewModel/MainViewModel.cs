@@ -558,12 +558,9 @@ namespace GraphicalPlotter
                     {
                         if (this.CurrentGraphicalFunctions.Count >= 1)
                         {
-                            
-
                             XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<GraphicalFunctionDisplayNameForSerialization>));
 
                             List<GraphicalFunctionDisplayNameForSerialization> functionsForSerialization = this.CreateSerialiationObjectsFromCurrentFunctions();
-                          
 
                             //TODO TEST THIS SHIT
                             SaveFileDialog dialog = new SaveFileDialog();
@@ -575,9 +572,7 @@ namespace GraphicalPlotter
                             {
                                 using (FileStream fileStream = new FileStream(dialog.FileName, FileMode.Create))
                                 {
-                                    
-                                        xmlSerializer.Serialize(fileStream, functionsForSerialization);
-                                   
+                                    xmlSerializer.Serialize(fileStream, functionsForSerialization);
                                 }
                             }
                         }
@@ -593,8 +588,6 @@ namespace GraphicalPlotter
             foreach (GraphicalFunctionViewModel functionVM in this.CurrentGraphicalFunctions)
             {
                 functionsForSerialization.Add(new GraphicalFunctionDisplayNameForSerialization(functionVM));
-
-                
             }
             return functionsForSerialization;
         }
@@ -631,7 +624,6 @@ namespace GraphicalPlotter
                                 //TODO REMOVE , just for testing and finding out what can go wrong
                                 catch (Exception e)
                                 {
-
                                     throw e;
                                 }
                             }
@@ -639,7 +631,6 @@ namespace GraphicalPlotter
                             this.ReconstructFunctionsFromFileInport(deserializedFunctions);
                             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CurrentGraphicalFunctions)));
                             this.UpdateDrawInformationForFunctions();
-
                         }
                     }
 
@@ -652,21 +643,16 @@ namespace GraphicalPlotter
             this.CurrentGraphicalFunctions = new ObservableCollection<GraphicalFunctionViewModel>();
             foreach (GraphicalFunctionDisplayNameForSerialization deserializedFunction in deserializedFunctions)
             {
-
                 List<FunctionParts> functionParts;
 
-                if (this.StringToFunctionConverter.TryParseStringToFunctionPartsList(deserializedFunction.FunctionName,out functionParts))
+                if (this.StringToFunctionConverter.TryParseStringToFunctionPartsList(deserializedFunction.FunctionName, out functionParts))
                 {
-
-
-
                     GraphicalFunctionViewModel graphicalFunctionVM = new GraphicalFunctionViewModel(
                         functionParts,
                         deserializedFunction.FunctionColor,
                         deserializedFunction.UserSetNameForFunction,
                         deserializedFunction.FunctionName,
                         deserializedFunction.FunctionVisibility);
-
 
                     // TESTTING IF THIS WORKS WITHOUT;
                     //////graphicalFunctionVM.FunctionColor = deserializedFunction.FunctionColor;
@@ -675,19 +661,28 @@ namespace GraphicalPlotter
 
                     this.AddFunctionToCurrentFunction(graphicalFunctionVM);
                 }
-                
-                
             }
         }
 
         //FIELD todo
         public ApplicationStatusSaveDataHandler SaveDataHandler { get; set; }
 
+        public bool isApplicationDataInitalized;
+        public bool IsApplicationDataInitalized 
+        {
+            get { return isApplicationDataInitalized; }
+            set
+            {
+                if (value != isApplicationDataInitalized)
+                {
+                    isApplicationDataInitalized = value;
+                }
+            }
+        }
+
         public MainViewModel()
         {
-
-            //Application.Current.MainWindow.Closing better alternative?? 
-
+            //Application.Current.MainWindow.Closing better alternative??
 
             this.SaveDataHandler = new ApplicationStatusSaveDataHandler();
 
@@ -697,33 +692,28 @@ namespace GraphicalPlotter
             this.TextBoxUserInputFunctionToolTip = "To Input a Function use the right format shown here. Using other formats will yield wrong inputs.\r\n PLEASE NOTE THAT THE NOTATION FOR DECIMALS IS BOUND TO YOUR LOCALICATION! \r\n Supported Functions are : sin,cos,tan and polynomial function up to a exponent degree of 10." +
                                                     "\r\n a3*x^3+a2*x^2+a1*x+c \r\n a*sin(b*x)+c \r\n a*cos(b*x)+c\r\n a*tan(b*x)+c";
 
+            this.CurrentGraphicalFunctions = new ObservableCollection<GraphicalFunctionViewModel>();
             if (this.SaveDataHandler.TryToExtractBackupDataForApplication(out AxisData savedXAxisData, out AxisData savedYAxisData, out AxisGridData savedXAxisGrid, out AxisGridData savedYAxisGrid, out List<GraphicalFunctionDisplayNameForSerialization> savedFunctions))
             {
-                this.XAxisData = savedXAxisData;
-                this.YAxisData = savedYAxisData;
-                this.XAxisGrid = savedXAxisGrid;
-                this.YAxisGrid = savedYAxisGrid;
-                //maybe i just need to set a list, so i have to change this method.
+
+                this.ReconstructAxisAndGridData(savedXAxisData, savedYAxisData, savedXAxisGrid, savedYAxisGrid);
+                this.IsApplicationDataInitalized = true;
+
                 this.ReconstructFunctionsFromFileInport(savedFunctions);
             }
-            else
-            {
-                this.XAxisData = new AxisData(this.textBoxXAxisMin, this.TextBoxXAxisMax, this.ColorPickerXAxisColor, this.CheckBoxXAxisVisibility);
-                this.YAxisData = new AxisData(this.TextBoxYAxisMin, this.TextBoxYAxisMax, this.ColorPickerYAxisColor, this.CheckBoxYAxisVisibility);
-                this.XAxisGrid = new AxisGridData(this.TextBoxXAxisGridIntervall, this.ColorPickerXAxisGridColor, this.CheckBoxXAxisGridVisibility);
-                this.YAxisGrid = new AxisGridData(this.TextBoxYAxisGridIntervall, this.ColorPickerYAxisGridColor, this.CheckBoxYAxisGridVisibility);
-                this.CurrentGraphicalFunctions = new ObservableCollection<GraphicalFunctionViewModel>();
-            }
+            this.IsApplicationDataInitalized = true;
 
 
+            this.XAxisData = new AxisData(this.TextBoxXAxisMin, this.TextBoxXAxisMax, this.ColorPickerXAxisColor, this.CheckBoxXAxisVisibility);
+            this.YAxisData = new AxisData(this.TextBoxYAxisMin, this.TextBoxYAxisMax, this.ColorPickerYAxisColor, this.CheckBoxYAxisVisibility);
+            this.XAxisGrid = new AxisGridData(this.TextBoxXAxisGridIntervall, this.ColorPickerXAxisGridColor, this.CheckBoxXAxisGridVisibility);
+            this.YAxisGrid = new AxisGridData(this.TextBoxYAxisGridIntervall, this.ColorPickerYAxisGridColor, this.CheckBoxYAxisGridVisibility);
            
 
             //Setting the properties to the start values, also binding them by refernc i hope, i could also try to first initialzie the properties and then make a grid of them
 
             this.MainGraphCanvas = new TwoDimensionalGraphCanvas(this.PixelWidhtCanvas, this.PixelHeightCanvas, this.XAxisData, this.YAxisData, this.XAxisGrid, this.YAxisGrid);
             this.CanvasFunctionConverter = new FunctionToCanvasFunctionConverter(this.MainGraphCanvas);
-           
-            
 
             this.UpdateDrawInformationForFunctions();
             this.UpdateDrawInformationForAxis();
@@ -738,11 +728,31 @@ namespace GraphicalPlotter
             //here comes the complete logic for this application
         }
 
-        
+        private void ReconstructAxisAndGridData(AxisData savedXAxisData, AxisData savedYAxisData, AxisGridData savedXAxisGrid, AxisGridData savedYAxisGrid)
+        {
+
+            this.TextBoxXAxisMin = savedXAxisData.MinVisibleValue;
+            this.TextBoxXAxisMax = savedXAxisData.MaxVisibleValue;
+            this.ColorPickerXAxisColor = savedXAxisData.AxisColor;
+            this.CheckBoxXAxisVisibility = savedXAxisData.Visibility;
+
+            this.TextBoxYAxisMin = savedYAxisData.MinVisibleValue;
+            this.TextBoxYAxisMax = savedYAxisData.MaxVisibleValue;
+            this.ColorPickerYAxisColor = savedYAxisData.AxisColor;
+            this.CheckBoxYAxisVisibility = savedYAxisData.Visibility;
+
+            this.TextBoxXAxisGridIntervall = savedXAxisGrid.IntervallBetweenLines;
+            this.ColorPickerXAxisGridColor = savedXAxisGrid.GridColor;
+            this.CheckBoxXAxisGridVisibility = savedXAxisGrid.Visibility;
+
+            this.TextBoxYAxisGridIntervall = savedYAxisGrid.IntervallBetweenLines;
+            this.ColorPickerYAxisGridColor = savedYAxisGrid.GridColor;
+            this.CheckBoxYAxisGridVisibility = savedYAxisGrid.Visibility;
+        }
 
         private void OnWindowClosing(object sender, ExitEventArgs e)
         {
-            this.SaveDataHandler.CreateApplicationSaveData(this.XAxisData,this.XAxisGrid,this.YAxisData,this.YAxisGrid,this.CreateSerialiationObjectsFromCurrentFunctions());
+            this.SaveDataHandler.CreateApplicationSaveData(this.XAxisData, this.XAxisGrid, this.YAxisData, this.YAxisGrid, this.CreateSerialiationObjectsFromCurrentFunctions());
         }
 
         public void UpdateFullCanvas()
@@ -837,52 +847,69 @@ namespace GraphicalPlotter
 
         public void UpdateDrawInformationForFunctions()
         {
-            List<FunctionDrawInformation> functionDrawInformation = new List<FunctionDrawInformation>();
-
-            foreach (GraphicalFunctionViewModel functionVM in this.CurrentGraphicalFunctions)
+            if (this.IsApplicationDataInitalized)
             {
-                if (functionVM.FunctionVisibility == true)
-                {
-                    functionDrawInformation.Add(this.CanvasFunctionConverter.ConvertFunctionViewModelIntoDrawInformation(functionVM));
-                }
-            }
 
-            this.DrawInformationForFunctions = functionDrawInformation;
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.DrawInformationForFunctions)));
+
+                List<FunctionDrawInformation> functionDrawInformation = new List<FunctionDrawInformation>();
+
+                foreach (GraphicalFunctionViewModel functionVM in this.CurrentGraphicalFunctions)
+                {
+                    if (functionVM.FunctionVisibility == true)
+                    {
+                        functionDrawInformation.Add(this.CanvasFunctionConverter.ConvertFunctionViewModelIntoDrawInformation(functionVM));
+                    }
+                }
+
+                this.DrawInformationForFunctions = functionDrawInformation;
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.DrawInformationForFunctions)));
+            }
+            
         }
 
         //yeah i know every function gets updated, but for now this is good enough
         //TODO fix, only the function that has changed needs updates to its information.
         public void UpdateDrawInformationForFunctions(object sender, UserInputFunctionChangedEventArgs e)
         {
-            List<FunctionDrawInformation> functionDrawInformation = new List<FunctionDrawInformation>();
-
-            foreach (GraphicalFunctionViewModel functionVM in this.CurrentGraphicalFunctions)
+            if (this.IsApplicationDataInitalized)
             {
-                if (functionVM.FunctionVisibility == true)
-                {
-                    functionDrawInformation.Add(this.CanvasFunctionConverter.ConvertFunctionViewModelIntoDrawInformation(functionVM));
-                }
-            }
+                List<FunctionDrawInformation> functionDrawInformation = new List<FunctionDrawInformation>();
 
-            this.DrawInformationForFunctions = functionDrawInformation;
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.DrawInformationForFunctions)));
+                foreach (GraphicalFunctionViewModel functionVM in this.CurrentGraphicalFunctions)
+                {
+                    if (functionVM.FunctionVisibility == true)
+                    {
+                        functionDrawInformation.Add(this.CanvasFunctionConverter.ConvertFunctionViewModelIntoDrawInformation(functionVM));
+                    }
+                }
+
+                this.DrawInformationForFunctions = functionDrawInformation;
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.DrawInformationForFunctions)));
+            }
         }
 
         public void UpdateDrawInformationForAxis()
         {
-            List<FunctionDrawInformation> functionDrawInformation = this.CanvasFunctionConverter.CreateFunctionDrawInformationForAxis();
+            if (this.IsApplicationDataInitalized)
+            {
 
-            this.DrawInformationForAxis = functionDrawInformation;
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.DrawInformationForAxis)));
+          
+                    List<FunctionDrawInformation> functionDrawInformation = this.CanvasFunctionConverter.CreateFunctionDrawInformationForAxis();
+
+                    this.DrawInformationForAxis = functionDrawInformation;
+                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.DrawInformationForAxis)));
+            }
         }
 
         public void UpdateDrawInformationForGridLines()
         {
-            List<FunctionDrawInformation> functionDrawInformation = this.CanvasFunctionConverter.CreateGridDrawInformation();
+            if (this.IsApplicationDataInitalized)
+            {
+                List<FunctionDrawInformation> functionDrawInformation = this.CanvasFunctionConverter.CreateGridDrawInformation();
 
-            this.DrawInformationForGridLines = functionDrawInformation;
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.DrawInformationForGridLines)));
+                this.DrawInformationForGridLines = functionDrawInformation;
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.DrawInformationForGridLines)));
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
