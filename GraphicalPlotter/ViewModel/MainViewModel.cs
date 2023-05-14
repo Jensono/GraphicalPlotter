@@ -138,6 +138,8 @@ namespace GraphicalPlotter
             get { return textBoxYAxisMin; }
             set
             {
+                // only here for the automatic scaling, if the automatic scaling is in process the the values could be anything so we need to get rid of that rule
+
                 if (value != textBoxYAxisMin && value < this.TextBoxYAxisMax)
                 {
                     textBoxYAxisMin = value;
@@ -155,13 +157,16 @@ namespace GraphicalPlotter
             get { return textBoxYAxisMax; }
             set
             {
-                if (value != textBoxYAxisMax && value > this.TextBoxYAxisMin)
-                {
-                    textBoxYAxisMax = value;
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxYAxisMax)));
-                    this.HasUserChangedYAxisSettings = true;
-                    this.UpdateFullCanvas();
-                }
+                // only here for the automatic scaling, if the automatic scaling is in process the the values could be anything so we need to get rid of that rule
+               
+                    if (value != textBoxYAxisMax && value > this.TextBoxYAxisMin)
+                    {
+                        textBoxYAxisMax = value;
+                        this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxYAxisMax)));
+                        this.HasUserChangedYAxisSettings = true;
+                        this.UpdateFullCanvas();
+                    }
+              
             }
         }
 
@@ -472,7 +477,7 @@ namespace GraphicalPlotter
                             this.AddFunctionToCurrentFunction(functionVM);
 
                             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CurrentGraphicalFunctions)));
-                            this.UpdateDrawInformationForFunctions();
+                            this.UpdateFullCanvas();
                         }
                     }
 
@@ -486,48 +491,149 @@ namespace GraphicalPlotter
 
             functionVM.OnUserFunctionChanged += new EventHandler<UserInputFunctionChangedEventArgs>(this.UpdateDrawInformationForFunctions);
 
-            //check if the user ever cahnged y-Axis Values, if not then autoscale the current Functions if they only are sin, cos and polynomials with exponent degree
+            //check if the user ever cahnged y-Axis Values, if not then autoscale the current Functions if they only are sin, cos and polynomials with exponent degree of zero ,
+            //but not incombination cos+sin or sin+sin , this would require a lot more code and it isnt in the requirement to begin with to be able to make a function like that so i hope that im good on that one
             if (!this.HasUserChangedYAxisSettings && this.IsFunctionScalable(functionVM))
             {
-                this.RescaleYMinAndMaxForFunction();
+                this.RescaleYMinAndMaxForRescalableFunctions();
             }
             else
             {
                 this.HasUserChangedYAxisSettings = true;
             }
-            
-
         }
 
-        private void RescaleYMinAndMaxForFunction()
+        //this is requirement is just so unnessary
+        private void RescaleYMinAndMaxForRescalableFunctions()
         {
-           // we need to calculate the max and min values for the sum of all functions parts and then rescale the x and why axis to fit that criteria, also we need to reset the hasUserChangedYAxis too false again after doing so.
+            double biggestYValueOverall= double.MinValue ;
+            double smallestYValueOverall = double.MaxValue;
+
+            //since we now know that the function is scalabe it can only be one of theses possibilites : cos+c1+c2+c3...cn, sin+c1+c2+c3...cn or c1+c2+c3...cn we will move forward with this assumption
+            foreach (GraphicalFunctionViewModel function in this.CurrentGraphicalFunctions)
+            {
+                double thisFunctionsSmallestYValue = this.FindSmallestYValue(function);
+                double thisFunctionsBiggestYValue = this.FindBiggestYValue(function);
+
+                if (thisFunctionsBiggestYValue > biggestYValueOverall)
+                {
+                    biggestYValueOverall = thisFunctionsBiggestYValue;
+                }
+
+                if (thisFunctionsSmallestYValue < smallestYValueOverall)
+                {
+                    smallestYValueOverall = thisFunctionsSmallestYValue;
+                }
+            }
+
+            
+            if (biggestYValueOverall==double.MinValue && biggestYValueOverall==double.MaxValue)
+            {
+
+            }
+            else
+            {
+                this.isApplicationDataInitalized = false;
+
+                this.textBoxYAxisMin = smallestYValueOverall;
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxYAxisMin)));
+                this.textBoxYAxisMax = biggestYValueOverall;
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxYAxisMax)));
+
+                this.IsApplicationDataInitalized = true;
+                this.HasUserChangedYAxisSettings = false;
+            }
+            
+
+            // we need to calculate the max and min values for the sum of all functions parts and then rescale the min and max of the y axis to fit that criteria, also we need to reset the hasUserChangedYAxis too false again after doing so.
+        }
+
+        private double FindBiggestYValue(GraphicalFunctionViewModel function)
+        {
+            //since we now know that the function is scalabe it can only be one of theses possibilites : cos+c1+c2+c3...cn, sin+c1+c2+c3...cn or c1+c2+c3...cn we will move forward with this assumption
+            double sumOfSmallestValues = 0;
+
+            foreach (FunctionParts parts in function.FunctionParts)
+            {
+                bool sinusFlag = parts.GetType() == typeof(SineFunction);
+                bool cosinusFlag = parts.GetType() == typeof(CosineFunction);
+
+                if (cosinusFlag || sinusFlag)
+                {
+                    sumOfSmallestValues += Math.Abs(parts.ConstantMulitplier);
+                }
+                //must be polynomial of degree 0 meaning only the constant multiplier is added
+                else
+                {
+                    sumOfSmallestValues += parts.ConstantMulitplier;
+                }
+            }
+            return sumOfSmallestValues;
+        }
+
+        private double FindSmallestYValue(GraphicalFunctionViewModel function)
+        {
+            double sumOfBiggestValues = 0;
+
+            foreach (FunctionParts parts in function.FunctionParts)
+            {
+                bool sinusFlag = parts.GetType() == typeof(SineFunction);
+                bool cosinusFlag = parts.GetType() == typeof(CosineFunction);
+
+                if (cosinusFlag || sinusFlag)
+                {
+                    sumOfBiggestValues += Math.Abs(parts.ConstantMulitplier) * -1;
+                }
+                //must be polynomial of degree 0 meaning only the constant multiplier is added
+                else
+                {
+                    sumOfBiggestValues += parts.ConstantMulitplier;
+                }
+            }
+            return sumOfBiggestValues;
         }
 
         private bool IsFunctionScalable(GraphicalFunctionViewModel functionVM)
         {
+            // we will count how often sinus and cosinus exist in the given function, the sum must be smaller than 2 , so there can only be one sin or one cos, else the calculation for the new max,min values
+            // would be way to hard for this model, and i dont have enough time to refracture that much code.
+            int sinusCount = 0;
+            int cosinusCount = 0;
             foreach (var currentFunctionPart in functionVM.FunctionParts)
             {
-
-                bool flagOne = currentFunctionPart.GetType() == typeof(SineFunction);
-                bool flagTwo = currentFunctionPart.GetType() == typeof(CosineFunction);
-                bool flagThree = currentFunctionPart.GetType() == typeof(PolynomialComponent);
-                bool flagFour = false;
-
-                if (flagThree)
+                bool sinusFlag = currentFunctionPart.GetType() == typeof(SineFunction);
+                bool cosinusFlag = currentFunctionPart.GetType() == typeof(CosineFunction);
+                bool polynomialFlag = currentFunctionPart.GetType() == typeof(PolynomialComponent);
+                bool polynomialDegreeFlag = false;
+                //set the polynomialdegree flag depending on the degree of the polynomial, only 0 is allowed
+                if (polynomialFlag)
                 {
                     PolynomialComponent currentPolynomialFunctionPart = (PolynomialComponent)currentFunctionPart;
-                   flagFour = currentPolynomialFunctionPart.ExponentDegree == 0;
+                    polynomialDegreeFlag = currentPolynomialFunctionPart.ExponentDegree == 0;
                 }
-                //only if one of these 3 primary factors are true we can even rescale.
-                if (flagOne || flagTwo || (flagThree && flagFour))
-                {
 
+                if (sinusFlag)
+                {
+                    sinusCount++;
+                }
+                if (cosinusFlag)
+                {
+                    cosinusCount++;
+                }
+
+                //only if one of these 3 primary factors are true we can even rescale.
+                if (sinusFlag || cosinusFlag || (polynomialFlag && polynomialDegreeFlag))
+                {
                 }
                 else
                 {
                     return false;
                 }
+            }
+
+            if (sinusCount + cosinusCount > 1)
+            {
+                return false;
             }
 
             return true;
@@ -734,7 +840,7 @@ namespace GraphicalPlotter
         public MainViewModel()
         {
             //Application.Current.MainWindow.Closing better alternative??
-            
+
             this.SaveDataHandler = new ApplicationStatusSaveDataHandler();
 
             this.StringToFunctionConverter = new StringToFunctionConverter();
@@ -752,7 +858,7 @@ namespace GraphicalPlotter
                 out List<GraphicalFunctionDisplayNameForSerialization> savedFunctions,
                 out bool hasUserChangedYAxisValues))
             {
-                this.ReconstructAxisAndGridData(savedXAxisData, savedYAxisData, savedXAxisGrid, savedYAxisGrid,hasUserChangedYAxisValues);
+                this.ReconstructAxisAndGridData(savedXAxisData, savedYAxisData, savedXAxisGrid, savedYAxisGrid, hasUserChangedYAxisValues);
                 this.IsApplicationDataInitalized = true;
 
                 this.ReconstructFunctionsFromFileInport(savedFunctions);
@@ -890,7 +996,7 @@ namespace GraphicalPlotter
             }
         }
 
-        private void ReconstructAxisAndGridData(AxisData savedXAxisData, AxisData savedYAxisData, AxisGridData savedXAxisGrid, AxisGridData savedYAxisGrid,bool hasUserChangedYAxis)
+        private void ReconstructAxisAndGridData(AxisData savedXAxisData, AxisData savedYAxisData, AxisGridData savedXAxisGrid, AxisGridData savedYAxisGrid, bool hasUserChangedYAxis)
         {
             this.TextBoxXAxisMin = savedXAxisData.MinVisibleValue;
             this.TextBoxXAxisMax = savedXAxisData.MaxVisibleValue;
@@ -1097,10 +1203,7 @@ namespace GraphicalPlotter
             {
                 functionDrawInformation.Add(partOfDrawPathForOneFunctions);
             }
-
         }
-
-
 
         //yeah i know every function gets updated, but for now this is good enough
         //TODO fix, only the function that has changed needs updates to its information.
