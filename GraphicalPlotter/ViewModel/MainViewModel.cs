@@ -1020,7 +1020,9 @@ namespace GraphicalPlotter
                 {
                     if (functionVM.FunctionVisibility == true)
                     {
-                        functionDrawInformation.Add(this.CanvasFunctionConverter.ConvertFunctionViewModelIntoDrawInformation(functionVM));
+                        // i need like a course in better naming conventions, but i hope it brings the point across.
+                        List<FunctionDrawInformation> functionDrawInformationForPathsForThisMathematicalFunction = this.CanvasFunctionConverter.ConvertFunctionViewModelIntoDrawInformation(functionVM);
+                        this.IntegrateListOfResultingDrawingFunctionsIntoListOfDrawingFunctions(functionDrawInformation, functionDrawInformationForPathsForThisMathematicalFunction);
                     }
                 }
 
@@ -1028,6 +1030,17 @@ namespace GraphicalPlotter
                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.DrawInformationForFunctions)));
             }
         }
+
+        private void IntegrateListOfResultingDrawingFunctionsIntoListOfDrawingFunctions(List<FunctionDrawInformation> functionDrawInformation, List<FunctionDrawInformation> functionDrawInformationForPathsForThisMathematicalFunction)
+        {
+            foreach (FunctionDrawInformation partOfDrawPathForOneFunctions in functionDrawInformationForPathsForThisMathematicalFunction)
+            {
+                functionDrawInformation.Add(partOfDrawPathForOneFunctions);
+            }
+
+        }
+
+
 
         //yeah i know every function gets updated, but for now this is good enough
         //TODO fix, only the function that has changed needs updates to its information.
@@ -1041,7 +1054,8 @@ namespace GraphicalPlotter
                 {
                     if (functionVM.FunctionVisibility == true)
                     {
-                        functionDrawInformation.Add(this.CanvasFunctionConverter.ConvertFunctionViewModelIntoDrawInformation(functionVM));
+                        List<FunctionDrawInformation> functionDrawInformationForPathsForThisMathematicalFunction = this.CanvasFunctionConverter.ConvertFunctionViewModelIntoDrawInformation(functionVM);
+                        this.IntegrateListOfResultingDrawingFunctionsIntoListOfDrawingFunctions(functionDrawInformation, functionDrawInformationForPathsForThisMathematicalFunction);
                     }
                 }
 

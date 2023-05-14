@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GraphicalPlotter"
         mc:Ignorable="d"
         Title="GraphicalPlotter" 
-        MinHeight="600" MinWidth="900"   Height="{Binding Path=PixelHeightApp, Mode=TwoWay}" Width="{Binding Path=PixelWidhtApp, Mode=TwoWay}">
+        MinHeight="600" MinWidth="900"   Height="{Binding Path=PixelHeightApp, Mode=TwoWay}" Width="{Binding Path=PixelWidhtApp, Mode=TwoWay}" Name="PlotterWindow">
     <Window.DataContext>
         <local:MainViewModel />
     </Window.DataContext>
@@ -20,8 +20,7 @@
         <TabItem Header="Graph">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="32*" ></ColumnDefinition>
-                    <ColumnDefinition Width="291*"/>
+                    <ColumnDefinition />
                     <ColumnDefinition Width="240"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -31,8 +30,8 @@
                 </Grid.RowDefinitions>
 
                 <!--Here the usergram for the graphplotter-->
-                <Canvas Grid.Row="0" Grid.Column="1" Grid.RowSpan="1" Height="{Binding PixelHeightCanvas}" Width="{Binding PixelWidhtCanvas}" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                         x:Name="PlotterCanvas" Margin="259,196,323,195" >
+                <Canvas Grid.Row="0" Grid.Column="0"  Height="{Binding PixelHeightCanvas}" Width="{Binding PixelWidhtCanvas}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                         x:Name="PlotterCanvas"  >
 
 
                     <!--the rectangle to show the zoom selection-->
@@ -95,6 +94,8 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
+
+                    <Rectangle Canvas.Top="-240" Fill="Aqua" Canvas.Left="{Binding PixelWidhtCanvas} " Height="43" Width="{Binding ActualWidth, ElementName=PlotterCanvas}"></Rectangle>
                 </Canvas>
 
                 <!--All the textboxes for the axis and grid information-->
