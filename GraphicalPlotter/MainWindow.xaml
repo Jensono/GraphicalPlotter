@@ -20,7 +20,8 @@
         <TabItem Header="Graph">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition ></ColumnDefinition>
+                    <ColumnDefinition Width="32*" ></ColumnDefinition>
+                    <ColumnDefinition Width="291*"/>
                     <ColumnDefinition Width="240"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -30,11 +31,14 @@
                 </Grid.RowDefinitions>
 
                 <!--Here the usergram for the graphplotter-->
-                <Canvas Grid.Row="0" Grid.Column="0" Grid.RowSpan="1" Height="{Binding PixelHeightCanvas}" Width="{Binding PixelWidhtCanvas}" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                         x:Name="PlotterCanvas" >
+                <Canvas Grid.Row="0" Grid.Column="1" Grid.RowSpan="1" Height="{Binding PixelHeightCanvas}" Width="{Binding PixelWidhtCanvas}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                         x:Name="PlotterCanvas" Margin="259,196,323,195" >
 
+
+                    <!--the rectangle to show the zoom selection-->
+                    <Rectangle x:Name="ZoomSelectionRectangle" Fill="#220000FF" Stroke="Blue" StrokeThickness="1" Opacity="0.3" Visibility="Hidden" />
                     <!--if i dont add a rectangle in the background the click events are only registered on the drawn lines-->
-                    <Rectangle Fill="Transparent" Width="{Binding ActualWidth, ElementName=PlotterCanvas}" Height="{Binding ActualHeight, ElementName=PlotterCanvas}" MouseDown="Canvas_ZoomStart"  MouseUp="Canvas_ZoomEnd"/>
+                    <Rectangle Fill="Transparent" Width="{Binding ActualWidth, ElementName=PlotterCanvas}" Height="{Binding ActualHeight, ElementName=PlotterCanvas}" MouseDown="Canvas_ZoomStart"  MouseUp="Canvas_ZoomEnd" MouseMove="Canvas_MouseMove"/>
                     <!-- your other elements -->
                     <!--Draw ItemControl for Functions-->
                     <ItemsControl ItemsSource="{Binding Path=DrawInformationForFunctions}">
@@ -94,7 +98,7 @@
                 </Canvas>
 
                 <!--All the textboxes for the axis and grid information-->
-                <Grid Grid.Row="1" Grid.Column="0" MaxHeight="150" MinHeight="150" Background="LightGray">
+                <Grid Grid.Row="1" Grid.Column="0" MaxHeight="150" MinHeight="150" Background="LightGray" Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition MinWidth="130" MaxWidth="130" />
                         <ColumnDefinition MinWidth="25" MaxWidth="25" />
@@ -187,7 +191,7 @@
                     <!--needs binding to view model -->
                 </Grid>
                 <!--Sidebar for function adding and display-->
-                <Grid Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
+                <Grid Grid.Row="0" Grid.Column="2" Grid.RowSpan="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30"></RowDefinition >
                         <RowDefinition Height="30"></RowDefinition>
@@ -279,8 +283,10 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <Button Content="Save Current Functions" Command="{Binding SaveFunctionsToFile}" Grid.ColumnSpan="2"></Button>
-                <Button Grid.Column="2" Content="Import Functions From File" Command="{Binding InportFunctionsFromFile}"></Button>
+                <Button Grid.Column="0" Grid.ColumnSpan="2"  Content="Save Current Functions" Command="{Binding SaveFunctionsToFile}" Margin="20" ></Button>
+                <Button Grid.Column="2" Content="Import Functions From File" Command="{Binding InportFunctionsFromFile}" Margin="20"></Button>
+                <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="Reset Axis and Grid Values" Command="{Binding RestoreDefaultValuesForAxisAndGridData}" Margin="20"></Button>
+                <Button Grid.Row="2" Grid.Column="2" Content="Delete All Current Functions" Command="{Binding DeleteAllCurrentFunctions}" Margin="20"></Button>
             </Grid>
 
 

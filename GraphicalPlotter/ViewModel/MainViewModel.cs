@@ -154,7 +154,7 @@ namespace GraphicalPlotter
             get { return textBoxYAxisMax; }
             set
             {
-                if (value != textBoxYAxisMax && value > this.TextBoxXAxisMin)
+                if (value != textBoxYAxisMax && value > this.TextBoxYAxisMin)
                 {
                     textBoxYAxisMax = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxYAxisMax)));
@@ -668,7 +668,8 @@ namespace GraphicalPlotter
         public ApplicationStatusSaveDataHandler SaveDataHandler { get; set; }
 
         public bool isApplicationDataInitalized;
-        public bool IsApplicationDataInitalized 
+
+        public bool IsApplicationDataInitalized
         {
             get { return isApplicationDataInitalized; }
             set
@@ -679,8 +680,6 @@ namespace GraphicalPlotter
                 }
             }
         }
-
-       
 
         public MainViewModel()
         {
@@ -697,7 +696,6 @@ namespace GraphicalPlotter
             this.CurrentGraphicalFunctions = new ObservableCollection<GraphicalFunctionViewModel>();
             if (this.SaveDataHandler.TryToExtractBackupDataForApplication(out AxisData savedXAxisData, out AxisData savedYAxisData, out AxisGridData savedXAxisGrid, out AxisGridData savedYAxisGrid, out List<GraphicalFunctionDisplayNameForSerialization> savedFunctions))
             {
-
                 this.ReconstructAxisAndGridData(savedXAxisData, savedYAxisData, savedXAxisGrid, savedYAxisGrid);
                 this.IsApplicationDataInitalized = true;
 
@@ -705,12 +703,10 @@ namespace GraphicalPlotter
             }
             this.IsApplicationDataInitalized = true;
 
-
             this.XAxisData = new AxisData(this.TextBoxXAxisMin, this.TextBoxXAxisMax, this.ColorPickerXAxisColor, this.CheckBoxXAxisVisibility);
             this.YAxisData = new AxisData(this.TextBoxYAxisMin, this.TextBoxYAxisMax, this.ColorPickerYAxisColor, this.CheckBoxYAxisVisibility);
             this.XAxisGrid = new AxisGridData(this.TextBoxXAxisGridIntervall, this.ColorPickerXAxisGridColor, this.CheckBoxXAxisGridVisibility);
             this.YAxisGrid = new AxisGridData(this.TextBoxYAxisGridIntervall, this.ColorPickerYAxisGridColor, this.CheckBoxYAxisGridVisibility);
-           
 
             //Setting the properties to the start values, also binding them by refernc i hope, i could also try to first initialzie the properties and then make a grid of them
 
@@ -725,11 +721,7 @@ namespace GraphicalPlotter
             BindingOperations.EnableCollectionSynchronization(this.DrawInformationForAxis, this.lockObjectFunctions);
             BindingOperations.EnableCollectionSynchronization(this.DrawInformationForGridLines, this.lockObjectFunctions);
 
-
-
-
             this.PropertyChanged += UpdateCanvasAttributes;
-
 
             // I have no idea if this is good , or necessary to cast here, but i am going to do it becouse i couldnt get it to work otherwise
             try
@@ -740,112 +732,86 @@ namespace GraphicalPlotter
             }
             catch (Exception)
             {
-
             }
-            
         }
 
         private void ZoomIntoCanvas(object sender, CanvasZoomEventArguments eventArgs)
         {
             if (this.ZoomStartPoint == null)
             {
-
             }
             else
             {
+                Point endPoint = eventArgs.CurrentMouseLocationOnCanvas;
+                // i should probably make a constructtor for that at this point
+                CanvasPixel endPixel = new CanvasPixel((int)Math.Round(endPoint.X), (int)Math.Round(endPoint.Y));
+                CanvasPixel startPixel = this.ZoomStartPoint;
 
-            Point endPoint = eventArgs.CurrentMouseLocationOnCanvas;
-            // i should probably make a constructtor for that at this point
-            CanvasPixel endPixel = new CanvasPixel((int)Math.Round(endPoint.X), (int)Math.Round(endPoint.Y));
-            CanvasPixel startPixel = this.ZoomStartPoint;
+                int biggerXPixelValue;
+                int smallerXPixelValue;
 
+                int biggerYPixelValue;
+                int smallerYPixelValue;
 
-            int biggerXPixelValue;
-            int smallerXPixelValue;
-
-
-            int biggerYPixelValue;
-            int smallerYPixelValue;
-
-            //in theory there could be scenario where the the x or y values are on the same pixel, to calculate the new x and y values i still need an intervall though so im changing up the values if they are indeed the same
-            if (endPixel.XAxisValue == startPixel.XAxisValue)
-            {
-                if (endPixel.XAxisValue<0)
+                //in theory there could be scenario where the the x or y values are on the same pixel, to calculate the new x and y values i still need an intervall though so im changing up the values if they are indeed the same
+                if (endPixel.XAxisValue == startPixel.XAxisValue)
                 {
-                    endPixel.XAxisValue -= 1;
+                    if (endPixel.XAxisValue < 0)
+                    {
+                        endPixel.XAxisValue -= 1;
+                    }
+                    else
+                    {
+                        endPixel.XAxisValue += 1;
+                    }
                 }
-                else
+                // same but for the y axis
+                if (endPixel.YAxisValue == startPixel.YAxisValue)
                 {
-                    endPixel.XAxisValue += 1;
+                    if (endPixel.YAxisValue < 0)
+                    {
+                        endPixel.YAxisValue -= 1;
+                    }
+                    else
+                    {
+                        endPixel.YAxisValue += 1;
+                    }
                 }
-            }
-            // same but for the y axis
-            if (endPixel.YAxisValue == startPixel.YAxisValue)
-            {
-                if (endPixel.YAxisValue < 0)
-                {
-                    endPixel.YAxisValue -= 1;
-                }
-                else
-                {
-                    endPixel.YAxisValue += 1;
-                }
-            }
 
-            if (endPixel.XAxisValue < startPixel.XAxisValue)
-            {
-                biggerXPixelValue = startPixel.XAxisValue;
-                smallerXPixelValue = endPixel.XAxisValue;
-            }
-            else
-            {
-                biggerXPixelValue = endPixel.XAxisValue;
-                smallerXPixelValue =  startPixel.XAxisValue;
-            }
+                biggerXPixelValue = Math.Max(startPixel.XAxisValue, endPixel.XAxisValue);
+                smallerXPixelValue = Math.Min(startPixel.XAxisValue, endPixel.XAxisValue);
+                biggerYPixelValue = Math.Max(startPixel.YAxisValue, endPixel.YAxisValue);
+                smallerYPixelValue = Math.Min(startPixel.YAxisValue, endPixel.YAxisValue);
 
-            if (endPixel.YAxisValue < startPixel.YAxisValue)
-            {
-                biggerYPixelValue = startPixel.YAxisValue;
-                smallerYPixelValue = endPixel.YAxisValue;
-            }
-            else
-            {
-                biggerYPixelValue = endPixel.YAxisValue;
-                smallerYPixelValue = startPixel.YAxisValue;
-            }
+                // A bigger pixelValue means closer a smaller value for the y axis and , a higher value for the x axis
+                double newXAxisMin = this.CalculateXValueForXPixel(smallerXPixelValue);
+                double newXAxisMax = this.CalculateXValueForXPixel(biggerXPixelValue);
+                double newYAxisMin = this.CalculateYValueForYPixel(biggerYPixelValue);
+                double newYAxisMax = this.CalculateYValueForYPixel(smallerYPixelValue);
 
-
-
-            // A bigger pixelValue means closer a smaller value for the y axis and , a higher value for the x axis
-            double newXAxisMin = this.CalculateXValueForXPixel(smallerXPixelValue);
-            double newXAxisMax = this.CalculateXValueForXPixel(biggerXPixelValue);
-            double newYAxisMin = this.CalculateYValueForYPixel(smallerYPixelValue);
-            double newYAxisMax = this.CalculateYValueForYPixel(biggerYPixelValue);
-
-
-//WHAT IF new min is bigger than max or reversed, think about it
+                //WHAT IF new min is bigger than max or reversed, think about it
 
                 //we will just write into the fields and update the canvas manually
-            this.TextBoxXAxisMin = newXAxisMin;
-            this.TextBoxXAxisMax = newXAxisMax;
-            this.TextBoxYAxisMin = newYAxisMin;
-            this.TextBoxYAxisMax = newYAxisMax;
+                this.TextBoxXAxisMin = newXAxisMin;
+                this.TextBoxXAxisMax = newXAxisMax;
+                this.TextBoxYAxisMin = newYAxisMin;
+                this.TextBoxYAxisMax = newYAxisMax;
 
+                //reset the start point so that the user cant just release the mouse inside the canvas and the old point is taken as the startpoint
+                this.zoomStartPoint = null;
                 this.UpdateFullCanvas();
             }
         }
 
         private double CalculateYValueForYPixel(int yPixelValue)
         {
-            return  ((((  yPixelValue) * (this.TextBoxYAxisMax - this.TextBoxYAxisMin)) / this.PixelHeightCanvas)) ;
+            return this.TextBoxYAxisMax - (((double)yPixelValue / (double)this.PixelHeightCanvas) * ((double)TextBoxYAxisMax - (double)this.TextBoxYAxisMin));
         }
 
         private double CalculateXValueForXPixel(int xPixelValue)
         {
-            return (((xPixelValue ) * (this.TextBoxXAxisMax - this.TextBoxXAxisMin)) / this.PixelWidhtCanvas) + TextBoxXAxisMin;
-                
-                
-                }
+            return ((((double)xPixelValue) * (this.TextBoxXAxisMax - this.TextBoxXAxisMin)) / this.PixelWidhtCanvas) + TextBoxXAxisMin;
+        }
 
         private void UpdateStartPoint(object sender, CanvasZoomEventArguments eventArgs)
         {
@@ -855,6 +821,7 @@ namespace GraphicalPlotter
         }
 
         private CanvasPixel zoomStartPoint;
+
         public CanvasPixel ZoomStartPoint
         {
             get { return zoomStartPoint; }
@@ -869,7 +836,6 @@ namespace GraphicalPlotter
 
         private void ReconstructAxisAndGridData(AxisData savedXAxisData, AxisData savedYAxisData, AxisGridData savedXAxisGrid, AxisGridData savedYAxisGrid)
         {
-
             this.TextBoxXAxisMin = savedXAxisData.MinVisibleValue;
             this.TextBoxXAxisMax = savedXAxisData.MaxVisibleValue;
             this.ColorPickerXAxisColor = savedXAxisData.AxisColor;
@@ -887,6 +853,66 @@ namespace GraphicalPlotter
             this.TextBoxYAxisGridIntervall = savedYAxisGrid.IntervallBetweenLines;
             this.ColorPickerYAxisGridColor = savedYAxisGrid.GridColor;
             this.CheckBoxYAxisGridVisibility = savedYAxisGrid.Visibility;
+        }
+
+        public ICommand RestoreDefaultValuesForAxisAndGridData
+        {
+            get
+            {
+                return new WindowCommand(
+                    (obj) =>
+                    {
+                        return true;
+                    },
+                    (obj) =>
+                    {
+                        this.IsApplicationDataInitalized = false;
+
+                        this.TextBoxXAxisMin = -10;
+                        this.TextBoxXAxisMax = 10;
+                        this.ColorPickerXAxisColor = Colors.DarkSlateBlue;
+                        this.CheckBoxXAxisVisibility = true;
+
+                        this.TextBoxYAxisMin = -10;
+                        this.TextBoxYAxisMax = 10;
+                        this.ColorPickerYAxisColor = Colors.DarkSlateBlue;
+                        this.CheckBoxYAxisVisibility = true;
+
+                        this.TextBoxXAxisGridIntervall = 1;
+                        this.ColorPickerXAxisGridColor = Colors.LightGray;
+                        this.CheckBoxXAxisGridVisibility = true;
+
+                        this.TextBoxYAxisGridIntervall = 1;
+                        this.ColorPickerYAxisGridColor = Colors.LightGray;
+                        this.CheckBoxYAxisGridVisibility = true;
+
+                        this.IsApplicationDataInitalized = true;
+
+                        this.UpdateFullCanvas();
+                    });
+            }
+        }
+
+        public ICommand DeleteAllCurrentFunctions
+        {
+            get
+            {
+                return new WindowCommand(
+                    (obj) =>
+                    {
+                        return true;
+                    },
+                    (obj) =>
+                    {
+                        this.IsApplicationDataInitalized = false;
+
+                        this.CurrentGraphicalFunctions = new ObservableCollection<GraphicalFunctionViewModel>();
+
+                        this.IsApplicationDataInitalized = true;
+                        this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CurrentGraphicalFunctions)));
+                        this.UpdateFullCanvas();
+                    });
+            }
         }
 
         private void OnWindowClosing(object sender, ExitEventArgs e)
@@ -988,8 +1014,6 @@ namespace GraphicalPlotter
         {
             if (this.IsApplicationDataInitalized)
             {
-
-
                 List<FunctionDrawInformation> functionDrawInformation = new List<FunctionDrawInformation>();
 
                 foreach (GraphicalFunctionViewModel functionVM in this.CurrentGraphicalFunctions)
@@ -1003,7 +1027,6 @@ namespace GraphicalPlotter
                 this.DrawInformationForFunctions = functionDrawInformation;
                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.DrawInformationForFunctions)));
             }
-            
         }
 
         //yeah i know every function gets updated, but for now this is good enough
@@ -1031,12 +1054,10 @@ namespace GraphicalPlotter
         {
             if (this.IsApplicationDataInitalized)
             {
+                List<FunctionDrawInformation> functionDrawInformation = this.CanvasFunctionConverter.CreateFunctionDrawInformationForAxis();
 
-          
-                    List<FunctionDrawInformation> functionDrawInformation = this.CanvasFunctionConverter.CreateFunctionDrawInformationForAxis();
-
-                    this.DrawInformationForAxis = functionDrawInformation;
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.DrawInformationForAxis)));
+                this.DrawInformationForAxis = functionDrawInformation;
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.DrawInformationForAxis)));
             }
         }
 
