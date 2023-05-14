@@ -142,6 +142,7 @@ namespace GraphicalPlotter
                 {
                     textBoxYAxisMin = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxYAxisMin)));
+                    this.HasUserChangedYAxisSettings = true;
                     this.UpdateFullCanvas();
                 }
             }
@@ -158,6 +159,7 @@ namespace GraphicalPlotter
                 {
                     textBoxYAxisMax = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxYAxisMax)));
+                    this.HasUserChangedYAxisSettings = true;
                     this.UpdateFullCanvas();
                 }
             }
@@ -483,6 +485,52 @@ namespace GraphicalPlotter
             this.CurrentGraphicalFunctions.Add(functionVM);
 
             functionVM.OnUserFunctionChanged += new EventHandler<UserInputFunctionChangedEventArgs>(this.UpdateDrawInformationForFunctions);
+
+            //check if the user ever cahnged y-Axis Values, if not then autoscale the current Functions if they only are sin, cos and polynomials with exponent degree
+            if (!this.HasUserChangedYAxisSettings && this.IsFunctionScalable(functionVM))
+            {
+                this.RescaleYMinAndMaxForFunction();
+            }
+            else
+            {
+                this.HasUserChangedYAxisSettings = true;
+            }
+            
+
+        }
+
+        private void RescaleYMinAndMaxForFunction()
+        {
+           // we need to calculate the max and min values for the sum of all functions parts and then rescale the x and why axis to fit that criteria, also we need to reset the hasUserChangedYAxis too false again after doing so.
+        }
+
+        private bool IsFunctionScalable(GraphicalFunctionViewModel functionVM)
+        {
+            foreach (var currentFunctionPart in functionVM.FunctionParts)
+            {
+
+                bool flagOne = currentFunctionPart.GetType() == typeof(SineFunction);
+                bool flagTwo = currentFunctionPart.GetType() == typeof(CosineFunction);
+                bool flagThree = currentFunctionPart.GetType() == typeof(PolynomialComponent);
+                bool flagFour = false;
+
+                if (flagThree)
+                {
+                    PolynomialComponent currentPolynomialFunctionPart = (PolynomialComponent)currentFunctionPart;
+                   flagFour = currentPolynomialFunctionPart.ExponentDegree == 0;
+                }
+                //only if one of these 3 primary factors are true we can even rescale.
+                if (flagOne || flagTwo || (flagThree && flagFour))
+                {
+
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public ICommand OpenColorPicker
@@ -681,10 +729,12 @@ namespace GraphicalPlotter
             }
         }
 
+        public bool HasUserChangedYAxisSettings { get; set; }
+
         public MainViewModel()
         {
             //Application.Current.MainWindow.Closing better alternative??
-
+            
             this.SaveDataHandler = new ApplicationStatusSaveDataHandler();
 
             this.StringToFunctionConverter = new StringToFunctionConverter();
@@ -694,9 +744,15 @@ namespace GraphicalPlotter
                                                     "\r\n a3*x^3+a2*x^2+a1*x+c \r\n a*sin(b*x)+c \r\n a*cos(b*x)+c\r\n a*tan(b*x)+c";
 
             this.CurrentGraphicalFunctions = new ObservableCollection<GraphicalFunctionViewModel>();
-            if (this.SaveDataHandler.TryToExtractBackupDataForApplication(out AxisData savedXAxisData, out AxisData savedYAxisData, out AxisGridData savedXAxisGrid, out AxisGridData savedYAxisGrid, out List<GraphicalFunctionDisplayNameForSerialization> savedFunctions))
+            if (this.SaveDataHandler.TryToExtractBackupDataForApplication(
+                out AxisData savedXAxisData,
+                out AxisData savedYAxisData,
+                out AxisGridData savedXAxisGrid,
+                out AxisGridData savedYAxisGrid,
+                out List<GraphicalFunctionDisplayNameForSerialization> savedFunctions,
+                out bool hasUserChangedYAxisValues))
             {
-                this.ReconstructAxisAndGridData(savedXAxisData, savedYAxisData, savedXAxisGrid, savedYAxisGrid);
+                this.ReconstructAxisAndGridData(savedXAxisData, savedYAxisData, savedXAxisGrid, savedYAxisGrid,hasUserChangedYAxisValues);
                 this.IsApplicationDataInitalized = true;
 
                 this.ReconstructFunctionsFromFileInport(savedFunctions);
@@ -834,7 +890,7 @@ namespace GraphicalPlotter
             }
         }
 
-        private void ReconstructAxisAndGridData(AxisData savedXAxisData, AxisData savedYAxisData, AxisGridData savedXAxisGrid, AxisGridData savedYAxisGrid)
+        private void ReconstructAxisAndGridData(AxisData savedXAxisData, AxisData savedYAxisData, AxisGridData savedXAxisGrid, AxisGridData savedYAxisGrid,bool hasUserChangedYAxis)
         {
             this.TextBoxXAxisMin = savedXAxisData.MinVisibleValue;
             this.TextBoxXAxisMax = savedXAxisData.MaxVisibleValue;
@@ -853,6 +909,8 @@ namespace GraphicalPlotter
             this.TextBoxYAxisGridIntervall = savedYAxisGrid.IntervallBetweenLines;
             this.ColorPickerYAxisGridColor = savedYAxisGrid.GridColor;
             this.CheckBoxYAxisGridVisibility = savedYAxisGrid.Visibility;
+
+            this.HasUserChangedYAxisSettings = hasUserChangedYAxis;
         }
 
         public ICommand RestoreDefaultValuesForAxisAndGridData
@@ -886,6 +944,8 @@ namespace GraphicalPlotter
                         this.ColorPickerYAxisGridColor = Colors.LightGray;
                         this.CheckBoxYAxisGridVisibility = true;
 
+                        this.HasUserChangedYAxisSettings = false;
+
                         this.IsApplicationDataInitalized = true;
 
                         this.UpdateFullCanvas();
@@ -917,7 +977,7 @@ namespace GraphicalPlotter
 
         private void OnWindowClosing(object sender, ExitEventArgs e)
         {
-            this.SaveDataHandler.CreateApplicationSaveData(this.XAxisData, this.XAxisGrid, this.YAxisData, this.YAxisGrid, this.CreateSerialiationObjectsFromCurrentFunctions());
+            this.SaveDataHandler.CreateApplicationSaveData(this.XAxisData, this.XAxisGrid, this.YAxisData, this.YAxisGrid, this.CreateSerialiationObjectsFromCurrentFunctions(), this.HasUserChangedYAxisSettings);
         }
 
         public void UpdateFullCanvas()

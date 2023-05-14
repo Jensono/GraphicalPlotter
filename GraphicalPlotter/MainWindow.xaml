@@ -29,9 +29,10 @@
                     <RowDefinition Height="150"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <!--Here the usergram for the graphplotter-->
-                <Canvas Grid.Row="0" Grid.Column="0"  Height="{Binding PixelHeightCanvas}" Width="{Binding PixelWidhtCanvas}" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                         x:Name="PlotterCanvas"  >
+                
+                <!-- really dumb fix to fix up the canvas, now functions that were drawn outside of the canvas a bit are covered up is clipToBounds-->
+
+                <Canvas Grid.Row="0" Grid.Column="0"  Height="{Binding PixelHeightCanvas}" Width="{Binding PixelWidhtCanvas}" x:Name="PlotterCanvas" ClipToBounds="True" >
 
 
                     <!--the rectangle to show the zoom selection-->
@@ -95,9 +96,9 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
-                    <Rectangle Canvas.Top="-240" Fill="Aqua" Canvas.Left="{Binding PixelWidhtCanvas} " Height="43" Width="{Binding ActualWidth, ElementName=PlotterCanvas}"></Rectangle>
-                </Canvas>
 
+                </Canvas>
+                
                 <!--All the textboxes for the axis and grid information-->
                 <Grid Grid.Row="1" Grid.Column="0" MaxHeight="150" MinHeight="150" Background="LightGray" Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>

@@ -17,7 +17,7 @@ namespace GraphicalPlotter
 
         }
 
-        public void CreateApplicationSaveData(AxisData xAxis, AxisGridData xGrid, AxisData yAxis, AxisGridData yGrid, List<GraphicalFunctionDisplayNameForSerialization> functionList )
+        public void CreateApplicationSaveData(AxisData xAxis, AxisGridData xGrid, AxisData yAxis, AxisGridData yGrid, List<GraphicalFunctionDisplayNameForSerialization> functionList,bool hasUserchangedYAxisValues )
         {
             AxisSaveData xAxisSaveData = new AxisSaveData(xAxis, xGrid, "xAxis");
             AxisSaveData yAxisSaveData = new AxisSaveData(yAxis, yGrid, "yAxis");
@@ -34,7 +34,7 @@ namespace GraphicalPlotter
             using (FileStream fileStream = new FileStream(newFilePath, FileMode.Create))
             {
                 // first we allways serialize the two axis informations, we will keep this order so that when we have the same order for the Deserialization
-                PlotterFullSaveData plotterSaveData = new PlotterFullSaveData(xAxisSaveData, yAxisSaveData, functionList);
+                PlotterFullSaveData plotterSaveData = new PlotterFullSaveData(xAxisSaveData, yAxisSaveData, functionList,hasUserchangedYAxisValues) ;
                 plotterSerializer.Serialize(fileStream,plotterSaveData);
 
             }
@@ -53,7 +53,12 @@ namespace GraphicalPlotter
 
         }
 
-        public bool TryToExtractBackupDataForApplication(out AxisData xAxisData,out AxisData yAxisData, out AxisGridData xGridData,out AxisGridData yGridData,out List<GraphicalFunctionDisplayNameForSerialization> functions)
+        public bool TryToExtractBackupDataForApplication(out AxisData xAxisData,
+            out AxisData yAxisData, 
+            out AxisGridData xGridData,
+            out AxisGridData yGridData,
+            out List<GraphicalFunctionDisplayNameForSerialization> functions,
+            out bool hasUserChangedYAxisValues)
             
         {
 
@@ -62,7 +67,7 @@ namespace GraphicalPlotter
             xGridData = new AxisGridData(1,Colors.LightSlateGray,true);
             yGridData = new AxisGridData(1, Colors.LightSlateGray, true);
             functions = new List<GraphicalFunctionDisplayNameForSerialization>();
-
+            hasUserChangedYAxisValues = false;
 
             try
             {
@@ -88,6 +93,7 @@ namespace GraphicalPlotter
 
                         //now the rest , which can only be the functions.
                         functions = fullSaveData.SerializationFunctionList;
+                        hasUserChangedYAxisValues = fullSaveData.HasUserChangedYAxis;
                     }
 
                     return true;
