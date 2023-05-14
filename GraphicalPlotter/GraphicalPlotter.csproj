@@ -57,6 +57,7 @@
     </ApplicationDefinition>
     <Compile Include="ApplicationStatusSaver.cs" />
     <Compile Include="AxisSaveData.cs" />
+    <Compile Include="CanvasZoomEventArguments.cs" />
     <Compile Include="ColorPicker\ColorPickerRGB.xaml.cs">
       <DependentUpon>ColorPickerRGB.xaml</DependentUpon>
     </Compile>

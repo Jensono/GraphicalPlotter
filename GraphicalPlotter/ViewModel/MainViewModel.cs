@@ -680,6 +680,8 @@ namespace GraphicalPlotter
             }
         }
 
+       
+
         public MainViewModel()
         {
             //Application.Current.MainWindow.Closing better alternative??
@@ -723,9 +725,146 @@ namespace GraphicalPlotter
             BindingOperations.EnableCollectionSynchronization(this.DrawInformationForAxis, this.lockObjectFunctions);
             BindingOperations.EnableCollectionSynchronization(this.DrawInformationForGridLines, this.lockObjectFunctions);
 
+
+
+
             this.PropertyChanged += UpdateCanvasAttributes;
 
-            //here comes the complete logic for this application
+
+            // I have no idea if this is good , or necessary to cast here, but i am going to do it becouse i couldnt get it to work otherwise
+            try
+            {
+                MainWindow plotterWindowWithCanvas = (MainWindow)Application.Current.MainWindow;
+                plotterWindowWithCanvas.OnCanvasZoomStart += this.UpdateStartPoint;
+                plotterWindowWithCanvas.OnCanvasZoomEnd += this.ZoomIntoCanvas;
+            }
+            catch (Exception)
+            {
+
+            }
+            
+        }
+
+        private void ZoomIntoCanvas(object sender, CanvasZoomEventArguments eventArgs)
+        {
+            if (this.ZoomStartPoint == null)
+            {
+
+            }
+            else
+            {
+
+            Point endPoint = eventArgs.CurrentMouseLocationOnCanvas;
+            // i should probably make a constructtor for that at this point
+            CanvasPixel endPixel = new CanvasPixel((int)Math.Round(endPoint.X), (int)Math.Round(endPoint.Y));
+            CanvasPixel startPixel = this.ZoomStartPoint;
+
+
+            int biggerXPixelValue;
+            int smallerXPixelValue;
+
+
+            int biggerYPixelValue;
+            int smallerYPixelValue;
+
+            //in theory there could be scenario where the the x or y values are on the same pixel, to calculate the new x and y values i still need an intervall though so im changing up the values if they are indeed the same
+            if (endPixel.XAxisValue == startPixel.XAxisValue)
+            {
+                if (endPixel.XAxisValue<0)
+                {
+                    endPixel.XAxisValue -= 1;
+                }
+                else
+                {
+                    endPixel.XAxisValue += 1;
+                }
+            }
+            // same but for the y axis
+            if (endPixel.YAxisValue == startPixel.YAxisValue)
+            {
+                if (endPixel.YAxisValue < 0)
+                {
+                    endPixel.YAxisValue -= 1;
+                }
+                else
+                {
+                    endPixel.YAxisValue += 1;
+                }
+            }
+
+            if (endPixel.XAxisValue < startPixel.XAxisValue)
+            {
+                biggerXPixelValue = startPixel.XAxisValue;
+                smallerXPixelValue = endPixel.XAxisValue;
+            }
+            else
+            {
+                biggerXPixelValue = endPixel.XAxisValue;
+                smallerXPixelValue =  startPixel.XAxisValue;
+            }
+
+            if (endPixel.YAxisValue < startPixel.YAxisValue)
+            {
+                biggerYPixelValue = startPixel.YAxisValue;
+                smallerYPixelValue = endPixel.YAxisValue;
+            }
+            else
+            {
+                biggerYPixelValue = endPixel.YAxisValue;
+                smallerYPixelValue = startPixel.YAxisValue;
+            }
+
+
+
+            // A bigger pixelValue means closer a smaller value for the y axis and , a higher value for the x axis
+            double newXAxisMin = this.CalculateXValueForXPixel(smallerXPixelValue);
+            double newXAxisMax = this.CalculateXValueForXPixel(biggerXPixelValue);
+            double newYAxisMin = this.CalculateYValueForYPixel(smallerYPixelValue);
+            double newYAxisMax = this.CalculateYValueForYPixel(biggerYPixelValue);
+
+
+//WHAT IF new min is bigger than max or reversed, think about it
+
+                //we will just write into the fields and update the canvas manually
+            this.TextBoxXAxisMin = newXAxisMin;
+            this.TextBoxXAxisMax = newXAxisMax;
+            this.TextBoxYAxisMin = newYAxisMin;
+            this.TextBoxYAxisMax = newYAxisMax;
+
+                this.UpdateFullCanvas();
+            }
+        }
+
+        private double CalculateYValueForYPixel(int yPixelValue)
+        {
+            return  ((((  yPixelValue) * (this.TextBoxYAxisMax - this.TextBoxYAxisMin)) / this.PixelHeightCanvas)) ;
+        }
+
+        private double CalculateXValueForXPixel(int xPixelValue)
+        {
+            return (((xPixelValue ) * (this.TextBoxXAxisMax - this.TextBoxXAxisMin)) / this.PixelWidhtCanvas) + TextBoxXAxisMin;
+                
+                
+                }
+
+        private void UpdateStartPoint(object sender, CanvasZoomEventArguments eventArgs)
+        {
+            Point startPoint = eventArgs.CurrentMouseLocationOnCanvas;
+            //TODO this could still be unsafe if there is some funky logic behind the Point or if someone opens the graphplotter on a 2000000K monitor or something lol.
+            this.ZoomStartPoint = new CanvasPixel((int)Math.Round(startPoint.X), (int)Math.Round(startPoint.Y));
+        }
+
+        private CanvasPixel zoomStartPoint;
+        public CanvasPixel ZoomStartPoint
+        {
+            get { return zoomStartPoint; }
+            set
+            {
+                if (value != zoomStartPoint && value != null)
+                {
+                    zoomStartPoint = value;
+                }
+            }
         }
 
         private void ReconstructAxisAndGridData(AxisData savedXAxisData, AxisData savedYAxisData, AxisGridData savedXAxisGrid, AxisGridData savedYAxisGrid)
