@@ -14,7 +14,7 @@ namespace GraphicalPlotter
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        //add more checks to the properties
+        // TODO add more checks to the properties
 
         private double textBoxXAxisMin = -10;
 
@@ -65,7 +65,6 @@ namespace GraphicalPlotter
             }
         }
 
-        //TDOD fields and such for colors after i figure out how to best do this
         private Color colorPickerXAxisColor = Colors.DarkSlateBlue;
 
         public Color ColorPickerXAxisColor
@@ -138,7 +137,6 @@ namespace GraphicalPlotter
             get { return textBoxYAxisMin; }
             set
             {
-                // only here for the automatic scaling, if the automatic scaling is in process the the values could be anything so we need to get rid of that rule
 
                 if (value != textBoxYAxisMin && value < this.TextBoxYAxisMax)
                 {
@@ -157,7 +155,6 @@ namespace GraphicalPlotter
             get { return textBoxYAxisMax; }
             set
             {
-                // only here for the automatic scaling, if the automatic scaling is in process the the values could be anything so we need to get rid of that rule
 
                 if (value != textBoxYAxisMax && value > this.TextBoxYAxisMin)
                 {
@@ -259,7 +256,7 @@ namespace GraphicalPlotter
                 if (value > 0)
                 {
                     pixelWidhtApp = value;
-                    //900-630
+                    //// 900-630
                     this.PixelWidhtCanvas = value - 270;
                 }
             }
@@ -275,7 +272,7 @@ namespace GraphicalPlotter
                 if (value > 0)
                 {
                     pixelHeightApp = value;
-                    //600-380
+                    //// 600-380
                     this.PixelHeightCanvas = value - 220;
                 }
             }
@@ -317,7 +314,7 @@ namespace GraphicalPlotter
 
         public FunctionToCanvasFunctionConverter CanvasFunctionConverter { get; set; }
 
-        //TODO do i actually need the lock here???
+        //// TODO do i actually need the lock here???
         private ObservableCollection<GraphicalFunctionViewModel> currentGraphicalFunctions;
 
         public ObservableCollection<GraphicalFunctionViewModel> CurrentGraphicalFunctions
@@ -439,8 +436,7 @@ namespace GraphicalPlotter
         public AxisGridData YAxisGrid { get; set; }
         public StringToFunctionConverter StringToFunctionConverter { get; set; }
 
-        //just to give the user a hint how a correctly formated function looks.
-        private string textBoxUserInputFunction = "5*x^2-sin(3x)+5";
+        private string textBoxUserInputFunction = string.Empty;
 
         public string TextBoxUserInputFunction
         {
@@ -470,7 +466,7 @@ namespace GraphicalPlotter
                     },
                     (obj) =>
                     {
-                        if (this.StringToFunctionConverter.ConvertStringToGraphicalFunction(this.TextBoxUserInputFunction, out graphicalFunction))
+                        if (this.StringToFunctionConverter.TryParseStringToGraphicalFunction(this.TextBoxUserInputFunction, out graphicalFunction))
                         {
                             GraphicalFunctionViewModel functionVM = new GraphicalFunctionViewModel(graphicalFunction);
                             this.AddFunctionToCurrentFunction(functionVM);
@@ -490,8 +486,8 @@ namespace GraphicalPlotter
 
             functionVM.OnUserFunctionChanged += new EventHandler<UserInputFunctionChangedEventArgs>(this.UpdateDrawInformationForFunctions);
 
-            //check if the user ever cahnged y-Axis Values, if not then autoscale the current Functions if they only are sin, cos and polynomials with exponent degree of zero ,
-            //but not incombination cos+sin or sin+sin , this would require a lot more code and it isnt in the requirement to begin with to be able to make a function like that so i hope that im good on that one
+            //// check if the user ever cahnged y-Axis Values, if not then autoscale the current Functions if they only are sin, cos and polynomials with exponent degree of zero ,
+            //// but not incombination cos+sin or sin+sin , this would require a lot more code and it isnt in the requirement to begin with to be able to make a function like that so i hope that im good on that one
             if (!this.HasUserChangedYAxisSettings && this.IsFunctionScalable(functionVM))
             {
                 this.RescaleYMinAndMaxForRescalableFunctions();
@@ -502,13 +498,13 @@ namespace GraphicalPlotter
             }
         }
 
-        //this is requirement is just so unnessary
+        //// this is requirement is just so unnessary
         private void RescaleYMinAndMaxForRescalableFunctions()
         {
             double biggestYValueOverall = double.MinValue;
             double smallestYValueOverall = double.MaxValue;
 
-            //since we now know that the function is scalabe it can only be one of theses possibilites : cos+c1+c2+c3...cn, sin+c1+c2+c3...cn or c1+c2+c3...cn we will move forward with this assumption
+            //// since we now know that the function is scalabe it can only be one of theses possibilites : cos+c1+c2+c3...cn, sin+c1+c2+c3...cn or c1+c2+c3...cn we will move forward with this assumption
             foreach (GraphicalFunctionViewModel function in this.CurrentGraphicalFunctions)
             {
                 double thisFunctionsSmallestYValue = this.FindSmallestYValue(function);
@@ -541,12 +537,12 @@ namespace GraphicalPlotter
                 this.HasUserChangedYAxisSettings = false;
             }
 
-            // we need to calculate the max and min values for the sum of all functions parts and then rescale the min and max of the y axis to fit that criteria, also we need to reset the hasUserChangedYAxis too false again after doing so.
+            ////  we need to calculate the max and min values for the sum of all functions parts and then rescale the min and max of the y axis to fit that criteria, also we need to reset the hasUserChangedYAxis too false again after doing so.
         }
 
         private double FindBiggestYValue(GraphicalFunctionViewModel function)
         {
-            //since we now know that the function is scalabe it can only be one of theses possibilites : cos+c1+c2+c3...cn, sin+c1+c2+c3...cn or c1+c2+c3...cn we will move forward with this assumption
+            //// since we now know that the function is scalabe it can only be one of theses possibilites : cos+c1+c2+c3...cn, sin+c1+c2+c3...cn or c1+c2+c3...cn we will move forward with this assumption
             double sumOfSmallestValues = 0;
 
             foreach (FunctionParts parts in function.FunctionParts)
@@ -558,7 +554,7 @@ namespace GraphicalPlotter
                 {
                     sumOfSmallestValues += Math.Abs(parts.ConstantMulitplier);
                 }
-                //must be polynomial of degree 0 meaning only the constant multiplier is added
+                //// must be polynomial of degree 0 meaning only the constant multiplier is added
                 else
                 {
                     sumOfSmallestValues += parts.ConstantMulitplier;
@@ -580,7 +576,7 @@ namespace GraphicalPlotter
                 {
                     sumOfBiggestValues += Math.Abs(parts.ConstantMulitplier) * -1;
                 }
-                //must be polynomial of degree 0 meaning only the constant multiplier is added
+                //// must be polynomial of degree 0 meaning only the constant multiplier is added
                 else
                 {
                     sumOfBiggestValues += parts.ConstantMulitplier;
@@ -591,8 +587,8 @@ namespace GraphicalPlotter
 
         private bool IsFunctionScalable(GraphicalFunctionViewModel functionVM)
         {
-            // we will count how often sinus and cosinus exist in the given function, the sum must be smaller than 2 , so there can only be one sin or one cos, else the calculation for the new max,min values
-            // would be way to hard for this model, and i dont have enough time to refracture that much code.
+            //// we will count how often sinus and cosinus exist in the given function, the sum must be smaller than 2 , so there can only be one sin or one cos, else the calculation for the new max,min values
+            //// would be way to hard for this model, and i dont have enough time to refracture that much code.
             int sinusCount = 0;
             int cosinusCount = 0;
             foreach (var currentFunctionPart in functionVM.FunctionParts)
@@ -601,7 +597,7 @@ namespace GraphicalPlotter
                 bool cosinusFlag = currentFunctionPart.GetType() == typeof(CosineFunction);
                 bool polynomialFlag = currentFunctionPart.GetType() == typeof(PolynomialComponent);
                 bool polynomialDegreeFlag = false;
-                //set the polynomialdegree flag depending on the degree of the polynomial, only 0 is allowed
+                //// set the polynomialdegree flag depending on the degree of the polynomial, only 0 is allowed
                 if (polynomialFlag)
                 {
                     PolynomialComponent currentPolynomialFunctionPart = (PolynomialComponent)currentFunctionPart;
@@ -617,7 +613,7 @@ namespace GraphicalPlotter
                     cosinusCount++;
                 }
 
-                //only if one of these 3 primary factors are true we can even rescale.
+                //// only if one of these 3 primary factors are true we can even rescale.
                 if (sinusFlag || cosinusFlag || (polynomialFlag && polynomialDegreeFlag))
                 {
                 }
@@ -648,18 +644,13 @@ namespace GraphicalPlotter
                     {
                         ColorPickerWindow colorPickerWindow = new ColorPickerWindow();
                         colorPickerWindow.ShowDialog();
-                        // If a color is selected and the ok button is pressed
+                        //// If a color is selected and the ok button is pressed
                         if (colorPickerWindow.isColorPicked == true)
                         {
                             //UNSAFE AS FUCK PLEASE FIX TODO TODO TODO
                             string propertyName = (string)obj;
 
-                            //i know that i could use the propertyInfo for this, but im not sure if we are allowed to use it.
-                            //PropertyInfo property = this.GetType().GetProperty(propertyName);
-                            //if (property != null && property.CanWrite)
-                            //{
-                            //    property.SetValue(this, selectedColor.Color);
-                            //}
+                           
 
                             // dumb design that i need to convert 2 times but not enough time to fix this TODO
                             Color selectedColor = colorPickerWindow.SelectedColor.Color;
@@ -686,8 +677,7 @@ namespace GraphicalPlotter
                                     break;
                             }
 
-                            // Set the selected color to the ColorPickerXAxisColor property in the main view model
-                            //this.ColorPickerXAxisColor =  selectedColor.Color;
+                            
                         }
                     }
 
@@ -712,7 +702,7 @@ namespace GraphicalPlotter
 
                             List<GraphicalFunctionDisplayNameForSerialization> functionsForSerialization = this.CreateSerialiationObjectsFromCurrentFunctions();
 
-                            //TODO TEST THIS SHIT
+                           
                             SaveFileDialog dialog = new SaveFileDialog();
 
                             dialog.Filter = "XML Files (*.xml)|*.xml";
@@ -757,7 +747,6 @@ namespace GraphicalPlotter
 
                         XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<GraphicalFunctionDisplayNameForSerialization>));
 
-                        //TODO TEST THIS SHIT
                         OpenFileDialog dialog = new OpenFileDialog();
 
                         dialog.Filter = "XML Files (*.xml)|*.xml";
@@ -768,13 +757,12 @@ namespace GraphicalPlotter
                             {
                                 try
                                 {
-                                    // TODO I for sure need to check if this is even serializable or something else right? just the try catch block isnt the kind of panacea that i think it is.
+                                    //// TODO I for sure need to check if this is even serializable or something else right? just the try catch block isnt the kind of panacea that i think it is.
                                     deserializedFunctions = (List<GraphicalFunctionDisplayNameForSerialization>)xmlSerializer.Deserialize(fileStream);
                                 }
-                                //TODO REMOVE , just for testing and finding out what can go wrong
-                                catch (Exception e)
+                                catch (Exception )
                                 {
-                                    throw e;
+                                   
                                 }
                             }
 
@@ -835,11 +823,13 @@ namespace GraphicalPlotter
 
         public MainViewModel()
         {
-            //Application.Current.MainWindow.Closing better alternative??
+            
 
             this.SaveDataHandler = new ApplicationStatusSaveDataHandler();
 
             this.StringToFunctionConverter = new StringToFunctionConverter();
+
+            //// Application.Current.MainWindow.Closing better alternative??
             Application.Current.Exit += OnWindowClosing;
 
             this.TextBoxUserInputFunctionToolTip = "To Input a Function use the right format shown here. Using other formats will yield wrong inputs.\r\n PLEASE NOTE THAT THE NOTATION FOR DECIMALS IS BOUND TO YOUR LOCALICATION! \r\n Supported Functions are : sin,cos,tan and polynomial function up to a exponent degree of 10." +
@@ -866,7 +856,7 @@ namespace GraphicalPlotter
             this.XAxisGrid = new AxisGridData(this.TextBoxXAxisGridIntervall, this.ColorPickerXAxisGridColor, this.CheckBoxXAxisGridVisibility);
             this.YAxisGrid = new AxisGridData(this.TextBoxYAxisGridIntervall, this.ColorPickerYAxisGridColor, this.CheckBoxYAxisGridVisibility);
 
-            //Setting the properties to the start values, also binding them by refernc i hope, i could also try to first initialzie the properties and then make a grid of them
+            //// Setting the properties to the start values, also binding them by refernc i hope, i could also try to first initialzie the properties and then make a grid of them
 
             this.MainGraphCanvas = new TwoDimensionalGraphCanvas(this.PixelWidhtCanvas, this.PixelHeightCanvas, this.XAxisData, this.YAxisData, this.XAxisGrid, this.YAxisGrid);
             this.CanvasFunctionConverter = new FunctionToCanvasFunctionConverter(this.MainGraphCanvas);
@@ -881,7 +871,7 @@ namespace GraphicalPlotter
 
             this.PropertyChanged += UpdateCanvasAttributes;
 
-            // I have no idea if this is good , or necessary to cast here, but i am going to do it becouse i couldnt get it to work otherwise
+            //// I have no idea if this is good , or necessary to cast here, but i am going to do it becouse i couldnt get it to work otherwise
             try
             {
                 MainWindow plotterWindowWithCanvas = (MainWindow)Application.Current.MainWindow;
@@ -901,7 +891,8 @@ namespace GraphicalPlotter
             else
             {
                 Point endPoint = eventArgs.CurrentMouseLocationOnCanvas;
-                // i should probably make a constructtor for that at this point
+                ////  i should probably make a constructtor for that at this point
+                //// todo add an construtor to canvasPixel that just takes a WPF Point.
                 CanvasPixel endPixel = new CanvasPixel((int)Math.Round(endPoint.X), (int)Math.Round(endPoint.Y));
                 CanvasPixel startPixel = this.ZoomStartPoint;
 
@@ -911,7 +902,7 @@ namespace GraphicalPlotter
                 int biggerYPixelValue;
                 int smallerYPixelValue;
 
-                //in theory there could be scenario where the the x or y values are on the same pixel, to calculate the new x and y values i still need an intervall though so im changing up the values if they are indeed the same
+                //// in theory there could be scenario where the the x or y values are on the same pixel, to calculate the new x and y values i still need an intervall though so im changing up the values if they are indeed the same
                 if (endPixel.XAxisValue == startPixel.XAxisValue)
                 {
                     if (endPixel.XAxisValue < 0)
@@ -923,7 +914,7 @@ namespace GraphicalPlotter
                         endPixel.XAxisValue += 1;
                     }
                 }
-                // same but for the y axis
+                //// same but for the y axis
                 if (endPixel.YAxisValue == startPixel.YAxisValue)
                 {
                     if (endPixel.YAxisValue < 0)
@@ -941,21 +932,20 @@ namespace GraphicalPlotter
                 biggerYPixelValue = Math.Max(startPixel.YAxisValue, endPixel.YAxisValue);
                 smallerYPixelValue = Math.Min(startPixel.YAxisValue, endPixel.YAxisValue);
 
-                // A bigger pixelValue means closer a smaller value for the y axis and , a higher value for the x axis
+                //// A bigger pixelValue means closer a smaller value for the y axis and , a higher value for the x axis
                 double newXAxisMin = this.CalculateXValueForXPixel(smallerXPixelValue);
                 double newXAxisMax = this.CalculateXValueForXPixel(biggerXPixelValue);
                 double newYAxisMin = this.CalculateYValueForYPixel(biggerYPixelValue);
                 double newYAxisMax = this.CalculateYValueForYPixel(smallerYPixelValue);
 
-                //WHAT IF new min is bigger than max or reversed, think about it
-
-                //we will just write into the fields and update the canvas manually
+                //// WHAT IF new min is bigger than max or reversed, think about it
+                //// cant happen because we always zoom IN so this is not a problem, if we would zoom out we would have to use the isInitialized flag to curcumvent the properties checks
                 this.TextBoxXAxisMin = newXAxisMin;
                 this.TextBoxXAxisMax = newXAxisMax;
                 this.TextBoxYAxisMin = newYAxisMin;
                 this.TextBoxYAxisMax = newYAxisMax;
 
-                //reset the start point so that the user cant just release the mouse inside the canvas and the old point is taken as the startpoint
+                //// reset the start point so that the user cant just release the mouse inside the canvas and the old point is taken as the startpoint
                 this.zoomStartPoint = null;
                 this.UpdateFullCanvas();
             }
@@ -974,7 +964,7 @@ namespace GraphicalPlotter
         private void UpdateStartPoint(object sender, CanvasZoomEventArguments eventArgs)
         {
             Point startPoint = eventArgs.CurrentMouseLocationOnCanvas;
-            //TODO this could still be unsafe if there is some funky logic behind the Point or if someone opens the graphplotter on a 2000000K monitor or something lol.
+            //// TODO this could still be unsafe if there is some funky logic behind the Point or if someone opens the graphplotter on a 2000000K monitor or something lol.
             this.ZoomStartPoint = new CanvasPixel((int)Math.Round(startPoint.X), (int)Math.Round(startPoint.Y));
         }
 
@@ -1090,13 +1080,14 @@ namespace GraphicalPlotter
             this.UpdateDrawInformationForGridLines();
         }
 
-        // this is utterly retarded but i dont have enough time to think about a better solution
-        //omg this is like prp the worst code i have written to date, what else would you use?? Methods for each function?? somekind of Observer class? i dont know please help
+        ////  this is utterly retarded but i dont have enough time to think about a better solution
+        //// omg this is like prp the worst code i have written to date, what else would you use?? Methods for each function?? somekind of Observer class? i dont know please help
+        //// I thought that when i just use a reference for the grid and axis classes it would tranfer but apprently not 
         private void UpdateCanvasAttributes(object sender, PropertyChangedEventArgs eventArgs)
         {
             switch (eventArgs.PropertyName)
             {
-                // for the x-axis itself
+                //// for the x-axis itself
                 case nameof(TextBoxXAxisMin):
                     this.XAxisData.MinVisibleValue = this.TextBoxXAxisMin;
                     break;
@@ -1113,7 +1104,7 @@ namespace GraphicalPlotter
                     this.XAxisData.AxisColor = this.ColorPickerXAxisColor;
                     break;
 
-                //for the y-axis itself
+                //// for the y-axis itself
                 case nameof(TextBoxYAxisMin):
                     this.YAxisData.MinVisibleValue = this.TextBoxYAxisMin;
                     break;
@@ -1130,7 +1121,7 @@ namespace GraphicalPlotter
                     this.YAxisData.AxisColor = this.ColorPickerYAxisColor;
                     break;
 
-                // for the x grid
+                //// for the x grid
 
                 case nameof(TextBoxXAxisGridIntervall):
                     this.XAxisGrid.IntervallBetweenLines = this.TextBoxXAxisGridIntervall;
@@ -1144,7 +1135,7 @@ namespace GraphicalPlotter
                     this.XAxisGrid.Visibility = this.CheckBoxXAxisGridVisibility;
                     break;
 
-                // for the y grid
+                //// for the y grid
 
                 case nameof(TextBoxYAxisGridIntervall):
                     this.YAxisGrid.IntervallBetweenLines = this.TextBoxYAxisGridIntervall;
@@ -1158,7 +1149,7 @@ namespace GraphicalPlotter
                     this.YAxisGrid.Visibility = this.CheckBoxYAxisGridVisibility;
                     break;
 
-                //For the canvas dimensions
+                //// For the canvas dimensions
                 case nameof(PixelHeightCanvas):
                     this.MainGraphCanvas.HeightInPixel = this.PixelHeightCanvas;
                     break;
@@ -1201,8 +1192,8 @@ namespace GraphicalPlotter
             }
         }
 
-        //yeah i know every function gets updated, but for now this is good enough
-        //TODO fix, only the function that has changed needs updates to its information.
+        //// yeah i know every function gets updated, but for now this is good enough
+        //// TODO fix, only the function that has changed needs updates to its information.
         public void UpdateDrawInformationForFunctions(object sender, UserInputFunctionChangedEventArgs e)
         {
             if (this.IsApplicationDataInitalized)

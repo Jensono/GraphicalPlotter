@@ -171,26 +171,25 @@ namespace GraphicalPlotter
                     {
                         ColorPickerWindow colorPickerWindow = new ColorPickerWindow();
                         colorPickerWindow.ShowDialog();
-                        // If a color is selected and the ok button is pressed
+                        //// If a color is selected and the ok button is pressed
                         if (colorPickerWindow.isColorPicked == true)
                         {
                             //UNSAFE AS FUCK PLEASE FIX TODO TODO TODO
                             string propertyName = (string)obj;
 
-                            //i know that i could use the propertyInfo for this, but im not sure if we are allowed to use it.
-                            //PropertyInfo property = this.GetType().GetProperty(propertyName);
-                            //if (property != null && property.CanWrite)
-                            //{
-                            //    property.SetValue(this, selectedColor.Color);
-                            //}
+                            ////i know that i could use the propertyInfo for this, but im not sure if we are allowed to use it.
+                            ////PropertyInfo property = this.GetType().GetProperty(propertyName);
+                            ////if (property != null && property.CanWrite)
+                            ////{
+                            ////    property.SetValue(this, selectedColor.Color);
+                            ////}
 
-                            // dumb design that i need to convert 2 times but not enough time to fix this TODO
+                            //// dumb design that i need to convert 2 times but not enough time to fix this TODO
                             Color selectedColor = colorPickerWindow.SelectedColor.Color;
 
                             this.FunctionColor = selectedColor;
                             this.OnUserFunctionChanged(this, new UserInputFunctionChangedEventArgs());
-                            // Set the selected color to the ColorPickerXAxisColor property in the main view model
-                            //this.ColorPickerXAxisColor =  selectedColor.Color;
+                            
                         }
                     }
 
@@ -198,7 +197,7 @@ namespace GraphicalPlotter
             }
         }
 
-        //yeah yeah i know i used them twice, but i dont want to put a whole ass graphicalfunction into this viewmodel too.
+        //// yeah yeah i know i used them twice, but i dont want to put a whole ass graphicalfunction into this viewmodel too.
 
         public double CalculateSumOfAllPartsForValue(double value)
         {
@@ -209,7 +208,7 @@ namespace GraphicalPlotter
             }
             return sum;
         }
-
+        // Todo no used right now - delete
         public string CreateFunctionFullName()
         {
             string returnstring = string.Empty;

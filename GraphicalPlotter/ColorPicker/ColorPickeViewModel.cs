@@ -67,7 +67,7 @@ namespace GraphicalPlotter
             {
                 return this.selectedColor;
             }
-            //todo right object check and null check
+            //// todo right object check and null check
             set
             {
                 this.selectedColor = value;
