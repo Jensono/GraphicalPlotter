@@ -18,8 +18,15 @@
 
         public Color FunctionColor
         {
-            get { return functionColor; }
-            set { functionColor = value; }
+            get 
+            { 
+                return this.functionColor; 
+            }
+
+            set 
+            {
+                this.functionColor = value; 
+            }
         }
 
         public List<CanvasPixel> CanvasPixels

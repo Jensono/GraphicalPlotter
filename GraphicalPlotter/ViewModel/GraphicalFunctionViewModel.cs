@@ -55,7 +55,7 @@
                         ColorPickerWindow colorPickerWindow = new ColorPickerWindow();
                         colorPickerWindow.ShowDialog();
                         //// If a color is selected and the ok button is pressed
-                        if (colorPickerWindow.isColorPicked == true)
+                        if (colorPickerWindow.IsColorPicked == true)
                         {
                             //UNSAFE AS FUCK PLEASE FIX TODO TODO TODO
                             string propertyName = (string)obj;
@@ -77,20 +77,7 @@
             }
         }
 
-        private bool IsInitialized
-        {
-            get
-            {
-                return this.isInitialized;
-            }
-            set
-            {
-                if (this.isInitialized != value)
-                {
-                    this.isInitialized = value;
-                }
-            }
-        }
+        
 
         public bool FunctionVisibility
         {
@@ -186,6 +173,21 @@
                 {
                     this.customUserSetName = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CustomUserSetName)));
+                }
+            }
+        }
+
+        private bool IsInitialized
+        {
+            get
+            {
+                return this.isInitialized;
+            }
+            set
+            {
+                if (this.isInitialized != value)
+                {
+                    this.isInitialized = value;
                 }
             }
         }

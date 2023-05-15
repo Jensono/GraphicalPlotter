@@ -1,6 +1,6 @@
 ﻿namespace GraphicalPlotter
 {
-    
+   
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -15,7 +15,7 @@
 
     public class MainViewModel : INotifyPropertyChanged
     {
-        // TODO add more checks to the properties
+      
 
         private double textBoxXAxisMin = -10;
         private double textBoxXAxisMax = 10;
@@ -49,6 +49,17 @@
         private object lockObjectFunctions = new object();
         private CanvasPixel zoomStartPoint;
 
+        private AxisData xAxisData;
+        private AxisData yAxisData;
+        private AxisGridData xAxisGrid;
+        private AxisGridData yAxisGrid;
+
+        private TwoDimensionalGraphCanvas mainGraphCanvas;
+        private FunctionToCanvasFunctionConverter canvasFunctionConverter;
+
+        private StringToFunctionConverter stringToFunctionConverter;
+        private ApplicationStatusSaveDataHandler saveDataHandler;
+
         public MainViewModel()
         {
             this.SaveDataHandler = new ApplicationStatusSaveDataHandler();
@@ -76,6 +87,7 @@
 
                 this.ReconstructFunctionsFromFileInport(savedFunctions);
             }
+
             this.IsApplicationDataInitalized = true;
 
             this.XAxisData = new AxisData(this.TextBoxXAxisMin, this.TextBoxXAxisMax, this.ColorPickerXAxisColor, this.CheckBoxXAxisVisibility);
@@ -114,8 +126,11 @@
 
         public double TextBoxXAxisMin
         {
-            get {
-                return this.textBoxXAxisMin; }
+            get
+            {
+                return this.textBoxXAxisMin;
+            }
+
             set
             {
                 if (value != this.textBoxXAxisMin && value < this.TextBoxXAxisMax)
@@ -130,7 +145,11 @@
 
         public double TextBoxXAxisMax
         {
-            get { return this.textBoxXAxisMax; }
+            get
+            {
+                return this.textBoxXAxisMax;
+            }
+
             set
             {
                 if (value != this.textBoxXAxisMax && value > this.TextBoxXAxisMin)
@@ -144,7 +163,11 @@
 
         public bool CheckBoxXAxisVisibility
         {
-            get { return this.checkBoxXAxisVisibility; }
+            get
+            {
+                return this.checkBoxXAxisVisibility;
+            }
+
             set
             {
                 if (value != this.checkBoxXAxisVisibility)
@@ -158,7 +181,11 @@
 
         public Color ColorPickerXAxisColor
         {
-            get { return this.colorPickerXAxisColor; }
+            get
+            {
+                return this.colorPickerXAxisColor;
+            }
+
             set
             {
                 if (value != this.colorPickerXAxisColor)
@@ -172,7 +199,11 @@
 
         public double TextBoxXAxisGridIntervall
         {
-            get { return this.textBoxXAxisGridIntervall; }
+            get
+            {
+                return this.textBoxXAxisGridIntervall;
+            }
+
             set
             {
                 // If the value is above 0 and when there arent more gridlines than the max amount , which is half of all the pixels
@@ -187,7 +218,11 @@
 
         public Color ColorPickerXAxisGridColor
         {
-            get { return this.colorPickerXAxisGridColor; }
+            get
+            {
+                return this.colorPickerXAxisGridColor;
+            }
+
             set
             {
                 if (value != this.colorPickerXAxisGridColor)
@@ -201,7 +236,11 @@
 
         public bool CheckBoxXAxisGridVisibility
         {
-            get { return this.checkBoxXAxisGridVisibility; }
+            get
+            {
+                return this.checkBoxXAxisGridVisibility;
+            }
+
             set
             {
                 if (value != this.checkBoxXAxisGridVisibility)
@@ -215,7 +254,11 @@
 
         public double TextBoxYAxisMin
         {
-            get { return this.textBoxYAxisMin; }
+            get
+            {
+                return this.textBoxYAxisMin;
+            }
+
             set
             {
                 if (value != this.textBoxYAxisMin && value < this.TextBoxYAxisMax)
@@ -230,7 +273,11 @@
 
         public double TextBoxYAxisMax
         {
-            get { return this.textBoxYAxisMax; }
+            get
+            {
+                return this.textBoxYAxisMax;
+            }
+
             set
             {
                 if (value != this.textBoxYAxisMax && value > this.TextBoxYAxisMin)
@@ -245,7 +292,11 @@
 
         public bool CheckBoxYAxisVisibility
         {
-            get { return this.checkBoxYAxisVisibility; }
+            get
+            {
+                return this.checkBoxYAxisVisibility;
+            }
+
             set
             {
                 if (value != this.checkBoxYAxisVisibility)
@@ -259,7 +310,11 @@
 
         public Color ColorPickerYAxisColor
         {
-            get { return this.colorPickerYAxisColor; }
+            get
+            {
+                return this.colorPickerYAxisColor;
+            }
+
             set
             {
                 if (value != this.colorPickerYAxisColor)
@@ -273,7 +328,11 @@
 
         public double TextBoxYAxisGridIntervall
         {
-            get { return this.textBoxYAxisGridIntervall; }
+            get
+            {
+                return this.textBoxYAxisGridIntervall;
+            }
+
             set
             {
                 if (value != this.textBoxYAxisGridIntervall && value > 0 && (((this.TextBoxYAxisMax - this.TextBoxYAxisMin) / value) < (this.PixelHeightCanvas / 2)))
@@ -287,7 +346,11 @@
 
         public Color ColorPickerYAxisGridColor
         {
-            get { return this.colorPickerYAxisGridColor; }
+            get
+            {
+                return this.colorPickerYAxisGridColor;
+            }
+
             set
             {
                 if (value != this.colorPickerYAxisGridColor)
@@ -301,7 +364,11 @@
 
         public bool CheckBoxYAxisGridVisibility
         {
-            get { return this.checkBoxYAxisGridVisibility; }
+            get
+            {
+                return this.checkBoxYAxisGridVisibility;
+            }
+
             set
             {
                 if (value != this.checkBoxYAxisGridVisibility)
@@ -315,7 +382,11 @@
 
         public int PixelWidhtApp
         {
-            get { return this.pixelWidhtApp; }
+            get
+            {
+                return this.pixelWidhtApp;
+            }
+
             set
             {
                 if (value > 0)
@@ -329,7 +400,11 @@
 
         public int PixelHeightApp
         {
-            get { return this.pixelHeightApp; }
+            get
+            {
+                return this.pixelHeightApp;
+            }
+
             set
             {
                 if (value > 0)
@@ -343,7 +418,11 @@
 
         public int PixelWidhtCanvas
         {
-            get { return this.pixelWidhtCanvas; }
+            get
+            {
+                return this.pixelWidhtCanvas;
+            }
+
             set
             {
                 if (value > 0)
@@ -357,7 +436,11 @@
 
         public int PixelHeightCanvas
         {
-            get { return this.pixelHeightCanvas; }
+            get
+            {
+                return this.pixelHeightCanvas;
+            }
+
             set
             {
                 if (value > 0)
@@ -369,9 +452,41 @@
             }
         }
 
-        public TwoDimensionalGraphCanvas MainGraphCanvas { get; set; }
+        public TwoDimensionalGraphCanvas MainGraphCanvas
+        {
+            get
+            {
+                return this.mainGraphCanvas;
+            }
 
-        public FunctionToCanvasFunctionConverter CanvasFunctionConverter { get; set; }
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException($"{nameof(this.MainGraphCanvas)} cannot be null!");
+                }
+
+                this.mainGraphCanvas = value;
+            }
+        }
+
+        public FunctionToCanvasFunctionConverter CanvasFunctionConverter
+        {
+            get 
+            {
+                return this.canvasFunctionConverter; 
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException($"{nameof(this.CanvasFunctionConverter)} cannot be null!");
+                }
+
+                this.canvasFunctionConverter = value;
+            }
+        }
 
         //// TODO do i actually need the lock here???
 
@@ -479,16 +594,125 @@
             }
         }
 
-        public AxisData XAxisData { get; set; }
-        public AxisData YAxisData { get; set; }
+        public AxisData XAxisData
+        {
+            get
+            {
+                return this.xAxisData;
+            }
 
-        public AxisGridData XAxisGrid { get; set; }
-        public AxisGridData YAxisGrid { get; set; }
-        public StringToFunctionConverter StringToFunctionConverter { get; set; }
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException($"{nameof(this.XAxisData)} cannot be null!");
+                }
+
+                this.xAxisData = value;
+            }
+        }
+
+        public AxisData YAxisData
+        {
+            get
+            {
+                return this.yAxisData;
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException($"{nameof(this.YAxisData)} cannot be null!");
+                }
+
+                this.yAxisData = value;
+            }
+        }
+
+        public AxisGridData XAxisGrid
+        {
+            get
+            {
+                return this.xAxisGrid;
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException($"{nameof(this.XAxisGrid)} cannot be null!");
+                }
+
+                this.xAxisGrid = value;
+            }
+        }
+
+        public AxisGridData YAxisGrid
+        {
+            get
+            {
+                return this.yAxisGrid;
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException($"{nameof(this.YAxisGrid)} cannot be null!");
+                }
+
+                this.yAxisGrid = value;
+            }
+        }
+                
+        public StringToFunctionConverter StringToFunctionConverter
+        {
+            get
+            { 
+                return this.stringToFunctionConverter;
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException($"{nameof(this.StringToFunctionConverter)} cannot be null!");
+                }
+
+                this.stringToFunctionConverter = value;
+            }
+        }
+                
+        public ApplicationStatusSaveDataHandler SaveDataHandler
+        {
+            get 
+            {
+                return this.saveDataHandler;
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException($"{nameof(this.SaveDataHandler)} cannot be null!");
+                }
+
+                this.saveDataHandler = value;
+            }
+        }
+
+        public string TextBoxUserInputFunctionToolTip { get; set; }
+
+        public bool HasUserChangedYAxisSettings { get; set; }
 
         public string TextBoxUserInputFunction
         {
-            get { return this.textBoxUserInputFunction; }
+            get
+            {
+                return this.textBoxUserInputFunction;
+            }
+
             set
             {
                 if (value != this.textBoxUserInputFunction)
@@ -500,14 +724,13 @@
             }
         }
 
-        public string TextBoxUserInputFunctionToolTip { get; set; }
-
-        //FIELD todo
-        public ApplicationStatusSaveDataHandler SaveDataHandler { get; set; }
-
         public bool IsApplicationDataInitalized
         {
-            get { return this.isApplicationDataInitalized; }
+            get
+            {
+                return this.isApplicationDataInitalized;
+            }
+
             set
             {
                 if (value != this.isApplicationDataInitalized)
@@ -517,11 +740,13 @@
             }
         }
 
-        public bool HasUserChangedYAxisSettings { get; set; }
-
         public CanvasPixel ZoomStartPoint
         {
-            get { return this.zoomStartPoint; }
+            get
+            {
+                return this.zoomStartPoint;
+            }
+
             set
             {
                 if (value != this.zoomStartPoint && value != null)
@@ -569,7 +794,7 @@
                         ColorPickerWindow colorPickerWindow = new ColorPickerWindow();
                         colorPickerWindow.ShowDialog();
                         //// If a color is selected and the ok button is pressed
-                        if (colorPickerWindow.isColorPicked == true)
+                        if (colorPickerWindow.IsColorPicked == true)
                         {
                             //UNSAFE AS FUCK PLEASE FIX TODO TODO TODO
                             string propertyName = (string)obj;
@@ -759,13 +984,12 @@
                         {
                             this.RescaleYMinAndMaxForRescalableFunctions();
                         }
+
                         this.IsApplicationDataInitalized = true;
                         this.UpdateFullCanvas();
                     });
             }
         }
-
-       
 
         public bool AreAllCurrentFunctionsAutomaticlyScalable()
         {
@@ -776,8 +1000,10 @@
                     return false;
                 }
             }
+
             return true;
         }
+
         private void AddFunctionToCurrentFunction(GraphicalFunctionViewModel functionVM)
         {
             this.CurrentGraphicalFunctions.Add(functionVM);
@@ -859,6 +1085,7 @@
                     sumOfSmallestValues += parts.ConstantMultiplier;
                 }
             }
+
             return sumOfSmallestValues;
         }
 
@@ -881,6 +1108,7 @@
                     sumOfBiggestValues += parts.ConstantMultiplier;
                 }
             }
+
             return sumOfBiggestValues;
         }
 
@@ -907,6 +1135,7 @@
                 {
                     sinusCount++;
                 }
+
                 if (cosinusFlag)
                 {
                     cosinusCount++;
@@ -937,6 +1166,7 @@
             {
                 functionsForSerialization.Add(new GraphicalFunctionDisplayNameForSerialization(functionVM));
             }
+
             return functionsForSerialization;
         }
 
@@ -1178,7 +1408,7 @@
             }
         }
 
-        public void UpdateDrawInformationForFunctions()
+        private void UpdateDrawInformationForFunctions()
         {
             if (this.IsApplicationDataInitalized)
             {

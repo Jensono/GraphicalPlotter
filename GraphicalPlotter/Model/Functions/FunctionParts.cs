@@ -18,11 +18,11 @@
         {
             get
             {
-                return constantMultiplier;
+                return this.constantMultiplier;
             }
             set
             {
-                constantMultiplier = value;
+                this.constantMultiplier = value;
             }
         }
 

@@ -7,9 +7,20 @@ namespace GraphicalPlotter
     {
         private Point currentMouseLocationOnCanvas;
 
+      
+
+        public CanvasZoomEventArguments(Point mouseLocation)
+        {
+            this.currentMouseLocationOnCanvas = mouseLocation;
+        }
+
         public Point CurrentMouseLocationOnCanvas
         {
-            get { return this.currentMouseLocationOnCanvas; }
+            get 
+            {
+                return this.currentMouseLocationOnCanvas; 
+            }
+
             set
             {
                 if (value != null)
@@ -17,11 +28,6 @@ namespace GraphicalPlotter
                     this.currentMouseLocationOnCanvas = value;
                 }
             }
-        }
-
-        public CanvasZoomEventArguments(Point mouseLocation)
-        {
-            this.currentMouseLocationOnCanvas = mouseLocation;
         }
     }
 }

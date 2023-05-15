@@ -14,11 +14,11 @@
         {
             get
             {
-                return degreeMultiplier;
+                return this.degreeMultiplier;
             }
             set
             {
-                degreeMultiplier = value;
+                this.degreeMultiplier = value;
             }
         }
 

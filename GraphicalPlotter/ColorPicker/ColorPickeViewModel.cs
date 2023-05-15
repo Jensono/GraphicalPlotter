@@ -28,7 +28,11 @@ namespace GraphicalPlotter
 
         public byte RedValue
         {
-            get { return this.redValue; }
+            get 
+            {
+                return this.redValue; 
+            }
+
             set
             {
                 this.redValue = value;
@@ -38,7 +42,11 @@ namespace GraphicalPlotter
 
         public byte GreenValue
         {
-            get { return this.greenValue; }
+            get 
+            {
+                return this.greenValue; 
+            }
+
             set
             {
                 this.greenValue = value;
@@ -48,7 +56,11 @@ namespace GraphicalPlotter
 
         public byte BlueValue
         {
-            get { return this.blueValue; }
+            get 
+            { 
+                return this.blueValue; 
+            }
+
             set
             {
                 this.blueValue = value;

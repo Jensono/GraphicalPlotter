@@ -8,10 +8,7 @@ namespace GraphicalPlotter
     [Serializable]
     public class GraphicalFunctionDisplayNameForSerialization
     {
-        public string FunctionName { get; set; }
-        public string UserSetNameForFunction { get; set; }
-        public Color FunctionColor { get; set; }
-        public bool FunctionVisibility { get; set; }
+        
 
         public GraphicalFunctionDisplayNameForSerialization(GraphicalFunctionViewModel functionViewModel)
         {
@@ -24,5 +21,10 @@ namespace GraphicalPlotter
         public GraphicalFunctionDisplayNameForSerialization()
         {
         }
+
+        public string FunctionName { get; set; }
+        public string UserSetNameForFunction { get; set; }
+        public Color FunctionColor { get; set; }
+        public bool FunctionVisibility { get; set; }
     }
 }

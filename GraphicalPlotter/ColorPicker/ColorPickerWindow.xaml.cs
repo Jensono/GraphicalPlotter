@@ -21,10 +21,7 @@ namespace GraphicalPlotter
     /// </summary>
     public partial class ColorPickerWindow : Window
     {
-       
-        public bool isColorPicked { get; set; }
-
-       
+                      
         private ColorPickerViewModel colorPickerViewModel = new ColorPickerViewModel(Color.FromRgb(127, 127, 127));
 
         public ColorPickerWindow()
@@ -32,11 +29,14 @@ namespace GraphicalPlotter
             this.InitializeComponent();
             this.DataContext = this.colorPickerViewModel;
         }
+
         public SolidColorBrush SelectedColor { get; set; }
+        public bool IsColorPicked { get; set; }
+
         private void OKButton_Click(object sender, RoutedEventArgs e)
         {
             this.SelectedColor = this.colorPickerViewModel.SelectedColor;
-            this.isColorPicked = true;
+            this.IsColorPicked = true;
             //// when using show, we also need to inform the window that there is a dialog result
             this.DialogResult = true;
             this.Close();

@@ -26,7 +26,7 @@ namespace GraphicalPlotter
         public event EventHandler<CanvasZoomEventArguments> OnCanvasZoomEnd;
 
         //// TODO right now when the user is zooming but moves out of the window to release the button, there is no zooming but the blue rectangle remains, fix with events that reset selected point and stop visibility of the rectangle maybe
-        public void Canvas_ZoomStart(object sender, MouseButtonEventArgs eventArgs)
+        private void Canvas_ZoomStart(object sender, MouseButtonEventArgs eventArgs)
         {
             //// we check if the user is activly drawing open a window or not
             //// right now i believe this uses all mousebuttons so left and right, it could be adapted later on tho for the the only one that is wanted.
@@ -65,7 +65,7 @@ namespace GraphicalPlotter
             }
         }
 
-        public void Canvas_ZoomEnd(object sender, MouseButtonEventArgs eventArgs)
+        private void Canvas_ZoomEnd(object sender, MouseButtonEventArgs eventArgs)
         {
             CanvasZoomEventArguments zoomEndEventArgs = new CanvasZoomEventArguments(eventArgs.GetPosition(PlotterCanvas));
             this.OnCanvasZoomEnd(this, zoomEndEventArgs);

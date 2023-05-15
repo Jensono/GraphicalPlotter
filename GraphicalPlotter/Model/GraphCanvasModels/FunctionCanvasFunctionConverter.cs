@@ -43,31 +43,6 @@
             return functionsDrawInformation;
         }
 
-        private FunctionDrawInformation ConvertFunctionIntoDrawInformation(GraphicalFunction function)
-        {
-            int xPixels = this.GraphicalCanvas.WidthInPixel;
-            int yPixels = this.GraphicalCanvas.HeightInPixel;
-            double xMax = this.GraphicalCanvas.XAxisData.MaxVisibleValue;
-            double xMin = this.GraphicalCanvas.XAxisData.MinVisibleValue;
-            double yMax = this.GraphicalCanvas.YAxisData.MaxVisibleValue;
-            double yMin = this.GraphicalCanvas.YAxisData.MinVisibleValue;
-
-            List<CanvasPixel> PixelValuesForthisFunction = new List<CanvasPixel>();
-
-            for (int xPixelPosition = 0; xPixelPosition < xPixels; xPixelPosition++)
-            {
-                double xCalculationIntervall = (xMax - xMin) / xPixels;
-                double xValueForCurrentPixel = xMin + (xPixelPosition * xCalculationIntervall);
-                double yValueForCurrentXValue = function.CalculateSumOfAllPartsForValue(xValueForCurrentPixel);
-
-                int roundedYPixelPosition = this.CalculateYPixelPositionForYValue(yPixels, yValueForCurrentXValue, yMin, yMax);
-
-                PixelValuesForthisFunction.Add(new CanvasPixel(xPixelPosition, roundedYPixelPosition));
-            }
-            FunctionDrawInformation drawInformation = new FunctionDrawInformation(PixelValuesForthisFunction, function.FunctionColor);
-            return drawInformation;
-        }
-
         public List<FunctionDrawInformation> ConvertFunctionViewModelIntoDrawInformation(GraphicalFunctionViewModel function)
         {
             int xPixels = this.GraphicalCanvas.WidthInPixel;
@@ -133,27 +108,6 @@
             return drawingPathsForFunction;
         }
 
-        public int CalculateYPixelPositionForYValue(int yPixels, double yValue, double yMin, double yMax)
-        {
-            /// /it took me 2 hours to come up with this function, i fucking hope it works
-
-            double yPixelPosition = yPixels - ((yValue - yMin) * yPixels / (yMax - yMin));
-
-            //// TODO find a better solution than this, if there is one
-            //// A function could, in theory have such a drastic change in the y axis that this problem could occur
-            if (yPixelPosition < int.MinValue)
-            {
-                yPixelPosition = int.MinValue;
-            }
-            else if (yPixelPosition > int.MaxValue)
-            {
-                yPixelPosition = int.MaxValue;
-            }
-
-            //// Why isnt there a explixit method that just rounds to int or long???
-            return (int)Math.Round(yPixelPosition);
-        }
-
         public List<FunctionDrawInformation> CreateFunctionDrawInformationForAxis()
         {
             List<FunctionDrawInformation> axisLines = new List<FunctionDrawInformation>();
@@ -176,8 +130,8 @@
                 int yPixelValueForXAxis = this.CalculateYPixelPositionForYValue(yPixels, 0, yMin, yMax);
 
                 List<CanvasPixel> axisPoints = new List<CanvasPixel>() { new CanvasPixel(0, yPixelValueForXAxis), new CanvasPixel(xPixels, yPixelValueForXAxis) };
-                FunctionDrawInformation DrawInformationXAxis = new FunctionDrawInformation(axisPoints, this.GraphicalCanvas.XAxisData.AxisColor);
-                axisLines.Add(DrawInformationXAxis);
+                FunctionDrawInformation drawInformationXAxis = new FunctionDrawInformation(axisPoints, this.GraphicalCanvas.XAxisData.AxisColor);
+                axisLines.Add(drawInformationXAxis);
             }
             //// only if the axis are visible we will calculate them , otherwise , weird things will happen
 
@@ -186,8 +140,8 @@
                 int xPixelValueForYAxis = this.CalculateXPixelPositionForXValue(xPixels, 0, xMin, xMax);
 
                 List<CanvasPixel> axisPoints = new List<CanvasPixel>() { new CanvasPixel(xPixelValueForYAxis, 0), new CanvasPixel(xPixelValueForYAxis, yPixels) };
-                FunctionDrawInformation DrawInformationXAxis = new FunctionDrawInformation(axisPoints, this.GraphicalCanvas.YAxisData.AxisColor);
-                axisLines.Add(DrawInformationXAxis);
+                FunctionDrawInformation drawInformationXAxis = new FunctionDrawInformation(axisPoints, this.GraphicalCanvas.YAxisData.AxisColor);
+                axisLines.Add(drawInformationXAxis);
             }
 
             return axisLines;
@@ -278,9 +232,10 @@
             return gridLines;
         }
 
-        private double GetGridStartingPostionForGridIntervalAndMinValue(double MinValue, double GridInterval, bool isMinAndMaxSmallerThanZero)
+        [Obsolete]
+        private double GetGridStartingPostionForGridIntervalAndMinValue(double MinValue, double gridInterval, bool isMinAndMaxSmallerThanZero)
         {
-            double logExponendForGridIntervall = Math.Log10(GridInterval);
+            double logExponendForGridIntervall = Math.Log10(gridInterval);
             double roundedStartingValue;
 
             if (logExponendForGridIntervall >= 1)
@@ -311,7 +266,53 @@
             return roundedStartingValue;
         }
 
-        public int CalculateXPixelPositionForXValue(int xPixels, double xValue, double xMin, double xMax)
+        private FunctionDrawInformation ConvertFunctionIntoDrawInformation(GraphicalFunction function)
+        {
+            int xPixels = this.GraphicalCanvas.WidthInPixel;
+            int yPixels = this.GraphicalCanvas.HeightInPixel;
+            double xMax = this.GraphicalCanvas.XAxisData.MaxVisibleValue;
+            double xMin = this.GraphicalCanvas.XAxisData.MinVisibleValue;
+            double yMax = this.GraphicalCanvas.YAxisData.MaxVisibleValue;
+            double yMin = this.GraphicalCanvas.YAxisData.MinVisibleValue;
+
+            List<CanvasPixel> PixelValuesForthisFunction = new List<CanvasPixel>();
+
+            for (int xPixelPosition = 0; xPixelPosition < xPixels; xPixelPosition++)
+            {
+                double xCalculationIntervall = (xMax - xMin) / xPixels;
+                double xValueForCurrentPixel = xMin + (xPixelPosition * xCalculationIntervall);
+                double yValueForCurrentXValue = function.CalculateSumOfAllPartsForValue(xValueForCurrentPixel);
+
+                int roundedYPixelPosition = this.CalculateYPixelPositionForYValue(yPixels, yValueForCurrentXValue, yMin, yMax);
+
+                PixelValuesForthisFunction.Add(new CanvasPixel(xPixelPosition, roundedYPixelPosition));
+            }
+            FunctionDrawInformation drawInformation = new FunctionDrawInformation(PixelValuesForthisFunction, function.FunctionColor);
+            return drawInformation;
+        }
+
+        private int CalculateYPixelPositionForYValue(int yPixels, double yValue, double yMin, double yMax)
+        {
+            /// /it took me 2 hours to come up with this function, i fucking hope it works
+
+            double yPixelPosition = yPixels - ((yValue - yMin) * yPixels / (yMax - yMin));
+
+            //// TODO find a better solution than this, if there is one
+            //// A function could, in theory have such a drastic change in the y axis that this problem could occur
+            if (yPixelPosition < int.MinValue)
+            {
+                yPixelPosition = int.MinValue;
+            }
+            else if (yPixelPosition > int.MaxValue)
+            {
+                yPixelPosition = int.MaxValue;
+            }
+
+            //// Why isnt there a explixit method that just rounds to int or long???
+            return (int)Math.Round(yPixelPosition);
+        }
+
+        private int CalculateXPixelPositionForXValue(int xPixels, double xValue, double xMin, double xMax)
         {
             double xPixelPosition = xPixels - ((xValue - xMin) * xPixels / (xMax - xMin));
 
