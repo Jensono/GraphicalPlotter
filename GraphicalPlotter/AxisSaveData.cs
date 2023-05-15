@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 
 namespace GraphicalPlotter
@@ -22,10 +18,8 @@ namespace GraphicalPlotter
 
         public string AxisName { get; set; }
 
-
-        public AxisSaveData(AxisData axis, AxisGridData grid,string axisname)
+        public AxisSaveData(AxisData axis, AxisGridData grid, string axisname)
         {
-
             this.AxisMin = axis.MinVisibleValue;
             this.AxisMax = axis.MaxVisibleValue;
             this.AxisLineColor = axis.AxisColor;
@@ -36,9 +30,9 @@ namespace GraphicalPlotter
             this.GridVisibility = grid.Visibility;
 
             this.AxisName = axisname;
-
         }
 
-        public AxisSaveData() { }
+        public AxisSaveData()
+        { }
     }
 }

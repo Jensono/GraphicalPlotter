@@ -1,31 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GraphicalPlotter
 {
     [Serializable]
     public class PlotterFullSaveData
     {
-
         public AxisSaveData XAxisSaveData { get; set; }
         public AxisSaveData YAxisSaveData { get; set; }
         public List<GraphicalFunctionDisplayNameForSerialization> SerializationFunctionList { get; set; }
         public bool HasUserChangedYAxis { get; set; }
-        public PlotterFullSaveData( AxisSaveData xAxisSaveData, AxisSaveData yAxisSaveData, List<GraphicalFunctionDisplayNameForSerialization> functionList,bool hasUserChangedYAxis) 
+
+        public PlotterFullSaveData(AxisSaveData xAxisSaveData, AxisSaveData yAxisSaveData, List<GraphicalFunctionDisplayNameForSerialization> functionList, bool hasUserChangedYAxis)
         {
             this.XAxisSaveData = xAxisSaveData;
             this.YAxisSaveData = yAxisSaveData;
             this.SerializationFunctionList = functionList;
             this.HasUserChangedYAxis = hasUserChangedYAxis;
-        
         }
 
-        //empty construtor for serialization
-        public PlotterFullSaveData() { }
-
-       
+        //// empty construtor for serialization
+        public PlotterFullSaveData()
+        { }
     }
 }

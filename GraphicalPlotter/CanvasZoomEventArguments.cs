@@ -5,6 +5,7 @@ namespace GraphicalPlotter
     public class CanvasZoomEventArguments
     {
         private Point currentMouseLocationOnCanvas;
+
         public Point CurrentMouseLocationOnCanvas
         {
             get { return currentMouseLocationOnCanvas; }
@@ -16,7 +17,8 @@ namespace GraphicalPlotter
                 }
             }
         }
-        public CanvasZoomEventArguments(Point mouseLocation) 
+
+        public CanvasZoomEventArguments(Point mouseLocation)
         {
             this.currentMouseLocationOnCanvas = mouseLocation;
         }

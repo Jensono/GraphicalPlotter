@@ -1,22 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
 
 namespace GraphicalPlotter
 {
-  
-
     public class GraphicalFunctionViewModel : INotifyPropertyChanged
     {
-
-
-        //This is so dumb i fucking hate events in C# WHY WHY do i need  a callback to call an event please microsoft 
+        //This is so dumb i fucking hate events in C# WHY WHY do i need  a callback to call an event please microsoft
         private bool isInitialized = false;
+
         private bool IsInitialized
         {
             get
@@ -27,16 +21,15 @@ namespace GraphicalPlotter
             {
                 if (this.isInitialized != value)
                 {
-                    this.isInitialized = value;                                    
-
+                    this.isInitialized = value;
                 }
-
-
             }
         }
 
         public event EventHandler<UserInputFunctionChangedEventArgs> OnUserFunctionChanged;
+
         private bool functionVisibility = true;
+
         public bool FunctionVisibility
         {
             get
@@ -53,33 +46,32 @@ namespace GraphicalPlotter
                     {
                         this.OnUserFunctionChanged(this, new UserInputFunctionChangedEventArgs());
                     }
-                 
 
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.FunctionVisibility)));
                 }
-                
-                
             }
         }
-        
 
         private Color functionColor;
-        public Color FunctionColor { 
-            get 
+
+        public Color FunctionColor
+        {
+            get
             {
                 return this.functionColor;
-            } 
+            }
             set
             {
                 // not nullable
-                                                 
-                    this.functionColor = value;
-                    
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.FunctionColor)));
-                
+
+                this.functionColor = value;
+
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.FunctionColor)));
             }
         }
+
         private List<FunctionParts> functionParts;
+
         public List<FunctionParts> FunctionParts
         {
             get
@@ -101,6 +93,7 @@ namespace GraphicalPlotter
         }
 
         private string functionDisplayName;
+
         public string FunctionDisplayName
         {
             get
@@ -145,7 +138,6 @@ namespace GraphicalPlotter
             }
         }
 
-
         public GraphicalFunctionViewModel(GraphicalFunction graphicalFunction)
         {
             this.CustomUserSetName = string.Empty;
@@ -156,17 +148,16 @@ namespace GraphicalPlotter
             this.IsInitialized = true;
         }
 
-        public GraphicalFunctionViewModel(List<FunctionParts> functionPartList, Color functionColor, string customUserSetName,string displayName, bool visibility) 
+        public GraphicalFunctionViewModel(List<FunctionParts> functionPartList, Color functionColor, string customUserSetName, string displayName, bool visibility)
         {
-
             this.CustomUserSetName = customUserSetName;
             this.FunctionColor = functionColor;
             this.FunctionDisplayName = displayName;
             this.FunctionParts = functionPartList;
             this.FunctionVisibility = visibility;
             this.IsInitialized = true;
-
         }
+
         public ICommand OpenColorPicker
         {
             get
@@ -178,7 +169,6 @@ namespace GraphicalPlotter
                     },
                     (obj) =>
                     {
-
                         ColorPickerWindow colorPickerWindow = new ColorPickerWindow();
                         colorPickerWindow.ShowDialog();
                         // If a color is selected and the ok button is pressed
@@ -229,6 +219,5 @@ namespace GraphicalPlotter
             }
             return returnstring;
         }
-
     }
 }

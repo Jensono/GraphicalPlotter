@@ -15,30 +15,29 @@ using System.Windows.Shapes;
 namespace GraphicalPlotter
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public partial class ColorPickerWindow : Window
     {
         public SolidColorBrush SelectedColor { get; set; }
         public bool isColorPicked { get; set; }
 
-        //need to change this to whatever color object is given TODO TODO
-        ColorPickerViewModel colorPickerViewModel = new ColorPickerViewModel(Color.FromRgb(127,127,127));
+       
+        private ColorPickerViewModel colorPickerViewModel = new ColorPickerViewModel(Color.FromRgb(127, 127, 127));
+
         public ColorPickerWindow()
         {
-            InitializeComponent();
-            //maybe only set the datacontext for the colorpicker?
-            DataContext = colorPickerViewModel;
+            this.InitializeComponent();
+            this.DataContext = this.colorPickerViewModel;
         }
 
-        
-        private void OKButton_Click(object sender,RoutedEventArgs e)
+        private void OKButton_Click(object sender, RoutedEventArgs e)
         {
-            SelectedColor = colorPickerViewModel.SelectedColor;
-            isColorPicked = true;
-            // when using show, we also need to inform the window that there is a dialog result
-            DialogResult = true;
-            Close();
+            this.SelectedColor = this.colorPickerViewModel.SelectedColor;
+            this.isColorPicked = true;
+            //// when using show, we also need to inform the window that there is a dialog result
+            this.DialogResult = true;
+            this.Close();
         }
     }
 }

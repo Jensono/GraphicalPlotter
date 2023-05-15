@@ -13,8 +13,7 @@ namespace GraphicalPlotter
             this.GraphicalCanvas = graphCanvas;
         }
 
-        // Prb need a lock here to read the information
-        // List prp also needs to be a observerableCollection
+       
         public List<FunctionDrawInformation> ConvertAllCurrentFunctionsIntoDrawData(List<GraphicalFunction> listOfFunctions)
         {
             List<FunctionDrawInformation> functionsDrawInformation = new List<FunctionDrawInformation>();
@@ -26,9 +25,8 @@ namespace GraphicalPlotter
             return functionsDrawInformation;
         }
 
-        //PRIVATE
-        //
-        public FunctionDrawInformation ConvertFunctionIntoDrawInformation(GraphicalFunction function)
+        
+        private FunctionDrawInformation ConvertFunctionIntoDrawInformation(GraphicalFunction function)
         {
             int xPixels = this.GraphicalCanvas.WidthInPixel;
             int yPixels = this.GraphicalCanvas.HeightInPixel;
@@ -46,15 +44,11 @@ namespace GraphicalPlotter
                 double yValueForCurrentXValue = function.CalculateSumOfAllPartsForValue(xValueForCurrentPixel);
 
                 int roundedYPixelPosition = this.CalculateYPixelPositionForYValue(yPixels, yValueForCurrentXValue, yMin, yMax);
-                //only add the pixel if it is inside the y Axis
+               
 
-                //if (!(roundedYPixelPosition<0) &&  ! (roundedYPixelPosition>yPixels))
-                //{
+              
                 PixelValuesForthisFunction.Add(new CanvasPixel(xPixelPosition, roundedYPixelPosition));
-                //}
-
-                //else
-                //    PixelValuesForthisFunction.Add(new CanvasPixel(xPixelPosition, roundedYPixelPosition));
+               
             }
             FunctionDrawInformation drawInformation = new FunctionDrawInformation(PixelValuesForthisFunction, function.FunctionColor);
             return drawInformation;
@@ -75,36 +69,31 @@ namespace GraphicalPlotter
 
             CanvasPixel lastThrownAwayPixel = null;
 
-            while (currentXPixel <= xPixels-1)
+            while (currentXPixel <= xPixels - 1)
             {
                 List<CanvasPixel> PixelValuesForthisPartOfFunction = new List<CanvasPixel>();
 
-
-                
-
                 for (int xPixelPosition = currentXPixel; xPixelPosition < xPixels; xPixelPosition++)
                 {
-
-                   
                     double xCalculationIntervall = (xMax - xMin) / xPixels;
                     double xValueForCurrentPixel = xMin + (xPixelPosition * xCalculationIntervall);
                     double yValueForCurrentXValue = function.CalculateSumOfAllPartsForValue(xValueForCurrentPixel);
 
                     int roundedYPixelPosition = this.CalculateYPixelPositionForYValue(yPixels, yValueForCurrentXValue, yMin, yMax);
 
-                    //if the currently calcualted pixel is not inside the canvas we start making a new drawinformation for that part
+                    //// if the currently calcualted pixel is not inside the canvas we start making a new drawinformation for that part
                     if (roundedYPixelPosition > yPixels || roundedYPixelPosition < 0)
                     {
-                        //if this happens begin a new list itembut start at the last x pixel for the next loop
+                        /// /if this happens begin a new list item but start at the last x pixel for the next loop
                         PixelValuesForthisPartOfFunction.Add(new CanvasPixel(xPixelPosition, roundedYPixelPosition));
 
-                        //add the last point for this part of function and add the function to the list
+                        //// add the last point for this part of function and add the function to the list
 
                         currentXPixel++;
                         break;
                     }
 
-                    if (lastThrownAwayPixel!=null)
+                    if (lastThrownAwayPixel != null)
                     {
                         PixelValuesForthisPartOfFunction.Add(lastThrownAwayPixel);
                         lastThrownAwayPixel = null;
@@ -114,45 +103,40 @@ namespace GraphicalPlotter
                     currentXPixel++;
                 }
 
-                // we will only land here if the function didnt have any values smaller or bigger than the yMax/yMin or if we have reached the last part of the function
+                //// we will only land here if the function didnt have any values smaller or bigger than the yMax/yMin or if we have reached the last part of the function
                 if (PixelValuesForthisPartOfFunction.Count > 1)
                 {
                     drawingPathsForFunction.Add(new FunctionDrawInformation(PixelValuesForthisPartOfFunction, function.FunctionColor));
-                    //reset the lastpixel becouse the current functions was closed
+                    //// reset the lastpixel becouse the current functions was closed
                     lastThrownAwayPixel = null;
                 }
                 else
                 {
-                    lastThrownAwayPixel= PixelValuesForthisPartOfFunction[0];
+                    lastThrownAwayPixel = PixelValuesForthisPartOfFunction[0];
                 }
-                
-
             }
-           
+
             return drawingPathsForFunction;
         }
 
         public int CalculateYPixelPositionForYValue(int yPixels, double yValue, double yMin, double yMax)
         {
-            //it took me 2 hours to come up with this function, i fucking hope it works
+            /// /it took me 2 hours to come up with this function, i fucking hope it works
 
             double yPixelPosition = yPixels - ((yValue - yMin) * yPixels / (yMax - yMin));
 
-            //TODO change the exeption message
-            // A function could, in theory have such a drastic change in the y axis that this problem could occur
-            //TODO find a fix that just draws the first few lines of the functions.
+            //// TODO find a better solution than this, if there is one
+            //// A function could, in theory have such a drastic change in the y axis that this problem could occur
             if (yPixelPosition < int.MinValue)
             {
                 yPixelPosition = int.MinValue;
-                //THIS IS just a hotfix for functions like tan , i just got an error in here before so im changing it to that
-                //throw new ArgumentOutOfRangeException("Yo there is probably a problem in your function bro");
             }
             else if (yPixelPosition > int.MaxValue)
             {
                 yPixelPosition = int.MaxValue;
             }
 
-            //Why isnt there a explixit method that just rounds to int or long???
+            //// Why isnt there a explixit method that just rounds to int or long???
             return (int)Math.Round(yPixelPosition);
         }
 
@@ -169,34 +153,29 @@ namespace GraphicalPlotter
             bool xAxisVisbility = this.GraphicalCanvas.XAxisData.Visibility;
             bool yAxisVisbility = this.GraphicalCanvas.YAxisData.Visibility;
 
-            //First we add the x axis, obv the x-axis needs to go from the left most x pixel to the last one. For where it is placed on the y axis we just find that out by
-            //using the function to calculate a y pixel for a y value, for the x-axis the y value is zero.
-            //only if the axis are visible we will calculate them , otherwise , weird things will happen
+            //// First we add the x axis, obv the x-axis needs to go from the left most x pixel to the last one. For where it is placed on the y axis we just find that out by
+            //// using the function to calculate a y pixel for a y value, for the x-axis the y value is zero.
+            //// only if the axis are visible we will calculate them , otherwise , weird things will happen
 
             if (yMax >= 0 && yMin <= 0 && xAxisVisbility)
             {
                 int yPixelValueForXAxis = this.CalculateYPixelPositionForYValue(yPixels, 0, yMin, yMax);
-                //only if the x-axis is visible we add it to be displayed
-                //if (yPixelValueForXAxis >= 0 && yPixelValueForXAxis <= yPixels)
-                //{
+               
                 List<CanvasPixel> axisPoints = new List<CanvasPixel>() { new CanvasPixel(0, yPixelValueForXAxis), new CanvasPixel(xPixels, yPixelValueForXAxis) };
                 FunctionDrawInformation DrawInformationXAxis = new FunctionDrawInformation(axisPoints, this.GraphicalCanvas.XAxisData.AxisColor);
                 axisLines.Add(DrawInformationXAxis);
-                //}
+               
             }
-            //only if the axis are visible we will calculate them , otherwise , weird things will happen
+            //// only if the axis are visible we will calculate them , otherwise , weird things will happen
 
             if (xMax >= 0 && xMin <= 0 && yAxisVisbility)
             {
                 int xPixelValueForYAxis = this.CalculateXPixelPositionForXValue(xPixels, 0, xMin, xMax);
-                //only if the y-axis is visible we add it to be displayed
-
-                //if (correctedXPixelValueForYAxis >= 0 && correctedXPixelValueForYAxis <= xPixels)
-                //{
+             
                 List<CanvasPixel> axisPoints = new List<CanvasPixel>() { new CanvasPixel(xPixelValueForYAxis, 0), new CanvasPixel(xPixelValueForYAxis, yPixels) };
                 FunctionDrawInformation DrawInformationXAxis = new FunctionDrawInformation(axisPoints, this.GraphicalCanvas.YAxisData.AxisColor);
                 axisLines.Add(DrawInformationXAxis);
-                //}
+               
             }
 
             return axisLines;
@@ -217,24 +196,24 @@ namespace GraphicalPlotter
             bool xGridVisbility = this.GraphicalCanvas.XAxisGridData.Visibility;
             bool yGridVisbility = this.GraphicalCanvas.YAxisGridData.Visibility;
 
-            //for the grid lines lying on the x-axis
+            //// for the grid lines that cross the x-axis
 
             double numberOfGridLinesForXAxis = (xMax - xMin) / xGridInterval;
             double numberOfGridLinesForYAxis = (yMax - yMin) / yGridInterval;
 
             List<FunctionDrawInformation> gridLines = new List<FunctionDrawInformation>();
 
-            // ONYL FOR THE Y AXIS GRID
-            //maybe need to flip the visbility paramters
+            //// ONYL FOR THE Y AXIS GRID
+            
             if (numberOfGridLinesForYAxis > 0 && numberOfGridLinesForYAxis < yPixels / 2 && yGridVisbility)
             {
                 double howManyGridsAwayFromXAxis = yMin / yGridInterval;
                 int yAxisGridStartIndex;
 
-                //if it is less then zero we still need to round up but to the next smaller number, so we use floor
+                //// if it is less then zero we still need to round up but to the next smaller number, so we use floor
                 if (howManyGridsAwayFromXAxis < 0)
                 {
-                    //we move one full number down
+                    //// we move one full number down
                     yAxisGridStartIndex = (int)Math.Floor(howManyGridsAwayFromXAxis);
                 }
                 else
@@ -242,7 +221,7 @@ namespace GraphicalPlotter
                     yAxisGridStartIndex = (int)Math.Ceiling(howManyGridsAwayFromXAxis);
                 }
 
-                //as long as we havent reached yMax yet we still nee to add more intervalls
+                //// as long as we havent reached yMax yet we still nee to add more intervalls
                 for (double i = yAxisGridStartIndex; (i * yGridInterval) < yMax; i += 1)
                 {
                     double currentYValue = i * yGridInterval;
@@ -254,26 +233,26 @@ namespace GraphicalPlotter
                 }
             }
 
-            // ONYL FOR THE X AXIS GRID
+            //// ONYL FOR THE X AXIS GRID
             if (numberOfGridLinesForXAxis > 0 && numberOfGridLinesForXAxis < xPixels / 2 && xGridVisbility)
             {
                 double howManyGridsAwayFromYAxis = xMin / xGridInterval;
 
                 int xAxisGridStartIndex;
 
-                //if it is less then zero we still need to round up but to the next smaller number, so we use floor
+                //// if it is less then zero we still need to round up but to the next smaller number, so we use floor
                 if (howManyGridsAwayFromYAxis < 0)
                 {
-                    //we move one full number down
+                    //// we move one full number down
                     xAxisGridStartIndex = (int)Math.Floor(howManyGridsAwayFromYAxis);
                 }
                 else
                 {
                     xAxisGridStartIndex = (int)Math.Ceiling(howManyGridsAwayFromYAxis);
                 }
-                //if it is less then zero we still need to round up but to the next smaller number, so we use floor
+                //// if it is less then zero we still need to round up but to the next smaller number, so we use floor
 
-                //as long as we havent reached yMax yet we still nee to add more intervalls
+                //// as long as we havent reached yMax yet we still nee to add more intervalls
                 for (double i = xAxisGridStartIndex; (i * xGridInterval) < xMax; i += 1)
                 {
                     double currentXValue = i * xGridInterval;
@@ -292,21 +271,21 @@ namespace GraphicalPlotter
             double logExponendForGridIntervall = Math.Log10(GridInterval);
             double roundedStartingValue;
 
-            //log is bigger then zero
+            //// log is bigger then zero
             if (logExponendForGridIntervall >= 1)
             {
                 double newGridLog = Math.Ceiling(logExponendForGridIntervall);
                 double startingValueForXnotRounded = Math.Abs(MinValue) / Math.Pow(10, newGridLog);
                 roundedStartingValue = Math.Ceiling(startingValueForXnotRounded) * Math.Pow(10, newGridLog);
             }
-            //else if bigger then zero but smaller then one
+            //// else if bigger then zero but smaller then one
             else if (logExponendForGridIntervall >= 0)
             {
                 double newGridLog = 0;
                 double startingValueForXnotRounded = Math.Abs(MinValue) / Math.Pow(10, newGridLog);
                 roundedStartingValue = Math.Ceiling(startingValueForXnotRounded) * Math.Pow(10, newGridLog);
             }
-            //if the log is negativ but smaller then -1
+            //// if the log is negativ but smaller then -1
             else
             {
                 int newGridLog = (int)Math.Ceiling(Math.Abs(logExponendForGridIntervall));
@@ -324,14 +303,13 @@ namespace GraphicalPlotter
         {
             double xPixelPosition = xPixels - ((xValue - xMin) * xPixels / (xMax - xMin)); //Changed minus to plus
 
-            //TODO change the exeption message
+            //TODO delete the execption message and copy the same thing i did for the y value calculation
             // A function could, in theory have such a drastic change in the y axis that this problem could occur
             //TODO find a fix that just draws the first few lines of the functions.
             if (xPixelPosition < int.MinValue || xPixelPosition > int.MaxValue)
             {
                 throw new ArgumentOutOfRangeException("Yo there is probably a problem in your function bro");
             }
-            //Why isnt there a explixit method that just rounds to int or long???
 
             return xPixels - (int)Math.Round(xPixelPosition);
         }

@@ -17,8 +17,6 @@
             {
                 return "+0 ";
             }
-
-                      
             else if (this.ConstantMulitplier == -1)
             {
                 returnstring += $"-{this.GetFunctionCalling()}*";
@@ -35,7 +33,6 @@
             {
                 returnstring += $"{this.ConstantMulitplier}*{this.GetFunctionCalling()}";
             }
-
 
             if (this.DegreeMultilplier == 0)
             {

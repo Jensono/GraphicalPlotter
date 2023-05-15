@@ -8,44 +8,40 @@
         Title="ColorPickerWindow" Height="140" Width="170">
     <Grid>
         <!--<local:ColorPickerRGB>
-            
         </local:ColorPickerRGB>-->
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="60" />
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
-                <TextBlock Text="Red Value" Grid.Row="0"/>
-                <Slider Minimum="0" Maximum="255" Value="{Binding RedValue}" Grid.Row="1" Width="100" Foreground="red"  />
-                <TextBlock Text="Green Value" Grid.Row="2"/>
-                <Slider Minimum="0" Maximum="255" Value="{Binding GreenValue}" Grid.Row="3" Width="100"/>
-                <TextBlock Text="Blue Value" Grid.Row="4"/>
-                <Slider Minimum="0" Maximum="255" Value="{Binding BlueValue}" Grid.Row="5" Width="100"/>
+                <TextBlock Text="Red Value" Grid.Row="0" />
+                <Slider Minimum="0" Maximum="255" Value="{Binding RedValue}" Grid.Row="1" Width="100" Foreground="red" />
+                <TextBlock Text="Green Value" Grid.Row="2" />
+                <Slider Minimum="0" Maximum="255" Value="{Binding GreenValue}" Grid.Row="3" Width="100" />
+                <TextBlock Text="Blue Value" Grid.Row="4" />
+                <Slider Minimum="0" Maximum="255" Value="{Binding BlueValue}" Grid.Row="5" Width="100" />
             </Grid>
 
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="10"/>
-                    <RowDefinition Height="50"/>
-
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="50" />
                 </Grid.RowDefinitions>
-                <Rectangle Grid.Row="0" Width="50" Height="50" Fill="{Binding SelectedColor}"/>
+                <Rectangle Grid.Row="0" Width="50" Height="50" Fill="{Binding SelectedColor}" />
                 <Button Grid.Row="2" Width="50" Height="30" Content="OK" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,5,5,15" Click="OKButton_Click"></Button>
             </Grid>
-
-
         </Grid>
     </Grid>
 </Window>

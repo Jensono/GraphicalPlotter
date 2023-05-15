@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GraphicalPlotter
+﻿namespace GraphicalPlotter
 {
     public class TwoDimensionalGraphCanvas
     {
@@ -26,8 +20,6 @@ namespace GraphicalPlotter
             this.YAxisData = yAxisData;
             this.XAxisGridData = xAxisGrid;
             this.YAxisGridData = yAxisGrid;
-
         }
     }
 }
-

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GraphicalPlotter"
         mc:Ignorable="d"
-        Title="GraphicalPlotter" 
+        Title="GraphicalPlotter"
         MinHeight="600" MinWidth="900"   Height="{Binding Path=PixelHeightApp, Mode=TwoWay}" Width="{Binding Path=PixelWidhtApp, Mode=TwoWay}" Name="PlotterWindow">
     <Window.DataContext>
         <local:MainViewModel />
@@ -29,16 +29,14 @@
                     <RowDefinition Height="150"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                
                 <!-- really dumb fix to fix up the canvas, now functions that were drawn outside of the canvas a bit are covered up is clipToBounds-->
 
-                <Canvas Grid.Row="0" Grid.Column="0"  Height="{Binding PixelHeightCanvas}" Width="{Binding PixelWidhtCanvas}" x:Name="PlotterCanvas" ClipToBounds="True" >
-
+                <Canvas Grid.Row="0" Grid.Column="0"  Height="{Binding PixelHeightCanvas}" Width="{Binding PixelWidhtCanvas}" x:Name="PlotterCanvas" ClipToBounds="True">
 
                     <!--the rectangle to show the zoom selection-->
                     <Rectangle x:Name="ZoomSelectionRectangle" Fill="#220000FF" Stroke="Blue" StrokeThickness="1" Opacity="0.3" Visibility="Hidden" />
                     <!--if i dont add a rectangle in the background the click events are only registered on the drawn lines-->
-                    <Rectangle Fill="Transparent" Width="{Binding ActualWidth, ElementName=PlotterCanvas}" Height="{Binding ActualHeight, ElementName=PlotterCanvas}" MouseDown="Canvas_ZoomStart"  MouseUp="Canvas_ZoomEnd" MouseMove="Canvas_MouseMove"/>
+                    <Rectangle Fill="Transparent" Width="{Binding ActualWidth, ElementName=PlotterCanvas}" Height="{Binding ActualHeight, ElementName=PlotterCanvas}" MouseDown="Canvas_ZoomStart"  MouseUp="Canvas_ZoomEnd" MouseMove="Canvas_MouseMove" />
                     <!-- your other elements -->
                     <!--Draw ItemControl for Functions-->
                     <ItemsControl ItemsSource="{Binding Path=DrawInformationForFunctions}">
@@ -95,10 +93,8 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-
-
                 </Canvas>
-                
+
                 <!--All the textboxes for the axis and grid information-->
                 <Grid Grid.Row="1" Grid.Column="0" MaxHeight="150" MinHeight="150" Background="LightGray" Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
@@ -136,7 +132,7 @@
                     <TextBox Grid.Row="0" Grid.Column="5"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="{Binding Path=TextBoxXAxisMax}" MinWidth="50" MinHeight="15" MaxHeight="15"></TextBox>
 
                     <TextBlock Text="select Color:" Grid.Row="0" Grid.Column="6"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
-                    <Button Grid.Row="0" Grid.Column="7"  HorizontalAlignment="Center" VerticalAlignment="Bottom"  MinWidth="50" MinHeight="15" MaxHeight="15" 
+                    <Button Grid.Row="0" Grid.Column="7"  HorizontalAlignment="Center" VerticalAlignment="Bottom"  MinWidth="50" MinHeight="15" MaxHeight="15"
                             Background="{Binding ColorPickerXAxisColor, Converter={StaticResource ColorToSolidBrushConverter}}" Command="{Binding OpenColorPicker}" CommandParameter="ColorPickerXAxisColor"></Button>
 
                     <!--needs binding to view model ALSO waiting for forum post on colorpicker lib-->
@@ -150,7 +146,7 @@
 
                     <TextBlock Text="select Color:" Grid.Row="2" Grid.Column="6"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
                     <!--Still needs binding to right command and color-->
-                    <Button Grid.Row="2" Grid.Column="7"  HorizontalAlignment="Center" VerticalAlignment="Bottom"  MinWidth="50" MinHeight="15" MaxHeight="15" 
+                    <Button Grid.Row="2" Grid.Column="7"  HorizontalAlignment="Center" VerticalAlignment="Bottom"  MinWidth="50" MinHeight="15" MaxHeight="15"
                             Background="{Binding ColorPickerXAxisGridColor, Converter={StaticResource ColorToSolidBrushConverter}}" Command="{Binding OpenColorPicker}" CommandParameter="ColorPickerXAxisGridColor"></Button>
                     <!--needs binding to view model ALSO waiting for forum post on colorpicker lib-->
 
@@ -169,7 +165,7 @@
 
                     <TextBlock Text="select Color:" Grid.Row="4" Grid.Column="6"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
 
-                    <Button Grid.Row="4" Grid.Column="7"  HorizontalAlignment="Center" VerticalAlignment="Bottom"  MinWidth="50" MinHeight="15" MaxHeight="15" 
+                    <Button Grid.Row="4" Grid.Column="7"  HorizontalAlignment="Center" VerticalAlignment="Bottom"  MinWidth="50" MinHeight="15" MaxHeight="15"
                             Background="{Binding ColorPickerYAxisColor, Converter={StaticResource ColorToSolidBrushConverter}}" Command="{Binding OpenColorPicker}" CommandParameter="ColorPickerYAxisColor"></Button>
                     <!--needs binding to view model ALSO waiting for forum post on colorpicker lib-->
 
@@ -184,7 +180,7 @@
                     <TextBlock Text="select Color:" Grid.Row="6" Grid.Column="6"  HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
 
                     <!--Still needs binding to right command and color-->
-                    <Button Grid.Row="6" Grid.Column="7"  HorizontalAlignment="Center" VerticalAlignment="Bottom"  MinWidth="50" MinHeight="15" MaxHeight="15" 
+                    <Button Grid.Row="6" Grid.Column="7"  HorizontalAlignment="Center" VerticalAlignment="Bottom"  MinWidth="50" MinHeight="15" MaxHeight="15"
                             Background="{Binding ColorPickerYAxisGridColor, Converter={StaticResource ColorToSolidBrushConverter}}" Command="{Binding OpenColorPicker}" CommandParameter="ColorPickerYAxisGridColor"></Button>
                     <!--needs binding to view model ALSO waiting for forum post on colorpicker lib-->
 
@@ -195,7 +191,7 @@
                 <!--Sidebar for function adding and display-->
                 <Grid Grid.Row="0" Grid.Column="2" Grid.RowSpan="2">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="30"></RowDefinition >
+                        <RowDefinition Height="30"></RowDefinition>
                         <RowDefinition Height="30"></RowDefinition>
                         <RowDefinition Height="30"></RowDefinition>
                         <RowDefinition Height="20"></RowDefinition>
@@ -207,16 +203,14 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock  Grid.Row="0" Text="Input new Function" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" Background="Ivory" Padding="15"></TextBlock>
 
-
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="190"/>
-                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="190" />
+                            <ColumnDefinition Width="30" />
                         </Grid.ColumnDefinitions>
                         <TextBox Grid.Row="0" Grid.Column="0" Text="{Binding Path=TextBoxUserInputFunction}" TextAlignment="Center"  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12"   Width="185" Height="20" ToolTipService.ShowOnDisabled="True" ToolTip="{Binding Path=TextBoxUserInputFunctionToolTip}"></TextBox>
                         <Button Grid.Row="0" Grid.Column="1" Content="Add" Command="{Binding Path=AddFunctionCommand}"  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12"   Width="30" Height="20" ToolTipService.ShowOnDisabled="True" ToolTip="{Binding Path=TextBoxUserInputFunctionToolTip}"></Button>
                     </Grid>
-
 
                     <TextBlock Grid.Row="2" Text="Current Functions" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" Background="Ivory" Padding="10"  ></TextBlock>
 
@@ -234,7 +228,7 @@
                         <TextBlock Grid.Column="3" Text="Visibility" FontSize="9" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
                     </Grid>
 
-                    <ListView Grid.Row="4" Grid.RowSpan="2"  ItemsSource="{Binding Path=CurrentGraphicalFunctions}" Background="OldLace" >
+                    <ListView Grid.Row="4" Grid.RowSpan="2"  ItemsSource="{Binding Path=CurrentGraphicalFunctions}" Background="OldLace">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <!-- maybe at a color selection in a later stage-->
@@ -246,7 +240,7 @@
                                         <ColumnDefinition MinWidth="30"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
                                     <TextBox Text="{Binding Path = CustomUserSetName}" FontSize="10" Grid.Column="0" Width="30"></TextBox>
-                                    <TextBlock Text="{Binding Path = FunctionDisplayName}" FontSize="10" Grid.Column="1" TextAlignment="Center"   >
+                                    <TextBlock Text="{Binding Path = FunctionDisplayName}" FontSize="10" Grid.Column="1" TextAlignment="Center">
 
                                         <TextBlock.TextDecorations>
                                             <TextDecoration Location="Underline">
@@ -257,7 +251,7 @@
                                         </TextBlock.TextDecorations>
                                     </TextBlock>
 
-                                    <Button Grid.Column="2"  HorizontalAlignment="Center" VerticalAlignment="Bottom"  MinWidth="50" MinHeight="15" MaxHeight="15"  
+                                    <Button Grid.Column="2"  HorizontalAlignment="Center" VerticalAlignment="Bottom"  MinWidth="50" MinHeight="15" MaxHeight="15"
                             Background="{Binding FunctionColor, Converter={StaticResource ColorToSolidBrushConverter}}" Command="{Binding OpenColorPicker}" ></Button>
                                     <!--CommandParameter="ColorPickerXAxisColor"-->
 
@@ -274,15 +268,15 @@
 
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="19*"/>
-                    <ColumnDefinition Width="276*"/>
-                    <ColumnDefinition Width="296*"/>
-                    <ColumnDefinition Width="295*"/>
+                    <ColumnDefinition Width="19*" />
+                    <ColumnDefinition Width="276*" />
+                    <ColumnDefinition Width="296*" />
+                    <ColumnDefinition Width="295*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
 
                 <Button Grid.Column="0" Grid.ColumnSpan="2"  Content="Save Current Functions" Command="{Binding SaveFunctionsToFile}" Margin="20" ></Button>
@@ -290,10 +284,6 @@
                 <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="Reset Axis and Grid Values" Command="{Binding RestoreDefaultValuesForAxisAndGridData}" Margin="20"></Button>
                 <Button Grid.Row="2" Grid.Column="2" Content="Delete All Current Functions" Command="{Binding DeleteAllCurrentFunctions}" Margin="20"></Button>
             </Grid>
-
-
-
-
         </TabItem>
     </TabControl>
 </Window>

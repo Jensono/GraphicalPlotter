@@ -158,15 +158,14 @@ namespace GraphicalPlotter
             set
             {
                 // only here for the automatic scaling, if the automatic scaling is in process the the values could be anything so we need to get rid of that rule
-               
-                    if (value != textBoxYAxisMax && value > this.TextBoxYAxisMin)
-                    {
-                        textBoxYAxisMax = value;
-                        this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxYAxisMax)));
-                        this.HasUserChangedYAxisSettings = true;
-                        this.UpdateFullCanvas();
-                    }
-              
+
+                if (value != textBoxYAxisMax && value > this.TextBoxYAxisMin)
+                {
+                    textBoxYAxisMax = value;
+                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxYAxisMax)));
+                    this.HasUserChangedYAxisSettings = true;
+                    this.UpdateFullCanvas();
+                }
             }
         }
 
@@ -506,7 +505,7 @@ namespace GraphicalPlotter
         //this is requirement is just so unnessary
         private void RescaleYMinAndMaxForRescalableFunctions()
         {
-            double biggestYValueOverall= double.MinValue ;
+            double biggestYValueOverall = double.MinValue;
             double smallestYValueOverall = double.MaxValue;
 
             //since we now know that the function is scalabe it can only be one of theses possibilites : cos+c1+c2+c3...cn, sin+c1+c2+c3...cn or c1+c2+c3...cn we will move forward with this assumption
@@ -526,10 +525,8 @@ namespace GraphicalPlotter
                 }
             }
 
-            
-            if (biggestYValueOverall==double.MinValue && biggestYValueOverall==double.MaxValue)
+            if (biggestYValueOverall == double.MinValue && biggestYValueOverall == double.MaxValue)
             {
-
             }
             else
             {
@@ -543,7 +540,6 @@ namespace GraphicalPlotter
                 this.IsApplicationDataInitalized = true;
                 this.HasUserChangedYAxisSettings = false;
             }
-            
 
             // we need to calculate the max and min values for the sum of all functions parts and then rescale the min and max of the y axis to fit that criteria, also we need to reset the hasUserChangedYAxis too false again after doing so.
         }

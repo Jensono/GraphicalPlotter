@@ -19,7 +19,9 @@ namespace GraphicalPlotter
             this.AxisColor = axisColor;
             this.Visibility = isVisible;
         }
+
         // Empty constructor for serialization
-        public AxisData() { }
+        public AxisData()
+        { }
     }
 }

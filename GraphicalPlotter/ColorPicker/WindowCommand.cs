@@ -28,7 +28,7 @@ namespace GraphicalPlotter
         private Action<object> onExecute;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WindowCommand"/> class. 
+        /// Initializes a new instance of the <see cref="WindowCommand"/> class.
         /// This class checks if a function can be executed.
         /// </summary>
         /// <param name="canExecute"> Function describing if the command can be executed.</param>
@@ -37,7 +37,6 @@ namespace GraphicalPlotter
         {
             this.CanExecuteFunction = canExecute;
             this.OnExecute = onExecute;
-           
         }
 
         /// <summary>

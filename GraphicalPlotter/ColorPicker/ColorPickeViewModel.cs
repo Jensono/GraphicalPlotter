@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows.Media;
 
 namespace GraphicalPlotter
@@ -30,7 +29,7 @@ namespace GraphicalPlotter
             }
         }
 
-        public byte RedValue 
+        public byte RedValue
         {
             get { return redValue; }
             set
@@ -50,7 +49,7 @@ namespace GraphicalPlotter
             }
         }
 
-        public byte BlueValue 
+        public byte BlueValue
         {
             get { return blueValue; }
             set
@@ -59,20 +58,20 @@ namespace GraphicalPlotter
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedColor)));
             }
         }
+
         private SolidColorBrush selectedColor;
-        public SolidColorBrush SelectedColor { 
-            get 
+
+        public SolidColorBrush SelectedColor
+        {
+            get
             {
                 return this.selectedColor;
             }
             //todo right object check and null check
-            set 
+            set
             {
                 this.selectedColor = value;
             }
         }
-
-       
     }
-
 }

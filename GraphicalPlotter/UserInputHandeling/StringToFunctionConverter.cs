@@ -22,19 +22,15 @@ namespace GraphicalPlotter
                 graphicalFunction = new GraphicalFunction(functionsCombined, Colors.Black);
                 return true;
             }
-
             else
             {
                 graphicalFunction = null;
                 return false;
             }
-            
         }
-
 
         public bool TryParseStringToFunctionPartsList(string input, out List<FunctionParts> functionComponents)
         {
-
             if (!this.DoesFunctionContainOnlyValidChracters(input))
             {
                 functionComponents = null;
