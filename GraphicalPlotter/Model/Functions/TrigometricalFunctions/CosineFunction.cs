@@ -1,7 +1,8 @@
-﻿using System;
+﻿
 
 namespace GraphicalPlotter
 {
+    using System;
     public class CosineFunction : TrigonometricFunctions
     {
         public CosineFunction(double constantMultiplier, double degreeMultiplier) : base(constantMultiplier, degreeMultiplier)
@@ -10,7 +11,7 @@ namespace GraphicalPlotter
 
         public override double CalculateItsOwnValue(double angle)
         {
-            return this.ConstantMulitplier * Math.Cos(angle * this.DegreeMultilplier);
+            return this.ConstantMultiplier * Math.Cos(angle * this.DegreeMultiplier);
         }
 
         public override string GetFunctionCalling()

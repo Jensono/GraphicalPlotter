@@ -1,25 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿
 
 namespace GraphicalPlotter
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Data;
+    using System.Windows.Documents;
+    using System.Windows.Input;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
+    using System.Windows.Shapes;
+
     /// <summary>
     ///
     /// </summary>
     public partial class ColorPickerWindow : Window
     {
-        public SolidColorBrush SelectedColor { get; set; }
+       
         public bool isColorPicked { get; set; }
 
        
@@ -30,7 +32,7 @@ namespace GraphicalPlotter
             this.InitializeComponent();
             this.DataContext = this.colorPickerViewModel;
         }
-
+        public SolidColorBrush SelectedColor { get; set; }
         private void OKButton_Click(object sender, RoutedEventArgs e)
         {
             this.SelectedColor = this.colorPickerViewModel.SelectedColor;

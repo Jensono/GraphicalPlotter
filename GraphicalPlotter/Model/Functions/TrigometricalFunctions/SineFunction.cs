@@ -1,7 +1,8 @@
-﻿using System;
+﻿
 
 namespace GraphicalPlotter
 {
+    using System;
     public class SineFunction : TrigonometricFunctions
     {
         public SineFunction(double constantMultiplier, double degreeMultiplier) : base(constantMultiplier, degreeMultiplier)
@@ -10,7 +11,7 @@ namespace GraphicalPlotter
 
         public override double CalculateItsOwnValue(double angle)
         {
-            return this.ConstantMulitplier * Math.Sin(angle * this.DegreeMultilplier);
+            return this.ConstantMultiplier * Math.Sin(angle * this.DegreeMultiplier);
         }
 
         public override string GetFunctionCalling()

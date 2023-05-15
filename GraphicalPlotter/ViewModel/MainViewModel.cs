@@ -1,17 +1,17 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Xml.Serialization;
-
-namespace GraphicalPlotter
+﻿namespace GraphicalPlotter
 {
+    using Microsoft.Win32;
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
+    using System.IO;
+    using System.Windows;
+    using System.Windows.Data;
+    using System.Windows.Input;
+    using System.Windows.Media;
+    using System.Xml.Serialization;
+
     public class MainViewModel : INotifyPropertyChanged
     {
         // TODO add more checks to the properties
@@ -20,12 +20,12 @@ namespace GraphicalPlotter
 
         public double TextBoxXAxisMin
         {
-            get { return textBoxXAxisMin; }
+            get { return this.textBoxXAxisMin; }
             set
             {
-                if (value != textBoxXAxisMin && value < this.TextBoxXAxisMax)
+                if (value != this.textBoxXAxisMin && value < this.TextBoxXAxisMax)
                 {
-                    textBoxXAxisMin = value;
+                    this.textBoxXAxisMin = value;
 
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxXAxisMin)));
                     this.UpdateFullCanvas();
@@ -37,12 +37,12 @@ namespace GraphicalPlotter
 
         public double TextBoxXAxisMax
         {
-            get { return textBoxXAxisMax; }
+            get { return this.textBoxXAxisMax; }
             set
             {
-                if (value != textBoxXAxisMax && value > this.TextBoxXAxisMin)
+                if (value != this.textBoxXAxisMax && value > this.TextBoxXAxisMin)
                 {
-                    textBoxXAxisMax = value;
+                    this.textBoxXAxisMax = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxXAxisMax)));
                     this.UpdateFullCanvas();
                 }
@@ -53,12 +53,12 @@ namespace GraphicalPlotter
 
         public bool CheckBoxXAxisVisibility
         {
-            get { return checkBoxXAxisVisibility; }
+            get { return this.checkBoxXAxisVisibility; }
             set
             {
-                if (value != checkBoxXAxisVisibility)
+                if (value != this.checkBoxXAxisVisibility)
                 {
-                    checkBoxXAxisVisibility = value;
+                    this.checkBoxXAxisVisibility = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CheckBoxXAxisVisibility)));
                     this.UpdateDrawInformationForAxis();
                 }
@@ -69,12 +69,12 @@ namespace GraphicalPlotter
 
         public Color ColorPickerXAxisColor
         {
-            get { return colorPickerXAxisColor; }
+            get { return this.colorPickerXAxisColor; }
             set
             {
-                if (value != colorPickerXAxisColor)
+                if (value != this.colorPickerXAxisColor)
                 {
-                    colorPickerXAxisColor = value;
+                    this.colorPickerXAxisColor = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.ColorPickerXAxisColor)));
                     this.UpdateDrawInformationForAxis();
                 }
@@ -85,13 +85,13 @@ namespace GraphicalPlotter
 
         public double TextBoxXAxisGridIntervall
         {
-            get { return textBoxXAxisGridIntervall; }
+            get { return this.textBoxXAxisGridIntervall; }
             set
             {
                 // If the value is above 0 and when there arent more gridlines than the max amount , which is half of all the pixels
-                if (value != textBoxXAxisGridIntervall && value > 0 && (((this.TextBoxXAxisMax - this.TextBoxXAxisMin) / value) < (this.PixelWidhtCanvas / 2)))
+                if (value != this.textBoxXAxisGridIntervall && value > 0 && (((this.TextBoxXAxisMax - this.TextBoxXAxisMin) / value) < (this.PixelWidhtCanvas / 2)))
                 {
-                    textBoxXAxisGridIntervall = value;
+                    this.textBoxXAxisGridIntervall = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxXAxisGridIntervall)));
                     this.UpdateDrawInformationForGridLines();
                 }
@@ -102,12 +102,12 @@ namespace GraphicalPlotter
 
         public Color ColorPickerXAxisGridColor
         {
-            get { return colorPickerXAxisGridColor; }
+            get { return this.colorPickerXAxisGridColor; }
             set
             {
-                if (value != colorPickerXAxisGridColor)
+                if (value != this.colorPickerXAxisGridColor)
                 {
-                    colorPickerXAxisGridColor = value;
+                    this.colorPickerXAxisGridColor = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.ColorPickerXAxisGridColor)));
                     this.UpdateDrawInformationForGridLines();
                 }
@@ -118,12 +118,12 @@ namespace GraphicalPlotter
 
         public bool CheckBoxXAxisGridVisibility
         {
-            get { return checkBoxXAxisGridVisibility; }
+            get { return this.checkBoxXAxisGridVisibility; }
             set
             {
-                if (value != checkBoxXAxisGridVisibility)
+                if (value != this.checkBoxXAxisGridVisibility)
                 {
-                    checkBoxXAxisGridVisibility = value;
+                    this.checkBoxXAxisGridVisibility = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CheckBoxXAxisGridVisibility)));
                     this.UpdateDrawInformationForGridLines();
                 }
@@ -134,13 +134,12 @@ namespace GraphicalPlotter
 
         public double TextBoxYAxisMin
         {
-            get { return textBoxYAxisMin; }
+            get { return this.textBoxYAxisMin; }
             set
             {
-
-                if (value != textBoxYAxisMin && value < this.TextBoxYAxisMax)
+                if (value != this.textBoxYAxisMin && value < this.TextBoxYAxisMax)
                 {
-                    textBoxYAxisMin = value;
+                    this.textBoxYAxisMin = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxYAxisMin)));
                     this.HasUserChangedYAxisSettings = true;
                     this.UpdateFullCanvas();
@@ -152,13 +151,12 @@ namespace GraphicalPlotter
 
         public double TextBoxYAxisMax
         {
-            get { return textBoxYAxisMax; }
+            get { return this.textBoxYAxisMax; }
             set
             {
-
-                if (value != textBoxYAxisMax && value > this.TextBoxYAxisMin)
+                if (value != this.textBoxYAxisMax && value > this.TextBoxYAxisMin)
                 {
-                    textBoxYAxisMax = value;
+                    this.textBoxYAxisMax = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxYAxisMax)));
                     this.HasUserChangedYAxisSettings = true;
                     this.UpdateFullCanvas();
@@ -170,12 +168,12 @@ namespace GraphicalPlotter
 
         public bool CheckBoxYAxisVisibility
         {
-            get { return checkBoxYAxisVisibility; }
+            get { return this.checkBoxYAxisVisibility; }
             set
             {
-                if (value != checkBoxYAxisVisibility)
+                if (value != this.checkBoxYAxisVisibility)
                 {
-                    checkBoxYAxisVisibility = value;
+                    this.checkBoxYAxisVisibility = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CheckBoxYAxisVisibility)));
                     this.UpdateDrawInformationForAxis();
                 }
@@ -186,12 +184,12 @@ namespace GraphicalPlotter
 
         public Color ColorPickerYAxisColor
         {
-            get { return colorPickerYAxisColor; }
+            get { return this.colorPickerYAxisColor; }
             set
             {
-                if (value != colorPickerYAxisColor)
+                if (value != this.colorPickerYAxisColor)
                 {
-                    colorPickerYAxisColor = value;
+                    this.colorPickerYAxisColor = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.ColorPickerYAxisColor)));
                     this.UpdateDrawInformationForAxis();
                 }
@@ -202,12 +200,12 @@ namespace GraphicalPlotter
 
         public double TextBoxYAxisGridIntervall
         {
-            get { return textBoxYAxisGridIntervall; }
+            get { return this.textBoxYAxisGridIntervall; }
             set
             {
-                if (value != textBoxYAxisGridIntervall && value > 0 && (((this.TextBoxYAxisMax - this.TextBoxYAxisMin) / value) < (this.PixelHeightCanvas / 2)))
+                if (value != this.textBoxYAxisGridIntervall && value > 0 && (((this.TextBoxYAxisMax - this.TextBoxYAxisMin) / value) < (this.PixelHeightCanvas / 2)))
                 {
-                    textBoxYAxisGridIntervall = value;
+                    this.textBoxYAxisGridIntervall = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxYAxisGridIntervall)));
                     this.UpdateDrawInformationForGridLines();
                 }
@@ -218,12 +216,12 @@ namespace GraphicalPlotter
 
         public Color ColorPickerYAxisGridColor
         {
-            get { return colorPickerYAxisGridColor; }
+            get { return this.colorPickerYAxisGridColor; }
             set
             {
-                if (value != colorPickerYAxisGridColor)
+                if (value != this.colorPickerYAxisGridColor)
                 {
-                    colorPickerYAxisGridColor = value;
+                    this.colorPickerYAxisGridColor = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.ColorPickerYAxisGridColor)));
                     this.UpdateDrawInformationForGridLines();
                 }
@@ -234,12 +232,12 @@ namespace GraphicalPlotter
 
         public bool CheckBoxYAxisGridVisibility
         {
-            get { return checkBoxYAxisGridVisibility; }
+            get { return this.checkBoxYAxisGridVisibility; }
             set
             {
-                if (value != checkBoxYAxisGridVisibility)
+                if (value != this.checkBoxYAxisGridVisibility)
                 {
-                    checkBoxYAxisGridVisibility = value;
+                    this.checkBoxYAxisGridVisibility = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CheckBoxYAxisGridVisibility)));
                     this.UpdateDrawInformationForGridLines();
                 }
@@ -255,7 +253,7 @@ namespace GraphicalPlotter
             {
                 if (value > 0)
                 {
-                    pixelWidhtApp = value;
+                    this.pixelWidhtApp = value;
                     //// 900-630
                     this.PixelWidhtCanvas = value - 270;
                 }
@@ -271,7 +269,7 @@ namespace GraphicalPlotter
             {
                 if (value > 0)
                 {
-                    pixelHeightApp = value;
+                    this.pixelHeightApp = value;
                     //// 600-380
                     this.PixelHeightCanvas = value - 220;
                 }
@@ -287,7 +285,7 @@ namespace GraphicalPlotter
             {
                 if (value > 0)
                 {
-                    pixelWidhtCanvas = value;
+                    this.pixelWidhtCanvas = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.PixelWidhtCanvas)));
                     this.UpdateFullCanvas();
                 }
@@ -303,7 +301,7 @@ namespace GraphicalPlotter
             {
                 if (value > 0)
                 {
-                    pixelHeightCanvas = value;
+                    this.pixelHeightCanvas = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.PixelHeightCanvas)));
                     this.UpdateFullCanvas();
                 }
@@ -440,12 +438,12 @@ namespace GraphicalPlotter
 
         public string TextBoxUserInputFunction
         {
-            get { return textBoxUserInputFunction; }
+            get { return this.textBoxUserInputFunction; }
             set
             {
-                if (value != textBoxUserInputFunction)
+                if (value != this.textBoxUserInputFunction)
                 {
-                    textBoxUserInputFunction = value;
+                    this.textBoxUserInputFunction = value;
 
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.TextBoxUserInputFunction)));
                 }
@@ -453,6 +451,39 @@ namespace GraphicalPlotter
         }
 
         public string TextBoxUserInputFunctionToolTip { get; set; }
+
+        //FIELD todo
+        public ApplicationStatusSaveDataHandler SaveDataHandler { get; set; }
+
+        public bool isApplicationDataInitalized;
+
+        public bool IsApplicationDataInitalized
+        {
+            get { return this.isApplicationDataInitalized; }
+            set
+            {
+                if (value != this.isApplicationDataInitalized)
+                {
+                    this.isApplicationDataInitalized = value;
+                }
+            }
+        }
+
+        public bool HasUserChangedYAxisSettings { get; set; }
+
+        private CanvasPixel zoomStartPoint;
+
+        public CanvasPixel ZoomStartPoint
+        {
+            get { return this.zoomStartPoint; }
+            set
+            {
+                if (value != this.zoomStartPoint && value != null)
+                {
+                    this.zoomStartPoint = value;
+                }
+            }
+        }
 
         public ICommand AddFunctionCommand
         {
@@ -474,9 +505,217 @@ namespace GraphicalPlotter
                             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CurrentGraphicalFunctions)));
                             this.UpdateFullCanvas();
                         }
-                    }
+                    });
+            }
+        }
 
-                    );
+        public ICommand OpenColorPicker
+        {
+            get
+            {
+                return new WindowCommand(
+                    (obj) =>
+                    {
+                        return true;
+                    },
+                    (obj) =>
+                    {
+                        ColorPickerWindow colorPickerWindow = new ColorPickerWindow();
+                        colorPickerWindow.ShowDialog();
+                        //// If a color is selected and the ok button is pressed
+                        if (colorPickerWindow.isColorPicked == true)
+                        {
+                            //UNSAFE AS FUCK PLEASE FIX TODO TODO TODO
+                            string propertyName = (string)obj;
+
+                            // dumb design that i need to convert 2 times but not enough time to fix this TODO
+                            Color selectedColor = colorPickerWindow.SelectedColor.Color;
+
+                            switch (propertyName)
+                            {
+                                case "ColorPickerXAxisColor":
+                                    this.ColorPickerXAxisColor = selectedColor;
+                                    break;
+
+                                case "ColorPickerYAxisColor":
+                                    this.ColorPickerYAxisColor = selectedColor;
+                                    break;
+
+                                case "ColorPickerXAxisGridColor":
+                                    this.ColorPickerXAxisGridColor = selectedColor;
+                                    break;
+
+                                case "ColorPickerYAxisGridColor":
+                                    this.ColorPickerYAxisGridColor = selectedColor;
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }
+                    });
+            }
+        }
+
+        public ICommand SaveFunctionsToFile
+        {
+            get
+            {
+                return new WindowCommand(
+                    (obj) =>
+                    {
+                        return true;
+                    },
+                    (obj) =>
+                    {
+                        if (this.CurrentGraphicalFunctions.Count >= 1)
+                        {
+                            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<GraphicalFunctionDisplayNameForSerialization>));
+
+                            List<GraphicalFunctionDisplayNameForSerialization> functionsForSerialization = this.CreateSerialiationObjectsFromCurrentFunctions();
+
+                            SaveFileDialog dialog = new SaveFileDialog();
+
+                            dialog.Filter = "XML Files (*.xml)|*.xml";
+                            dialog.FileName = "functions";
+
+                            if (dialog.ShowDialog() == true)
+                            {
+                                using (FileStream fileStream = new FileStream(dialog.FileName, FileMode.Create))
+                                {
+                                    xmlSerializer.Serialize(fileStream, functionsForSerialization);
+                                }
+                            }
+                        }
+                    });
+            }
+        }
+
+        public ICommand InportFunctionsFromFile
+        {
+            get
+            {
+                return new WindowCommand(
+                    (obj) =>
+                    {
+                        return true;
+                    },
+                    (obj) =>
+                    {
+                        List<GraphicalFunctionDisplayNameForSerialization> deserializedFunctions = new List<GraphicalFunctionDisplayNameForSerialization>();
+
+                        XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<GraphicalFunctionDisplayNameForSerialization>));
+
+                        OpenFileDialog dialog = new OpenFileDialog();
+
+                        dialog.Filter = "XML Files (*.xml)|*.xml";
+
+                        if (dialog.ShowDialog() == true)
+                        {
+                            using (FileStream fileStream = new FileStream(dialog.FileName, FileMode.Open))
+                            {
+                                try
+                                {
+                                    //// TODO I for sure need to check if this is even serializable or something else right? just the try catch block isnt the kind of panacea that i think it is.
+                                    deserializedFunctions = (List<GraphicalFunctionDisplayNameForSerialization>)xmlSerializer.Deserialize(fileStream);
+                                }
+                                catch (Exception)
+                                {
+                                }
+                            }
+
+                            this.ReconstructFunctionsFromFileInport(deserializedFunctions);
+                            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CurrentGraphicalFunctions)));
+                            this.UpdateDrawInformationForFunctions();
+                        }
+                    });
+            }
+        }
+
+        public ICommand RestoreDefaultValuesForAxisAndGridData
+        {
+            get
+            {
+                return new WindowCommand(
+                    (obj) =>
+                    {
+                        return true;
+                    },
+                    (obj) =>
+                    {
+                        this.IsApplicationDataInitalized = false;
+
+                        this.TextBoxXAxisMin = -10;
+                        this.TextBoxXAxisMax = 10;
+                        this.ColorPickerXAxisColor = Colors.DarkSlateBlue;
+                        this.CheckBoxXAxisVisibility = true;
+
+                        this.TextBoxYAxisMin = -10;
+                        this.TextBoxYAxisMax = 10;
+                        this.ColorPickerYAxisColor = Colors.DarkSlateBlue;
+                        this.CheckBoxYAxisVisibility = true;
+
+                        this.TextBoxXAxisGridIntervall = 1;
+                        this.ColorPickerXAxisGridColor = Colors.LightGray;
+                        this.CheckBoxXAxisGridVisibility = true;
+
+                        this.TextBoxYAxisGridIntervall = 1;
+                        this.ColorPickerYAxisGridColor = Colors.LightGray;
+                        this.CheckBoxYAxisGridVisibility = true;
+
+                        this.HasUserChangedYAxisSettings = false;
+
+                        this.IsApplicationDataInitalized = true;
+
+                        this.UpdateFullCanvas();
+                    });
+            }
+        }
+
+        public ICommand DeleteAllCurrentFunctions
+        {
+            get
+            {
+                return new WindowCommand(
+                    (obj) =>
+                    {
+                        return true;
+                    },
+                    (obj) =>
+                    {
+                        this.IsApplicationDataInitalized = false;
+
+                        this.CurrentGraphicalFunctions = new ObservableCollection<GraphicalFunctionViewModel>();
+
+                        this.IsApplicationDataInitalized = true;
+
+                        this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CurrentGraphicalFunctions)));
+                        this.UpdateFullCanvas();
+                    });
+            }
+        }
+
+        public ICommand ResetAutomaticScaling
+        {
+            get
+            {
+                return new WindowCommand(
+                    (obj) =>
+                    {
+                        return true;
+                    },
+                    (obj) =>
+                    {
+                        this.IsApplicationDataInitalized = false;
+
+                        this.HasUserChangedYAxisSettings = false;
+                        if (this.AreAllCurrentFunctionsAutomaticlyScalable())
+                        {
+                            this.RescaleYMinAndMaxForRescalableFunctions();
+                        }
+                        this.IsApplicationDataInitalized = true;
+                        this.UpdateFullCanvas();
+                    });
             }
         }
 
@@ -496,6 +735,18 @@ namespace GraphicalPlotter
             {
                 this.HasUserChangedYAxisSettings = true;
             }
+        }
+
+        public bool AreAllCurrentFunctionsAutomaticlyScalable()
+        {
+            foreach (var functionVM in this.CurrentGraphicalFunctions)
+            {
+                if (!this.IsFunctionScalable(functionVM))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         //// this is requirement is just so unnessary
@@ -521,8 +772,9 @@ namespace GraphicalPlotter
                 }
             }
 
-            if (biggestYValueOverall == double.MinValue && biggestYValueOverall == double.MaxValue)
+            if (biggestYValueOverall < 1.5E-308 && smallestYValueOverall > 1.5E+308)
             {
+                // we need this if there are no functions or somebody tried to rescale with functions that make no sense
             }
             else
             {
@@ -552,12 +804,12 @@ namespace GraphicalPlotter
 
                 if (cosinusFlag || sinusFlag)
                 {
-                    sumOfSmallestValues += Math.Abs(parts.ConstantMulitplier);
+                    sumOfSmallestValues += Math.Abs(parts.ConstantMultiplier);
                 }
-                //// must be polynomial of degree 0 meaning only the constant multiplier is added
                 else
                 {
-                    sumOfSmallestValues += parts.ConstantMulitplier;
+                    //// must be polynomial of degree 0 meaning only the constant multiplier is added
+                    sumOfSmallestValues += parts.ConstantMultiplier;
                 }
             }
             return sumOfSmallestValues;
@@ -574,12 +826,12 @@ namespace GraphicalPlotter
 
                 if (cosinusFlag || sinusFlag)
                 {
-                    sumOfBiggestValues += Math.Abs(parts.ConstantMulitplier) * -1;
+                    sumOfBiggestValues += Math.Abs(parts.ConstantMultiplier) * -1;
                 }
-                //// must be polynomial of degree 0 meaning only the constant multiplier is added
                 else
                 {
-                    sumOfBiggestValues += parts.ConstantMulitplier;
+                    //// must be polynomial of degree 0 meaning only the constant multiplier is added
+                    sumOfBiggestValues += parts.ConstantMultiplier;
                 }
             }
             return sumOfBiggestValues;
@@ -631,97 +883,6 @@ namespace GraphicalPlotter
             return true;
         }
 
-        public ICommand OpenColorPicker
-        {
-            get
-            {
-                return new WindowCommand(
-                    (obj) =>
-                    {
-                        return true;
-                    },
-                    (obj) =>
-                    {
-                        ColorPickerWindow colorPickerWindow = new ColorPickerWindow();
-                        colorPickerWindow.ShowDialog();
-                        //// If a color is selected and the ok button is pressed
-                        if (colorPickerWindow.isColorPicked == true)
-                        {
-                            //UNSAFE AS FUCK PLEASE FIX TODO TODO TODO
-                            string propertyName = (string)obj;
-
-                           
-
-                            // dumb design that i need to convert 2 times but not enough time to fix this TODO
-                            Color selectedColor = colorPickerWindow.SelectedColor.Color;
-
-                            switch (propertyName)
-                            {
-                                case "ColorPickerXAxisColor":
-                                    this.ColorPickerXAxisColor = selectedColor;
-                                    break;
-
-                                case "ColorPickerYAxisColor":
-                                    this.ColorPickerYAxisColor = selectedColor;
-                                    break;
-
-                                case "ColorPickerXAxisGridColor":
-                                    this.ColorPickerXAxisGridColor = selectedColor;
-                                    break;
-
-                                case "ColorPickerYAxisGridColor":
-                                    this.ColorPickerYAxisGridColor = selectedColor;
-                                    break;
-
-                                default:
-                                    break;
-                            }
-
-                            
-                        }
-                    }
-
-                    );
-            }
-        }
-
-        public ICommand SaveFunctionsToFile
-        {
-            get
-            {
-                return new WindowCommand(
-                    (obj) =>
-                    {
-                        return true;
-                    },
-                    (obj) =>
-                    {
-                        if (this.CurrentGraphicalFunctions.Count >= 1)
-                        {
-                            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<GraphicalFunctionDisplayNameForSerialization>));
-
-                            List<GraphicalFunctionDisplayNameForSerialization> functionsForSerialization = this.CreateSerialiationObjectsFromCurrentFunctions();
-
-                           
-                            SaveFileDialog dialog = new SaveFileDialog();
-
-                            dialog.Filter = "XML Files (*.xml)|*.xml";
-                            dialog.FileName = "functions";
-
-                            if (dialog.ShowDialog() == true)
-                            {
-                                using (FileStream fileStream = new FileStream(dialog.FileName, FileMode.Create))
-                                {
-                                    xmlSerializer.Serialize(fileStream, functionsForSerialization);
-                                }
-                            }
-                        }
-                    }
-
-                    );
-            }
-        }
-
         private List<GraphicalFunctionDisplayNameForSerialization> CreateSerialiationObjectsFromCurrentFunctions()
         {
             List<GraphicalFunctionDisplayNameForSerialization> functionsForSerialization = new List<GraphicalFunctionDisplayNameForSerialization>();
@@ -730,50 +891,6 @@ namespace GraphicalPlotter
                 functionsForSerialization.Add(new GraphicalFunctionDisplayNameForSerialization(functionVM));
             }
             return functionsForSerialization;
-        }
-
-        public ICommand InportFunctionsFromFile
-        {
-            get
-            {
-                return new WindowCommand(
-                    (obj) =>
-                    {
-                        return true;
-                    },
-                    (obj) =>
-                    {
-                        List<GraphicalFunctionDisplayNameForSerialization> deserializedFunctions = new List<GraphicalFunctionDisplayNameForSerialization>();
-
-                        XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<GraphicalFunctionDisplayNameForSerialization>));
-
-                        OpenFileDialog dialog = new OpenFileDialog();
-
-                        dialog.Filter = "XML Files (*.xml)|*.xml";
-
-                        if (dialog.ShowDialog() == true)
-                        {
-                            using (FileStream fileStream = new FileStream(dialog.FileName, FileMode.Open))
-                            {
-                                try
-                                {
-                                    //// TODO I for sure need to check if this is even serializable or something else right? just the try catch block isnt the kind of panacea that i think it is.
-                                    deserializedFunctions = (List<GraphicalFunctionDisplayNameForSerialization>)xmlSerializer.Deserialize(fileStream);
-                                }
-                                catch (Exception )
-                                {
-                                   
-                                }
-                            }
-
-                            this.ReconstructFunctionsFromFileInport(deserializedFunctions);
-                            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CurrentGraphicalFunctions)));
-                            this.UpdateDrawInformationForFunctions();
-                        }
-                    }
-
-                    );
-            }
         }
 
         private void ReconstructFunctionsFromFileInport(List<GraphicalFunctionDisplayNameForSerialization> deserializedFunctions)
@@ -802,38 +919,18 @@ namespace GraphicalPlotter
             }
         }
 
-        //FIELD todo
-        public ApplicationStatusSaveDataHandler SaveDataHandler { get; set; }
-
-        public bool isApplicationDataInitalized;
-
-        public bool IsApplicationDataInitalized
-        {
-            get { return isApplicationDataInitalized; }
-            set
-            {
-                if (value != isApplicationDataInitalized)
-                {
-                    isApplicationDataInitalized = value;
-                }
-            }
-        }
-
-        public bool HasUserChangedYAxisSettings { get; set; }
-
         public MainViewModel()
         {
-            
-
             this.SaveDataHandler = new ApplicationStatusSaveDataHandler();
 
             this.StringToFunctionConverter = new StringToFunctionConverter();
 
             //// Application.Current.MainWindow.Closing better alternative??
-            Application.Current.Exit += OnWindowClosing;
+            Application.Current.Exit += this.OnWindowClosing;
 
-            this.TextBoxUserInputFunctionToolTip = "To Input a Function use the right format shown here. Using other formats will yield wrong inputs.\r\n PLEASE NOTE THAT THE NOTATION FOR DECIMALS IS BOUND TO YOUR LOCALICATION! \r\n Supported Functions are : sin,cos,tan and polynomial function up to a exponent degree of 10." +
-                                                    "\r\n a3*x^3+a2*x^2+a1*x+c \r\n a*sin(b*x)+c \r\n a*cos(b*x)+c\r\n a*tan(b*x)+c";
+            this.TextBoxUserInputFunctionToolTip = "To Input a Function use the right format shown here. Using other formats may yield wrong inputs.\r\n PLEASE NOTE THAT THE NOTATION FOR DECIMALS IS BOUND TO YOUR LOCALICATION! \r\n Supported Functions are : sin,cos,tan and polynomial function up to a exponent degree of 10." +
+                                                    "\r\n a3*x^3+a2*x^2+a1*x+c \r\n a*sin(b*x)+c \r\n a*cos(b*x)+c\r\n a*tan(b*x)+c" + "\r\n \r\n it is also possible to combine polynomial functions with sin cos and tan like this: \r\n " +
+                                                    "5x^2+9x-8*cos(0,5x)";
 
             this.CurrentGraphicalFunctions = new ObservableCollection<GraphicalFunctionViewModel>();
             if (this.SaveDataHandler.TryToExtractBackupDataForApplication(
@@ -869,7 +966,7 @@ namespace GraphicalPlotter
             BindingOperations.EnableCollectionSynchronization(this.DrawInformationForAxis, this.lockObjectFunctions);
             BindingOperations.EnableCollectionSynchronization(this.DrawInformationForGridLines, this.lockObjectFunctions);
 
-            this.PropertyChanged += UpdateCanvasAttributes;
+            this.PropertyChanged += this.UpdateCanvasAttributes;
 
             //// I have no idea if this is good , or necessary to cast here, but i am going to do it becouse i couldnt get it to work otherwise
             try
@@ -953,12 +1050,12 @@ namespace GraphicalPlotter
 
         private double CalculateYValueForYPixel(int yPixelValue)
         {
-            return this.TextBoxYAxisMax - (((double)yPixelValue / (double)this.PixelHeightCanvas) * ((double)TextBoxYAxisMax - (double)this.TextBoxYAxisMin));
+            return this.TextBoxYAxisMax - (((double)yPixelValue / (double)this.PixelHeightCanvas) * ((double)this.TextBoxYAxisMax - (double)this.TextBoxYAxisMin));
         }
 
         private double CalculateXValueForXPixel(int xPixelValue)
         {
-            return ((((double)xPixelValue) * (this.TextBoxXAxisMax - this.TextBoxXAxisMin)) / this.PixelWidhtCanvas) + TextBoxXAxisMin;
+            return ((((double)xPixelValue) * (this.TextBoxXAxisMax - this.TextBoxXAxisMin)) / this.PixelWidhtCanvas) + this.TextBoxXAxisMin;
         }
 
         private void UpdateStartPoint(object sender, CanvasZoomEventArguments eventArgs)
@@ -966,20 +1063,6 @@ namespace GraphicalPlotter
             Point startPoint = eventArgs.CurrentMouseLocationOnCanvas;
             //// TODO this could still be unsafe if there is some funky logic behind the Point or if someone opens the graphplotter on a 2000000K monitor or something lol.
             this.ZoomStartPoint = new CanvasPixel((int)Math.Round(startPoint.X), (int)Math.Round(startPoint.Y));
-        }
-
-        private CanvasPixel zoomStartPoint;
-
-        public CanvasPixel ZoomStartPoint
-        {
-            get { return zoomStartPoint; }
-            set
-            {
-                if (value != zoomStartPoint && value != null)
-                {
-                    zoomStartPoint = value;
-                }
-            }
         }
 
         private void ReconstructAxisAndGridData(AxisData savedXAxisData, AxisData savedYAxisData, AxisGridData savedXAxisGrid, AxisGridData savedYAxisGrid, bool hasUserChangedYAxis)
@@ -1005,71 +1088,92 @@ namespace GraphicalPlotter
             this.HasUserChangedYAxisSettings = hasUserChangedYAxis;
         }
 
-        public ICommand RestoreDefaultValuesForAxisAndGridData
-        {
-            get
-            {
-                return new WindowCommand(
-                    (obj) =>
-                    {
-                        return true;
-                    },
-                    (obj) =>
-                    {
-                        this.IsApplicationDataInitalized = false;
-
-                        this.TextBoxXAxisMin = -10;
-                        this.TextBoxXAxisMax = 10;
-                        this.ColorPickerXAxisColor = Colors.DarkSlateBlue;
-                        this.CheckBoxXAxisVisibility = true;
-
-                        this.TextBoxYAxisMin = -10;
-                        this.TextBoxYAxisMax = 10;
-                        this.ColorPickerYAxisColor = Colors.DarkSlateBlue;
-                        this.CheckBoxYAxisVisibility = true;
-
-                        this.TextBoxXAxisGridIntervall = 1;
-                        this.ColorPickerXAxisGridColor = Colors.LightGray;
-                        this.CheckBoxXAxisGridVisibility = true;
-
-                        this.TextBoxYAxisGridIntervall = 1;
-                        this.ColorPickerYAxisGridColor = Colors.LightGray;
-                        this.CheckBoxYAxisGridVisibility = true;
-
-                        this.HasUserChangedYAxisSettings = false;
-
-                        this.IsApplicationDataInitalized = true;
-
-                        this.UpdateFullCanvas();
-                    });
-            }
-        }
-
-        public ICommand DeleteAllCurrentFunctions
-        {
-            get
-            {
-                return new WindowCommand(
-                    (obj) =>
-                    {
-                        return true;
-                    },
-                    (obj) =>
-                    {
-                        this.IsApplicationDataInitalized = false;
-
-                        this.CurrentGraphicalFunctions = new ObservableCollection<GraphicalFunctionViewModel>();
-
-                        this.IsApplicationDataInitalized = true;
-                        this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CurrentGraphicalFunctions)));
-                        this.UpdateFullCanvas();
-                    });
-            }
-        }
-
         private void OnWindowClosing(object sender, ExitEventArgs e)
         {
             this.SaveDataHandler.CreateApplicationSaveData(this.XAxisData, this.XAxisGrid, this.YAxisData, this.YAxisGrid, this.CreateSerialiationObjectsFromCurrentFunctions(), this.HasUserChangedYAxisSettings);
+        }
+
+        ////  this is utterly retarded but i dont have enough time to think about a better solution
+        //// omg this is like prp the worst code i have written to date, what else would you use?? Methods for each function?? somekind of Observer class? i dont know please help
+        //// I thought that when i just use a reference for the grid and axis classes it would tranfer but apprently not
+        private void UpdateCanvasAttributes(object sender, PropertyChangedEventArgs eventArgs)
+        {
+            switch (eventArgs.PropertyName)
+            {
+                //// for the x-axis itself
+                case nameof(this.TextBoxXAxisMin):
+                    this.XAxisData.MinVisibleValue = this.TextBoxXAxisMin;
+                    break;
+
+                case nameof(this.TextBoxXAxisMax):
+                    this.XAxisData.MaxVisibleValue = this.TextBoxXAxisMax;
+                    break;
+
+                case nameof(this.CheckBoxXAxisVisibility):
+                    this.XAxisData.Visibility = this.CheckBoxXAxisVisibility;
+                    break;
+
+                case nameof(this.ColorPickerXAxisColor):
+                    this.XAxisData.AxisColor = this.ColorPickerXAxisColor;
+                    break;
+
+                //// for the y-axis itself
+                case nameof(this.TextBoxYAxisMin):
+                    this.YAxisData.MinVisibleValue = this.TextBoxYAxisMin;
+                    break;
+
+                case nameof(this.TextBoxYAxisMax):
+                    this.YAxisData.MaxVisibleValue = this.TextBoxYAxisMax;
+                    break;
+
+                case nameof(this.CheckBoxYAxisVisibility):
+                    this.YAxisData.Visibility = this.CheckBoxYAxisVisibility;
+                    break;
+
+                case nameof(this.ColorPickerYAxisColor):
+                    this.YAxisData.AxisColor = this.ColorPickerYAxisColor;
+                    break;
+
+                //// for the x grid
+
+                case nameof(this.TextBoxXAxisGridIntervall):
+                    this.XAxisGrid.IntervallBetweenLines = this.TextBoxXAxisGridIntervall;
+                    break;
+
+                case nameof(this.ColorPickerXAxisGridColor):
+                    this.XAxisGrid.GridColor = this.ColorPickerXAxisGridColor;
+                    break;
+
+                case nameof(this.CheckBoxXAxisGridVisibility):
+                    this.XAxisGrid.Visibility = this.CheckBoxXAxisGridVisibility;
+                    break;
+
+                //// for the y grid
+
+                case nameof(this.TextBoxYAxisGridIntervall):
+                    this.YAxisGrid.IntervallBetweenLines = this.TextBoxYAxisGridIntervall;
+                    break;
+
+                case nameof(this.ColorPickerYAxisGridColor):
+                    this.YAxisGrid.GridColor = this.ColorPickerYAxisGridColor;
+                    break;
+
+                case nameof(this.CheckBoxYAxisGridVisibility):
+                    this.YAxisGrid.Visibility = this.CheckBoxYAxisGridVisibility;
+                    break;
+
+                //// For the canvas dimensions
+                case nameof(this.PixelHeightCanvas):
+                    this.MainGraphCanvas.HeightInPixel = this.PixelHeightCanvas;
+                    break;
+
+                case nameof(this.PixelWidhtCanvas):
+                    this.MainGraphCanvas.WidthInPixel = this.PixelWidhtCanvas;
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         public void UpdateFullCanvas()
@@ -1080,86 +1184,11 @@ namespace GraphicalPlotter
             this.UpdateDrawInformationForGridLines();
         }
 
-        ////  this is utterly retarded but i dont have enough time to think about a better solution
-        //// omg this is like prp the worst code i have written to date, what else would you use?? Methods for each function?? somekind of Observer class? i dont know please help
-        //// I thought that when i just use a reference for the grid and axis classes it would tranfer but apprently not 
-        private void UpdateCanvasAttributes(object sender, PropertyChangedEventArgs eventArgs)
+        private void IntegrateListOfResultingDrawingFunctionsIntoListOfDrawingFunctions(List<FunctionDrawInformation> functionDrawInformation, List<FunctionDrawInformation> functionDrawInformationForPathsForThisMathematicalFunction)
         {
-            switch (eventArgs.PropertyName)
+            foreach (FunctionDrawInformation partOfDrawPathForOneFunctions in functionDrawInformationForPathsForThisMathematicalFunction)
             {
-                //// for the x-axis itself
-                case nameof(TextBoxXAxisMin):
-                    this.XAxisData.MinVisibleValue = this.TextBoxXAxisMin;
-                    break;
-
-                case nameof(TextBoxXAxisMax):
-                    this.XAxisData.MaxVisibleValue = this.TextBoxXAxisMax;
-                    break;
-
-                case nameof(CheckBoxXAxisVisibility):
-                    this.XAxisData.Visibility = this.CheckBoxXAxisVisibility;
-                    break;
-
-                case nameof(ColorPickerXAxisColor):
-                    this.XAxisData.AxisColor = this.ColorPickerXAxisColor;
-                    break;
-
-                //// for the y-axis itself
-                case nameof(TextBoxYAxisMin):
-                    this.YAxisData.MinVisibleValue = this.TextBoxYAxisMin;
-                    break;
-
-                case nameof(TextBoxYAxisMax):
-                    this.YAxisData.MaxVisibleValue = this.TextBoxYAxisMax;
-                    break;
-
-                case nameof(CheckBoxYAxisVisibility):
-                    this.YAxisData.Visibility = this.CheckBoxYAxisVisibility;
-                    break;
-
-                case nameof(ColorPickerYAxisColor):
-                    this.YAxisData.AxisColor = this.ColorPickerYAxisColor;
-                    break;
-
-                //// for the x grid
-
-                case nameof(TextBoxXAxisGridIntervall):
-                    this.XAxisGrid.IntervallBetweenLines = this.TextBoxXAxisGridIntervall;
-                    break;
-
-                case nameof(ColorPickerXAxisGridColor):
-                    this.XAxisGrid.GridColor = this.ColorPickerXAxisGridColor;
-                    break;
-
-                case nameof(CheckBoxXAxisGridVisibility):
-                    this.XAxisGrid.Visibility = this.CheckBoxXAxisGridVisibility;
-                    break;
-
-                //// for the y grid
-
-                case nameof(TextBoxYAxisGridIntervall):
-                    this.YAxisGrid.IntervallBetweenLines = this.TextBoxYAxisGridIntervall;
-                    break;
-
-                case nameof(ColorPickerYAxisGridColor):
-                    this.YAxisGrid.GridColor = this.ColorPickerYAxisGridColor;
-                    break;
-
-                case nameof(CheckBoxYAxisGridVisibility):
-                    this.YAxisGrid.Visibility = this.CheckBoxYAxisGridVisibility;
-                    break;
-
-                //// For the canvas dimensions
-                case nameof(PixelHeightCanvas):
-                    this.MainGraphCanvas.HeightInPixel = this.PixelHeightCanvas;
-                    break;
-
-                case nameof(PixelWidhtCanvas):
-                    this.MainGraphCanvas.WidthInPixel = this.PixelWidhtCanvas;
-                    break;
-
-                default:
-                    break;
+                functionDrawInformation.Add(partOfDrawPathForOneFunctions);
             }
         }
 
@@ -1181,14 +1210,6 @@ namespace GraphicalPlotter
 
                 this.DrawInformationForFunctions = functionDrawInformation;
                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.DrawInformationForFunctions)));
-            }
-        }
-
-        private void IntegrateListOfResultingDrawingFunctionsIntoListOfDrawingFunctions(List<FunctionDrawInformation> functionDrawInformation, List<FunctionDrawInformation> functionDrawInformationForPathsForThisMathematicalFunction)
-        {
-            foreach (FunctionDrawInformation partOfDrawPathForOneFunctions in functionDrawInformationForPathsForThisMathematicalFunction)
-            {
-                functionDrawInformation.Add(partOfDrawPathForOneFunctions);
             }
         }
 

@@ -1,19 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Media;
-
-namespace GraphicalPlotter
+﻿namespace GraphicalPlotter
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Windows.Media;
+
     public class FunctionToCanvasFunctionConverter
     {
-        public TwoDimensionalGraphCanvas GraphicalCanvas { get; set; }
+        private TwoDimensionalGraphCanvas graphicalCanvas;
 
         public FunctionToCanvasFunctionConverter(TwoDimensionalGraphCanvas graphCanvas)
         {
             this.GraphicalCanvas = graphCanvas;
         }
 
-       
+        public TwoDimensionalGraphCanvas GraphicalCanvas
+        {
+            get
+            {
+                return this.graphicalCanvas;
+            }
+            set
+            {
+                if (value != null)
+                {
+                    this.graphicalCanvas = value;
+                }
+                else
+                {
+                    throw new ArgumentNullException($"{nameof(this.GraphicalCanvas)} can not be null!");
+                }
+            }
+        }
+
         public List<FunctionDrawInformation> ConvertAllCurrentFunctionsIntoDrawData(List<GraphicalFunction> listOfFunctions)
         {
             List<FunctionDrawInformation> functionsDrawInformation = new List<FunctionDrawInformation>();
@@ -25,7 +43,6 @@ namespace GraphicalPlotter
             return functionsDrawInformation;
         }
 
-        
         private FunctionDrawInformation ConvertFunctionIntoDrawInformation(GraphicalFunction function)
         {
             int xPixels = this.GraphicalCanvas.WidthInPixel;
@@ -44,11 +61,8 @@ namespace GraphicalPlotter
                 double yValueForCurrentXValue = function.CalculateSumOfAllPartsForValue(xValueForCurrentPixel);
 
                 int roundedYPixelPosition = this.CalculateYPixelPositionForYValue(yPixels, yValueForCurrentXValue, yMin, yMax);
-               
 
-              
                 PixelValuesForthisFunction.Add(new CanvasPixel(xPixelPosition, roundedYPixelPosition));
-               
             }
             FunctionDrawInformation drawInformation = new FunctionDrawInformation(PixelValuesForthisFunction, function.FunctionColor);
             return drawInformation;
@@ -160,22 +174,20 @@ namespace GraphicalPlotter
             if (yMax >= 0 && yMin <= 0 && xAxisVisbility)
             {
                 int yPixelValueForXAxis = this.CalculateYPixelPositionForYValue(yPixels, 0, yMin, yMax);
-               
+
                 List<CanvasPixel> axisPoints = new List<CanvasPixel>() { new CanvasPixel(0, yPixelValueForXAxis), new CanvasPixel(xPixels, yPixelValueForXAxis) };
                 FunctionDrawInformation DrawInformationXAxis = new FunctionDrawInformation(axisPoints, this.GraphicalCanvas.XAxisData.AxisColor);
                 axisLines.Add(DrawInformationXAxis);
-               
             }
             //// only if the axis are visible we will calculate them , otherwise , weird things will happen
 
             if (xMax >= 0 && xMin <= 0 && yAxisVisbility)
             {
                 int xPixelValueForYAxis = this.CalculateXPixelPositionForXValue(xPixels, 0, xMin, xMax);
-             
+
                 List<CanvasPixel> axisPoints = new List<CanvasPixel>() { new CanvasPixel(xPixelValueForYAxis, 0), new CanvasPixel(xPixelValueForYAxis, yPixels) };
                 FunctionDrawInformation DrawInformationXAxis = new FunctionDrawInformation(axisPoints, this.GraphicalCanvas.YAxisData.AxisColor);
                 axisLines.Add(DrawInformationXAxis);
-               
             }
 
             return axisLines;
@@ -204,7 +216,7 @@ namespace GraphicalPlotter
             List<FunctionDrawInformation> gridLines = new List<FunctionDrawInformation>();
 
             //// ONYL FOR THE Y AXIS GRID
-            
+
             if (numberOfGridLinesForYAxis > 0 && numberOfGridLinesForYAxis < yPixels / 2 && yGridVisbility)
             {
                 double howManyGridsAwayFromXAxis = yMin / yGridInterval;
@@ -271,23 +283,23 @@ namespace GraphicalPlotter
             double logExponendForGridIntervall = Math.Log10(GridInterval);
             double roundedStartingValue;
 
-            //// log is bigger then zero
             if (logExponendForGridIntervall >= 1)
             {
+                //// log is bigger then zero
                 double newGridLog = Math.Ceiling(logExponendForGridIntervall);
                 double startingValueForXnotRounded = Math.Abs(MinValue) / Math.Pow(10, newGridLog);
                 roundedStartingValue = Math.Ceiling(startingValueForXnotRounded) * Math.Pow(10, newGridLog);
             }
-            //// else if bigger then zero but smaller then one
             else if (logExponendForGridIntervall >= 0)
             {
+                //// else if bigger then zero but smaller then one
                 double newGridLog = 0;
                 double startingValueForXnotRounded = Math.Abs(MinValue) / Math.Pow(10, newGridLog);
                 roundedStartingValue = Math.Ceiling(startingValueForXnotRounded) * Math.Pow(10, newGridLog);
             }
-            //// if the log is negativ but smaller then -1
             else
             {
+                //// if the log is negativ but smaller then -1
                 int newGridLog = (int)Math.Ceiling(Math.Abs(logExponendForGridIntervall));
                 roundedStartingValue = Math.Round(MinValue, newGridLog);
             }
@@ -301,7 +313,7 @@ namespace GraphicalPlotter
 
         public int CalculateXPixelPositionForXValue(int xPixels, double xValue, double xMin, double xMax)
         {
-            double xPixelPosition = xPixels - ((xValue - xMin) * xPixels / (xMax - xMin)); 
+            double xPixelPosition = xPixels - ((xValue - xMin) * xPixels / (xMax - xMin));
 
             //// TODO delete the execption message and copy the same thing i did for the y value calculation
             //// A function could, in theory have such a drastic change in the y axis that this problem could occur

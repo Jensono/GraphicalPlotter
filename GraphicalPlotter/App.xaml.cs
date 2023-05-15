@@ -1,7 +1,8 @@
-﻿using System.Windows;
+﻿
 
 namespace GraphicalPlotter
 {
+    using System.Windows;
     /// <summary>
     /// Interaktionslogik für "App.xaml"
     /// </summary>

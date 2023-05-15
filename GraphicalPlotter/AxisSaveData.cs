@@ -1,11 +1,15 @@
-﻿using System;
-using System.Windows.Media;
+﻿
 
 namespace GraphicalPlotter
 {
+    using System;
+    using System.Windows.Media;
+
     [Serializable]
     public class AxisSaveData
     {
+
+        //TODO fields but i dont need any nullchecks, min smaller then max maybe
         public double AxisMin { get; set; }
         public double AxisMax { get; set; }
 
@@ -16,9 +20,7 @@ namespace GraphicalPlotter
         public Color GridLineColor { get; set; }
         public bool GridVisibility { get; set; }
 
-        public string AxisName { get; set; }
-
-        public AxisSaveData(AxisData axis, AxisGridData grid, string axisname)
+        public AxisSaveData(AxisData axis, AxisGridData grid)
         {
             this.AxisMin = axis.MinVisibleValue;
             this.AxisMax = axis.MaxVisibleValue;
@@ -28,8 +30,6 @@ namespace GraphicalPlotter
             this.GridIntervall = grid.IntervallBetweenLines;
             this.GridLineColor = grid.GridColor;
             this.GridVisibility = grid.Visibility;
-
-            this.AxisName = axisname;
         }
 
         public AxisSaveData()

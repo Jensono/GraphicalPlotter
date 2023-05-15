@@ -2,53 +2,66 @@
 {
     public abstract class TrigonometricFunctions : FunctionParts
     {
-        public double DegreeMultilplier { get; set; }
+        private double degreeMultiplier;
+      
 
         public TrigonometricFunctions(double constantMultiplier, double degreeMultiplier) : base(constantMultiplier)
         {
-            this.DegreeMultilplier = degreeMultiplier;
+            this.DegreeMultiplier = degreeMultiplier;
+        }
+
+        public double DegreeMultiplier
+        {
+            get
+            {
+                return degreeMultiplier;
+            }
+            set
+            {
+                degreeMultiplier = value;
+            }
         }
 
         public override string GetFunctionName()
         {
             string returnstring = string.Empty;
 
-            if (this.ConstantMulitplier == 0)
+            if (this.ConstantMultiplier == 0)
             {
                 return "+0 ";
             }
-            else if (this.ConstantMulitplier == -1)
+            else if (this.ConstantMultiplier == -1)
             {
                 returnstring += $"-{this.GetFunctionCalling()}*";
             }
-            else if (this.ConstantMulitplier == 1)
+            else if (this.ConstantMultiplier == 1)
             {
                 returnstring += $"+{this.GetFunctionCalling()}";
             }
-            else if (this.ConstantMulitplier > 0)
+            else if (this.ConstantMultiplier > 0)
             {
-                returnstring += "+" + $"{this.ConstantMulitplier}*{this.GetFunctionCalling()}";
+                returnstring += "+" + $"{this.ConstantMultiplier}*{this.GetFunctionCalling()}";
             }
             else
             {
-                returnstring += $"{this.ConstantMulitplier}*{this.GetFunctionCalling()}";
+                returnstring += $"{this.ConstantMultiplier}*{this.GetFunctionCalling()}";
             }
 
-            if (this.DegreeMultilplier == 0)
+            if (this.DegreeMultiplier == 0)
             {
                 returnstring += "(0)";
             }
-            else if (this.DegreeMultilplier == 1)
+            else if (this.DegreeMultiplier == 1)
             {
                 returnstring += "(x)";
             }
-            else if (this.DegreeMultilplier == -1)
+            else if (this.DegreeMultiplier == -1)
             {
                 returnstring += "(-x)";
             }
             else
             {
-                returnstring += $"({DegreeMultilplier}*x)";
+                returnstring += $"({DegreeMultiplier}*x)";
             }
 
             return returnstring;

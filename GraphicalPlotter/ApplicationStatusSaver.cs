@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Windows.Media;
-using System.Xml.Serialization;
+﻿
 
 namespace GraphicalPlotter
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Windows.Media;
+    using System.Xml.Serialization;
     public class ApplicationStatusSaveDataHandler
     {
         public ApplicationStatusSaveDataHandler()
@@ -14,8 +15,8 @@ namespace GraphicalPlotter
 
         public void CreateApplicationSaveData(AxisData xAxis, AxisGridData xGrid, AxisData yAxis, AxisGridData yGrid, List<GraphicalFunctionDisplayNameForSerialization> functionList, bool hasUserchangedYAxisValues)
         {
-            AxisSaveData xAxisSaveData = new AxisSaveData(xAxis, xGrid, "xAxis");
-            AxisSaveData yAxisSaveData = new AxisSaveData(yAxis, yGrid, "yAxis");
+            AxisSaveData xAxisSaveData = new AxisSaveData(xAxis, xGrid);
+            AxisSaveData yAxisSaveData = new AxisSaveData(yAxis, yGrid);
 
             //// i can get the basedirectory like this, but i also found : Environment.CurrentDirectory , but i think this is better
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
@@ -43,7 +44,8 @@ namespace GraphicalPlotter
             File.Move(newFilePath, oldbackupPath);
         }
 
-        public bool TryToExtractBackupDataForApplication(out AxisData xAxisData,
+        public bool TryToExtractBackupDataForApplication(
+            out AxisData xAxisData,
             out AxisData yAxisData,
             out AxisGridData xGridData,
             out AxisGridData yGridData,

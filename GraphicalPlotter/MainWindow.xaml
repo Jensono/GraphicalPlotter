@@ -264,7 +264,7 @@
                 </Grid>
             </Grid>
         </TabItem>
-        <TabItem Header="Import/Export">
+        <TabItem Header="Import/Export Functions and other Setting">
 
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -283,6 +283,7 @@
                 <Button Grid.Column="2" Content="Import Functions From File" Command="{Binding InportFunctionsFromFile}" Margin="20"></Button>
                 <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="Reset Axis and Grid Values" Command="{Binding RestoreDefaultValuesForAxisAndGridData}" Margin="20"></Button>
                 <Button Grid.Row="2" Grid.Column="2" Content="Delete All Current Functions" Command="{Binding DeleteAllCurrentFunctions}" Margin="20"></Button>
+                <Button Grid.Row="2" Grid.Column="3" Content="Reset Automatic Scaling" Command="{Binding ResetAutomaticScaling}" Margin="20"></Button>
             </Grid>
         </TabItem>
     </TabControl>

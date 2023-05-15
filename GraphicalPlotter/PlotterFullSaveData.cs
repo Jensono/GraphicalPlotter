@@ -1,8 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 
 namespace GraphicalPlotter
 {
+    using System;
+    using System.Collections.Generic;
+
     [Serializable]
     public class PlotterFullSaveData
     {

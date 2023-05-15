@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Windows.Media;
+﻿
 
 namespace GraphicalPlotter
 {
+    using System.Collections.Generic;
+    using System.Windows.Media;
+
     public class FunctionDrawInformation
     {
         public List<CanvasPixel> CanvasPixels { get; set; }

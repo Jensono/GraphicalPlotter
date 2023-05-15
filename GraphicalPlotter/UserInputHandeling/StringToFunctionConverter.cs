@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Media;
+﻿
 
 namespace GraphicalPlotter
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Windows.Media;
     public class StringToFunctionConverter
     {
         public StringToFunctionConverter()
@@ -94,14 +95,14 @@ namespace GraphicalPlotter
         private bool TryParseSinusFunction(string sinusFunction, out FunctionParts rightFunction)
         {
             //// first strip of all whitespaces
-            sinusFunction = sinusFunction.Replace(" ", "");
+            sinusFunction = sinusFunction.Replace(" ", string.Empty);
 
             double constantMultiplier;
             double degreeMultiplier;
 
             string constantMultiplierString = sinusFunction.Split('s')[0];
             //// sin(x),+sin(x),-sin(x)
-            if (constantMultiplierString == "" || constantMultiplierString == "+")
+            if (constantMultiplierString == string.Empty || constantMultiplierString == "+")
             {
                 constantMultiplier = 1;
             }
@@ -130,9 +131,9 @@ namespace GraphicalPlotter
                 return false;
             }
 
-            string degreeMultiplierAsString = insideBrackets.Replace('x', ' ').Replace('*', ' ').Replace(" ", "");
+            string degreeMultiplierAsString = insideBrackets.Replace('x', ' ').Replace('*', ' ').Replace(" ", string.Empty);
             //// HERE
-            if (degreeMultiplierAsString == "" || degreeMultiplierAsString == "+")
+            if (degreeMultiplierAsString == string.Empty || degreeMultiplierAsString == "+")
             {
                 degreeMultiplier = 1;
             }
@@ -153,12 +154,12 @@ namespace GraphicalPlotter
         private bool TryParseCosineFunction(string cosineFunction, out FunctionParts rightFunction)
         {
             //// TODO first strip of all whitespaces
-            cosineFunction = cosineFunction.Replace(" ", "");
+            cosineFunction = cosineFunction.Replace(" ", string.Empty);
             double constantMultiplier;
             double degreeMultiplier;
             string constantMultiplierString = cosineFunction.Split('c')[0];
             //// cos(x),+cos(x),-cos(x)
-            if (constantMultiplierString == "" || constantMultiplierString == "+")
+            if (constantMultiplierString == string.Empty || constantMultiplierString == "+")
             {
                 constantMultiplier = 1;
             }
@@ -187,8 +188,8 @@ namespace GraphicalPlotter
                 return false;
             }
 
-            string degreeMultiplierAsString = insideBrackets.Replace('x', ' ').Replace('*', ' ').Replace(" ", "");
-            if (degreeMultiplierAsString == "" || degreeMultiplierAsString == "+")
+            string degreeMultiplierAsString = insideBrackets.Replace('x', ' ').Replace('*', ' ').Replace(" ", string.Empty);
+            if (degreeMultiplierAsString == string.Empty || degreeMultiplierAsString == "+")
             {
                 degreeMultiplier = 1;
             }
@@ -208,12 +209,12 @@ namespace GraphicalPlotter
 
         private bool TryParseTangentFunction(string tangentFunction, out FunctionParts rightFunction)
         {
-            tangentFunction = tangentFunction.Replace(" ", "");
+            tangentFunction = tangentFunction.Replace(" ", string.Empty);
             double constantMultiplier;
             double degreeMultiplier;
             string constantMultiplierString = tangentFunction.Split('t')[0];
             //// tan(x),+tan(x),-tan(x)
-            if (constantMultiplierString == "" || constantMultiplierString == "+")
+            if (constantMultiplierString == string.Empty || constantMultiplierString == "+")
             {
                 constantMultiplier = 1;
             }
@@ -242,8 +243,8 @@ namespace GraphicalPlotter
                 return false;
             }
 
-            string degreeMultiplierAsString = insideBrackets.Replace('x', ' ').Replace('*', ' ').Replace(" ", "");
-            if (degreeMultiplierAsString == "" || degreeMultiplierAsString == "+")
+            string degreeMultiplierAsString = insideBrackets.Replace('x', ' ').Replace('*', ' ').Replace(" ", string.Empty);
+            if (degreeMultiplierAsString == string.Empty || degreeMultiplierAsString == "+")
             {
                 degreeMultiplier = 1;
             }
@@ -264,13 +265,13 @@ namespace GraphicalPlotter
         //// This function is still full with holes but its better than nothing and with the current system it should work, maybe next time i need to actually save a function asa a FUNC or something like that. But i need more time to fix stuff like that
         private bool TryParsePolynomialPart(string polyFunction, out FunctionParts rightFunction)
         {
-            polyFunction = polyFunction.Replace(" ", "").Replace("(", "").Replace(")", "");
+            polyFunction = polyFunction.Replace(" ", string.Empty).Replace("(", string.Empty).Replace(")", string.Empty);
             double constantMultiplier;
             double exponentenDegree;
             //// even if there is no x and its just a constant value, it will just return the full string as the only elemnt in the list
             string constantMultiplierString = polyFunction.Split('x')[0];
             //// tan(x),+tan(x),-tan(x)
-            if (constantMultiplierString == "" || constantMultiplierString == "+")
+            if (constantMultiplierString == string.Empty || constantMultiplierString == "+")
             {
                 constantMultiplier = 1;
             }
@@ -278,13 +279,15 @@ namespace GraphicalPlotter
             {
                 constantMultiplier = -1;
             }
-            //// constants like -4*3 will not be parsed, and well if the user cant calculate that in his head or calculater i guess its his own fault.
-            //// Can not just be 4* or *3 becouse of the second and term in this if statement, and also needs to be a parseable number, then we just take this string and convert it into a normal function , at this point the string could be anything like -4*8*-9 etc
-            //// and does not have a defined lenght, so we will just split at the "*" mark and try to sum up all parts, if the split does not work there maybe is another problem in the function.
+            
             else if (constantMultiplierString.Split('*').Length >= 2
                 && constantMultiplierString.Split('*')[1].Length < 0
                 && double.TryParse(constantMultiplierString.Split('*')[1], out double secondmultiplier))
             {
+
+                //// constants like -4*3 will not be parsed, and well if the user cant calculate that in his head or calculater i guess its his own fault.
+                //// Can not just be 4* or *3 becouse of the second and term in this if statement, and also needs to be a parseable number, then we just take this string and convert it into a normal function , at this point the string could be anything like -4*8*-9 etc
+                //// and does not have a defined lenght, so we will just split at the "*" mark and try to sum up all parts, if the split does not work there maybe is another problem in the function.
                 if (this.ParseAStringWithMultituteOfSimpleMultiplication(constantMultiplierString, out double sumOfCalculation))
                 {
                     rightFunction = new PolynomialComponent(0, sumOfCalculation);
@@ -316,7 +319,7 @@ namespace GraphicalPlotter
             {
                 string afterExponentMark = polyFunction.Split('^')[1];
 
-                if (afterExponentMark == "")
+                if (afterExponentMark == string.Empty)
                 {
                     exponentenDegree = 1;
                 }
@@ -360,9 +363,9 @@ namespace GraphicalPlotter
 
         private string[] SplitFunctionStringIntoArray(string input)
         {
-            input = input.Replace(" ", "");
+            input = input.Replace(" ", string.Empty);
             char lastCharacter = ' ';
-            string newStringToSplit = "";
+            string newStringToSplit = string.Empty;
             foreach (char currentCharacter in input)
             {
                 if ((currentCharacter == '+' || currentCharacter == '-') && !(lastCharacter == '(' || lastCharacter == '^' || lastCharacter == '*'))

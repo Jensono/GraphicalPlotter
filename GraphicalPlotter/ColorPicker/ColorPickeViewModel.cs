@@ -1,65 +1,62 @@
-﻿using System.ComponentModel;
-using System.Windows.Media;
-
+﻿
 namespace GraphicalPlotter
 {
+    using System.ComponentModel;
+    using System.Windows.Media;
+
     public class ColorPickerViewModel : INotifyPropertyChanged
     {
         private byte greenValue;
         private byte redValue;
         private byte blueValue;
+        private SolidColorBrush selectedColor;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        
 
         public ColorPickerViewModel(Color color)
         {
             this.RedValue = color.R;
             this.GreenValue = color.G;
             this.BlueValue = color.B;
-            this.SelectedColor = new SolidColorBrush(Color.FromRgb(RedValue, GreenValue, BlueValue));
+            this.SelectedColor = new SolidColorBrush(Color.FromRgb(this.RedValue, this.GreenValue, this.BlueValue));
 
-            PropertyChanged += UpdateBrushColor;
+            this.PropertyChanged += this.UpdateBrushColor;
         }
 
-        private void UpdateBrushColor(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(SelectedColor))
-            {
-                this.SelectedColor = new SolidColorBrush(Color.FromRgb(RedValue, GreenValue, BlueValue));
-            }
-        }
+        public event PropertyChangedEventHandler PropertyChanged;
+
 
         public byte RedValue
         {
-            get { return redValue; }
+            get { return this.redValue; }
             set
             {
-                redValue = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedColor)));
+                this.redValue = value;
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.SelectedColor)));
             }
         }
 
         public byte GreenValue
         {
-            get { return greenValue; }
+            get { return this.greenValue; }
             set
             {
-                greenValue = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedColor)));
+                this.greenValue = value;
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.SelectedColor)));
             }
         }
 
         public byte BlueValue
         {
-            get { return blueValue; }
+            get { return this.blueValue; }
             set
             {
-                blueValue = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedColor)));
+                this.blueValue = value;
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.SelectedColor)));
             }
         }
 
-        private SolidColorBrush selectedColor;
+        
 
         public SolidColorBrush SelectedColor
         {
@@ -71,6 +68,14 @@ namespace GraphicalPlotter
             set
             {
                 this.selectedColor = value;
+            }
+        }
+
+        private void UpdateBrushColor(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(this.SelectedColor))
+            {
+                this.SelectedColor = new SolidColorBrush(Color.FromRgb(this.RedValue, this.GreenValue, this.BlueValue));
             }
         }
     }

@@ -1,19 +1,19 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
+﻿
 
 namespace GraphicalPlotter
 {
+    using System;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Input;
+
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>>
     public partial class MainWindow : Window
     {
-        public event EventHandler<CanvasZoomEventArguments> OnCanvasZoomStart;
-
-        public event EventHandler<CanvasZoomEventArguments> OnCanvasZoomEnd;
-
+       
+        //TODO make a property for this / field
         public Point ZoomSelectionStartPoint;
 
         public MainWindow()
@@ -21,6 +21,11 @@ namespace GraphicalPlotter
             this.InitializeComponent();
         }
 
+        public event EventHandler<CanvasZoomEventArguments> OnCanvasZoomStart;
+
+        public event EventHandler<CanvasZoomEventArguments> OnCanvasZoomEnd;
+
+        //// TODO right now when the user is zooming but moves out of the window to release the button, there is no zooming but the blue rectangle remains, fix with events that reset selected point and stop visibility of the rectangle maybe
         public void Canvas_ZoomStart(object sender, MouseButtonEventArgs eventArgs)
         {
             //// we check if the user is activly drawing open a window or not
@@ -32,7 +37,7 @@ namespace GraphicalPlotter
                 this.OnCanvasZoomStart(this, zoomStartEventArgs);
 
                 //// start the window that shows the zoomselection so the user knows where he is
-                this.ZoomSelectionStartPoint = eventArgs.GetPosition(PlotterCanvas);
+                this.ZoomSelectionStartPoint = eventArgs.GetPosition(this.PlotterCanvas);
                 Canvas.SetLeft(this.ZoomSelectionRectangle, this.ZoomSelectionStartPoint.X);
                 Canvas.SetTop(this.ZoomSelectionRectangle, this.ZoomSelectionStartPoint.Y);
                 ZoomSelectionRectangle.Width = 0;

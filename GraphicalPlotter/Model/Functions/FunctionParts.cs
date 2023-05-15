@@ -6,12 +6,24 @@
     /// </summary>
     public abstract class FunctionParts
     {
-        public double ConstantMulitplier { get; set; }
+        private double constantMultiplier;
 
         // right now the multiplier can also be null
         public FunctionParts(double constantMultiplier)
         {
-            this.ConstantMulitplier = constantMultiplier;
+            this.ConstantMultiplier = constantMultiplier;
+        }
+
+        public double ConstantMultiplier
+        {
+            get
+            {
+                return constantMultiplier;
+            }
+            set
+            {
+                constantMultiplier = value;
+            }
         }
 
         public abstract double CalculateItsOwnValue(double x);

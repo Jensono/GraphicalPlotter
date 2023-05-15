@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows.Input;
-using System.Windows.Media;
+﻿
 
 namespace GraphicalPlotter
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Windows.Input;
+    using System.Windows.Media;
+
     public class GraphicalFunctionViewModel : INotifyPropertyChanged
     {
-        //This is so dumb i fucking hate events in C# WHY WHY do i need  a callback to call an event please microsoft
+        //// This is so dumb i fucking hate events in C# WHY WHY do i need  a callback to call an event please microsoft
         private bool isInitialized = false;
 
         private bool IsInitialized
@@ -143,7 +145,7 @@ namespace GraphicalPlotter
             this.CustomUserSetName = string.Empty;
             this.FunctionColor = graphicalFunction.FunctionColor;
             this.FunctionDisplayName = graphicalFunction.FunctionDisplayName;
-            this.FunctionParts = graphicalFunction.FunctionComponentns;
+            this.FunctionParts = graphicalFunction.FunctionComponents;
             this.FunctionVisibility = graphicalFunction.Visibility;
             this.IsInitialized = true;
         }
@@ -191,9 +193,7 @@ namespace GraphicalPlotter
                             this.OnUserFunctionChanged(this, new UserInputFunctionChangedEventArgs());
                             
                         }
-                    }
-
-                    );
+                    });
             }
         }
 
@@ -208,7 +208,7 @@ namespace GraphicalPlotter
             }
             return sum;
         }
-        // Todo no used right now - delete
+        //// Todo no used right now - delete maybe
         public string CreateFunctionFullName()
         {
             string returnstring = string.Empty;

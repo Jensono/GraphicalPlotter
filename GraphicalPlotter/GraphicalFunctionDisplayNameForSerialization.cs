@@ -1,8 +1,10 @@
-﻿using System;
-using System.Windows.Media;
+﻿
 
 namespace GraphicalPlotter
 {
+    using System;
+    using System.Windows.Media;
+
     [Serializable]
     public class GraphicalFunctionDisplayNameForSerialization
     {

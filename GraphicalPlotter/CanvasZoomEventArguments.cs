@@ -1,19 +1,20 @@
-﻿using System.Windows;
+﻿
 
 namespace GraphicalPlotter
 {
+    using System.Windows;
     public class CanvasZoomEventArguments
     {
         private Point currentMouseLocationOnCanvas;
 
         public Point CurrentMouseLocationOnCanvas
         {
-            get { return currentMouseLocationOnCanvas; }
+            get { return this.currentMouseLocationOnCanvas; }
             set
             {
                 if (value != null)
                 {
-                    currentMouseLocationOnCanvas = value;
+                    this.currentMouseLocationOnCanvas = value;
                 }
             }
         }

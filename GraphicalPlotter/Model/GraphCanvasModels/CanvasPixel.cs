@@ -4,21 +4,13 @@
     {
         private int xAxisValue;
 
-        public int XAxisValue
-        {
-            get
-            {
-                return this.xAxisValue;
-            }
-            set
-            {
-                
-                this.xAxisValue = value;
-                
-            }
-        }
-
         private int yAxisValue;
+
+        public CanvasPixel(int xAxisValue, int yAxisValue)
+        {
+            this.XAxisValue = xAxisValue;
+            this.YAxisValue = yAxisValue;
+        }
 
         public int YAxisValue
         {
@@ -28,16 +20,20 @@
             }
             set
             {
-              
                 this.yAxisValue = value;
-                
             }
         }
 
-        public CanvasPixel(int xAxisValue, int yAxisValue)
+        public int XAxisValue
         {
-            this.XAxisValue = xAxisValue;
-            this.YAxisValue = yAxisValue;
+            get
+            {
+                return this.xAxisValue;
+            }
+            set
+            {
+                this.xAxisValue = value;
+            }
         }
     }
 }
