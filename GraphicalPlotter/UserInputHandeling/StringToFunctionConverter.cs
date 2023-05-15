@@ -1,11 +1,10 @@
-﻿
-
-namespace GraphicalPlotter
+﻿namespace GraphicalPlotter
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Windows.Media;
+
     public class StringToFunctionConverter
     {
         public StringToFunctionConverter()
@@ -90,8 +89,50 @@ namespace GraphicalPlotter
             return true;
         }
 
-        //// false strings like : "-15**sin(2x)"; or "-15*sin(2x*x)"; are still beeing parsed, expecially in the last case it is deceiving, but if the user wants right inputs he will just have to stick to the rules.
+        public bool DoesFunctionContainOnlyValidChracters(string input)
+        {
+            char[] allowedSymbols = new char[] { '-', '+', '(', ')', '*', ',', 's', 'i', 'n', 'c', 'o', 't', 'x', 'a', '^', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ' ' };
 
+            //// it would return a "relative complement" which i had to look up because ive never seen that in english.
+            var invalidCharacters = input.Except(allowedSymbols);
+            if (invalidCharacters.Any())
+            {
+                return false;
+            }
+            else if (input.Contains("**"))
+            {
+                return false;
+            }
+
+            {
+                return true;
+            }
+        }
+
+        public bool ParseAStringWithMultituteOfSimpleMultiplication(string toBeParsed, out double result)
+        {
+            string[] multipliers = toBeParsed.Split('*');
+            double sum = 0;
+
+            foreach (string multi in multipliers)
+            {
+                double currentResult;
+                if (double.TryParse(multi, out currentResult))
+                {
+                    sum += currentResult;
+                }
+                else
+                {
+                    result = 0;
+                    return false;
+                }
+            }
+
+            result = sum;
+            return true;
+        }
+
+        //// false strings like : "-15**sin(2x)"; or "-15*sin(2x*x)"; are still beeing parsed, expecially in the last case it is deceiving, but if the user wants right inputs he will just have to stick to the rules.
         private bool TryParseSinusFunction(string sinusFunction, out FunctionParts rightFunction)
         {
             //// first strip of all whitespaces
@@ -279,12 +320,10 @@ namespace GraphicalPlotter
             {
                 constantMultiplier = -1;
             }
-            
             else if (constantMultiplierString.Split('*').Length >= 2
                 && constantMultiplierString.Split('*')[1].Length < 0
                 && double.TryParse(constantMultiplierString.Split('*')[1], out double secondmultiplier))
             {
-
                 //// constants like -4*3 will not be parsed, and well if the user cant calculate that in his head or calculater i guess its his own fault.
                 //// Can not just be 4* or *3 becouse of the second and term in this if statement, and also needs to be a parseable number, then we just take this string and convert it into a normal function , at this point the string could be anything like -4*8*-9 etc
                 //// and does not have a defined lenght, so we will just split at the "*" mark and try to sum up all parts, if the split does not work there maybe is another problem in the function.
@@ -328,6 +367,7 @@ namespace GraphicalPlotter
                     rightFunction = null;
                     return false;
                 }
+
                 if (!(exponentenDegree <= 10))
                 {
                     rightFunction = null;
@@ -336,28 +376,6 @@ namespace GraphicalPlotter
             }
 
             rightFunction = new PolynomialComponent(exponentenDegree, constantMultiplier);
-            return true;
-        }
-
-        public bool ParseAStringWithMultituteOfSimpleMultiplication(string toBeParsed, out double result)
-        {
-            string[] multipliers = toBeParsed.Split('*');
-            double sum = 0;
-
-            foreach (string multi in multipliers)
-            {
-                double currentResult;
-                if (double.TryParse(multi, out currentResult))
-                {
-                    sum += currentResult;
-                }
-                else
-                {
-                    result = 0;
-                    return false;
-                }
-            }
-            result = sum;
             return true;
         }
 
@@ -372,6 +390,7 @@ namespace GraphicalPlotter
                 {
                     newStringToSplit += "j";
                 }
+
                 newStringToSplit += currentCharacter;
                 lastCharacter = currentCharacter;
             }
@@ -380,23 +399,5 @@ namespace GraphicalPlotter
         }
 
         //// for the current implementation this is enough
-        public bool DoesFunctionContainOnlyValidChracters(string input)
-        {
-            char[] allowedSymbols = new char[] { '-', '+', '(', ')', '*', ',', 's', 'i', 'n', 'c', 'o', 't', 'x', 'a', '^', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ' ' };
-
-            //// it would return a "relative complement" which i had to look up because ive never seen that in english.
-            var invalidCharacters = input.Except(allowedSymbols);
-            if (invalidCharacters.Any())
-            {
-                return false;
-            }
-            else if (input.Contains("**"))
-            {
-                return false;
-            }
-            {
-                return true;
-            }
-        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace GraphicalPlotter
 {
-    using Microsoft.Win32;
+    
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -11,16 +11,111 @@
     using System.Windows.Input;
     using System.Windows.Media;
     using System.Xml.Serialization;
+    using Microsoft.Win32;
 
     public class MainViewModel : INotifyPropertyChanged
     {
         // TODO add more checks to the properties
 
         private double textBoxXAxisMin = -10;
+        private double textBoxXAxisMax = 10;
+        private bool checkBoxXAxisVisibility = true;
+        private Color colorPickerXAxisColor = Colors.DarkSlateBlue;
+
+        private Color colorPickerXAxisGridColor = Colors.LightGray;
+        private bool checkBoxXAxisGridVisibility = true;
+        private double textBoxYAxisGridIntervall = 2;
+
+        private double textBoxYAxisMin = -10;
+        private double textBoxYAxisMax = 10;
+        private bool checkBoxYAxisVisibility = true;
+        private Color colorPickerYAxisColor = Colors.DarkSlateBlue;
+
+        private Color colorPickerYAxisGridColor = Colors.LightGray;
+        private bool checkBoxYAxisGridVisibility = true;
+        private double textBoxXAxisGridIntervall = 2;
+
+        private int pixelWidhtApp = 900;
+        private int pixelHeightApp = 600;
+        private int pixelWidhtCanvas = 630;
+        private int pixelHeightCanvas = 380;
+
+        private ObservableCollection<GraphicalFunctionViewModel> currentGraphicalFunctions;
+        private List<FunctionDrawInformation> drawInformationForFunctions;
+        private List<FunctionDrawInformation> drawInformationForAxis;
+        private List<FunctionDrawInformation> drawInformationForGridLines;
+        private string textBoxUserInputFunction = string.Empty;
+        private bool isApplicationDataInitalized;
+        private object lockObjectFunctions = new object();
+        private CanvasPixel zoomStartPoint;
+
+        public MainViewModel()
+        {
+            this.SaveDataHandler = new ApplicationStatusSaveDataHandler();
+
+            this.StringToFunctionConverter = new StringToFunctionConverter();
+
+            //// Application.Current.MainWindow.Closing better alternative??
+            Application.Current.Exit += this.OnWindowClosing;
+
+            this.TextBoxUserInputFunctionToolTip = "To Input a Function use the right format shown here. Using other formats may yield wrong inputs.\r\n PLEASE NOTE THAT THE NOTATION FOR DECIMALS IS BOUND TO YOUR LOCALICATION! \r\n Supported Functions are : sin,cos,tan and polynomial function up to a exponent degree of 10." +
+                                                    "\r\n a3*x^3+a2*x^2+a1*x+c \r\n a*sin(b*x)+c \r\n a*cos(b*x)+c\r\n a*tan(b*x)+c" + "\r\n \r\n it is also possible to combine polynomial functions with sin cos and tan like this: \r\n " +
+                                                    "5x^2+9x-8*cos(0,5x)";
+
+            this.CurrentGraphicalFunctions = new ObservableCollection<GraphicalFunctionViewModel>();
+            if (this.SaveDataHandler.TryToExtractBackupDataForApplication(
+                out AxisData savedXAxisData,
+                out AxisData savedYAxisData,
+                out AxisGridData savedXAxisGrid,
+                out AxisGridData savedYAxisGrid,
+                out List<GraphicalFunctionDisplayNameForSerialization> savedFunctions,
+                out bool hasUserChangedYAxisValues))
+            {
+                this.ReconstructAxisAndGridData(savedXAxisData, savedYAxisData, savedXAxisGrid, savedYAxisGrid, hasUserChangedYAxisValues);
+                this.IsApplicationDataInitalized = true;
+
+                this.ReconstructFunctionsFromFileInport(savedFunctions);
+            }
+            this.IsApplicationDataInitalized = true;
+
+            this.XAxisData = new AxisData(this.TextBoxXAxisMin, this.TextBoxXAxisMax, this.ColorPickerXAxisColor, this.CheckBoxXAxisVisibility);
+            this.YAxisData = new AxisData(this.TextBoxYAxisMin, this.TextBoxYAxisMax, this.ColorPickerYAxisColor, this.CheckBoxYAxisVisibility);
+            this.XAxisGrid = new AxisGridData(this.TextBoxXAxisGridIntervall, this.ColorPickerXAxisGridColor, this.CheckBoxXAxisGridVisibility);
+            this.YAxisGrid = new AxisGridData(this.TextBoxYAxisGridIntervall, this.ColorPickerYAxisGridColor, this.CheckBoxYAxisGridVisibility);
+
+            //// Setting the properties to the start values, also binding them by refernc i hope, i could also try to first initialzie the properties and then make a grid of them
+
+            this.MainGraphCanvas = new TwoDimensionalGraphCanvas(this.PixelWidhtCanvas, this.PixelHeightCanvas, this.XAxisData, this.YAxisData, this.XAxisGrid, this.YAxisGrid);
+            this.CanvasFunctionConverter = new FunctionToCanvasFunctionConverter(this.MainGraphCanvas);
+
+            this.UpdateDrawInformationForFunctions();
+            this.UpdateDrawInformationForAxis();
+            this.UpdateDrawInformationForGridLines();
+
+            BindingOperations.EnableCollectionSynchronization(this.CurrentGraphicalFunctions, this.lockObjectFunctions);
+            BindingOperations.EnableCollectionSynchronization(this.DrawInformationForAxis, this.lockObjectFunctions);
+            BindingOperations.EnableCollectionSynchronization(this.DrawInformationForGridLines, this.lockObjectFunctions);
+
+            this.PropertyChanged += this.UpdateCanvasAttributes;
+
+            //// I have no idea if this is good , or necessary to cast here, but i am going to do it becouse i couldnt get it to work otherwise
+            try
+            {
+                MainWindow plotterWindowWithCanvas = (MainWindow)Application.Current.MainWindow;
+                plotterWindowWithCanvas.OnCanvasZoomStart += this.UpdateStartPoint;
+                plotterWindowWithCanvas.OnCanvasZoomEnd += this.ZoomIntoCanvas;
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public double TextBoxXAxisMin
         {
-            get { return this.textBoxXAxisMin; }
+            get {
+                return this.textBoxXAxisMin; }
             set
             {
                 if (value != this.textBoxXAxisMin && value < this.TextBoxXAxisMax)
@@ -32,8 +127,6 @@
                 }
             }
         }
-
-        private double textBoxXAxisMax = 10;
 
         public double TextBoxXAxisMax
         {
@@ -49,8 +142,6 @@
             }
         }
 
-        public bool checkBoxXAxisVisibility = true;
-
         public bool CheckBoxXAxisVisibility
         {
             get { return this.checkBoxXAxisVisibility; }
@@ -65,8 +156,6 @@
             }
         }
 
-        private Color colorPickerXAxisColor = Colors.DarkSlateBlue;
-
         public Color ColorPickerXAxisColor
         {
             get { return this.colorPickerXAxisColor; }
@@ -80,8 +169,6 @@
                 }
             }
         }
-
-        private double textBoxXAxisGridIntervall = 2;
 
         public double TextBoxXAxisGridIntervall
         {
@@ -98,8 +185,6 @@
             }
         }
 
-        private Color colorPickerXAxisGridColor = Colors.LightGray;
-
         public Color ColorPickerXAxisGridColor
         {
             get { return this.colorPickerXAxisGridColor; }
@@ -114,8 +199,6 @@
             }
         }
 
-        public bool checkBoxXAxisGridVisibility = true;
-
         public bool CheckBoxXAxisGridVisibility
         {
             get { return this.checkBoxXAxisGridVisibility; }
@@ -129,8 +212,6 @@
                 }
             }
         }
-
-        private double textBoxYAxisMin = -10;
 
         public double TextBoxYAxisMin
         {
@@ -147,8 +228,6 @@
             }
         }
 
-        private double textBoxYAxisMax = 10;
-
         public double TextBoxYAxisMax
         {
             get { return this.textBoxYAxisMax; }
@@ -164,8 +243,6 @@
             }
         }
 
-        public bool checkBoxYAxisVisibility = true;
-
         public bool CheckBoxYAxisVisibility
         {
             get { return this.checkBoxYAxisVisibility; }
@@ -179,8 +256,6 @@
                 }
             }
         }
-
-        private Color colorPickerYAxisColor = Colors.DarkSlateBlue;
 
         public Color ColorPickerYAxisColor
         {
@@ -196,8 +271,6 @@
             }
         }
 
-        private double textBoxYAxisGridIntervall = 2;
-
         public double TextBoxYAxisGridIntervall
         {
             get { return this.textBoxYAxisGridIntervall; }
@@ -211,8 +284,6 @@
                 }
             }
         }
-
-        private Color colorPickerYAxisGridColor = Colors.LightGray;
 
         public Color ColorPickerYAxisGridColor
         {
@@ -228,8 +299,6 @@
             }
         }
 
-        public bool checkBoxYAxisGridVisibility = true;
-
         public bool CheckBoxYAxisGridVisibility
         {
             get { return this.checkBoxYAxisGridVisibility; }
@@ -243,8 +312,6 @@
                 }
             }
         }
-
-        private int pixelWidhtApp = 900;
 
         public int PixelWidhtApp
         {
@@ -260,8 +327,6 @@
             }
         }
 
-        private int pixelHeightApp = 600;
-
         public int PixelHeightApp
         {
             get { return this.pixelHeightApp; }
@@ -276,8 +341,6 @@
             }
         }
 
-        private int pixelWidhtCanvas = 630;
-
         public int PixelWidhtCanvas
         {
             get { return this.pixelWidhtCanvas; }
@@ -291,8 +354,6 @@
                 }
             }
         }
-
-        private int pixelHeightCanvas = 380;
 
         public int PixelHeightCanvas
         {
@@ -313,7 +374,6 @@
         public FunctionToCanvasFunctionConverter CanvasFunctionConverter { get; set; }
 
         //// TODO do i actually need the lock here???
-        private ObservableCollection<GraphicalFunctionViewModel> currentGraphicalFunctions;
 
         public ObservableCollection<GraphicalFunctionViewModel> CurrentGraphicalFunctions
         {
@@ -341,8 +401,6 @@
             }
         }
 
-        private List<FunctionDrawInformation> drawInformationForFunctions;
-
         public List<FunctionDrawInformation> DrawInformationForFunctions
         {
             get
@@ -368,8 +426,6 @@
                 }
             }
         }
-
-        private List<FunctionDrawInformation> drawInformationForAxis;
 
         public List<FunctionDrawInformation> DrawInformationForAxis
         {
@@ -397,8 +453,6 @@
             }
         }
 
-        private List<FunctionDrawInformation> drawInformationForGridLines;
-
         public List<FunctionDrawInformation> DrawInformationForGridLines
         {
             get
@@ -425,16 +479,12 @@
             }
         }
 
-        private object lockObjectFunctions = new object();
-
         public AxisData XAxisData { get; set; }
         public AxisData YAxisData { get; set; }
 
         public AxisGridData XAxisGrid { get; set; }
         public AxisGridData YAxisGrid { get; set; }
         public StringToFunctionConverter StringToFunctionConverter { get; set; }
-
-        private string textBoxUserInputFunction = string.Empty;
 
         public string TextBoxUserInputFunction
         {
@@ -455,8 +505,6 @@
         //FIELD todo
         public ApplicationStatusSaveDataHandler SaveDataHandler { get; set; }
 
-        public bool isApplicationDataInitalized;
-
         public bool IsApplicationDataInitalized
         {
             get { return this.isApplicationDataInitalized; }
@@ -470,8 +518,6 @@
         }
 
         public bool HasUserChangedYAxisSettings { get; set; }
-
-        private CanvasPixel zoomStartPoint;
 
         public CanvasPixel ZoomStartPoint
         {
@@ -719,6 +765,19 @@
             }
         }
 
+       
+
+        public bool AreAllCurrentFunctionsAutomaticlyScalable()
+        {
+            foreach (var functionVM in this.CurrentGraphicalFunctions)
+            {
+                if (!this.IsFunctionScalable(functionVM))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
         private void AddFunctionToCurrentFunction(GraphicalFunctionViewModel functionVM)
         {
             this.CurrentGraphicalFunctions.Add(functionVM);
@@ -735,18 +794,6 @@
             {
                 this.HasUserChangedYAxisSettings = true;
             }
-        }
-
-        public bool AreAllCurrentFunctionsAutomaticlyScalable()
-        {
-            foreach (var functionVM in this.CurrentGraphicalFunctions)
-            {
-                if (!this.IsFunctionScalable(functionVM))
-                {
-                    return false;
-                }
-            }
-            return true;
         }
 
         //// this is requirement is just so unnessary
@@ -916,67 +963,6 @@
 
                     this.AddFunctionToCurrentFunction(graphicalFunctionVM);
                 }
-            }
-        }
-
-        public MainViewModel()
-        {
-            this.SaveDataHandler = new ApplicationStatusSaveDataHandler();
-
-            this.StringToFunctionConverter = new StringToFunctionConverter();
-
-            //// Application.Current.MainWindow.Closing better alternative??
-            Application.Current.Exit += this.OnWindowClosing;
-
-            this.TextBoxUserInputFunctionToolTip = "To Input a Function use the right format shown here. Using other formats may yield wrong inputs.\r\n PLEASE NOTE THAT THE NOTATION FOR DECIMALS IS BOUND TO YOUR LOCALICATION! \r\n Supported Functions are : sin,cos,tan and polynomial function up to a exponent degree of 10." +
-                                                    "\r\n a3*x^3+a2*x^2+a1*x+c \r\n a*sin(b*x)+c \r\n a*cos(b*x)+c\r\n a*tan(b*x)+c" + "\r\n \r\n it is also possible to combine polynomial functions with sin cos and tan like this: \r\n " +
-                                                    "5x^2+9x-8*cos(0,5x)";
-
-            this.CurrentGraphicalFunctions = new ObservableCollection<GraphicalFunctionViewModel>();
-            if (this.SaveDataHandler.TryToExtractBackupDataForApplication(
-                out AxisData savedXAxisData,
-                out AxisData savedYAxisData,
-                out AxisGridData savedXAxisGrid,
-                out AxisGridData savedYAxisGrid,
-                out List<GraphicalFunctionDisplayNameForSerialization> savedFunctions,
-                out bool hasUserChangedYAxisValues))
-            {
-                this.ReconstructAxisAndGridData(savedXAxisData, savedYAxisData, savedXAxisGrid, savedYAxisGrid, hasUserChangedYAxisValues);
-                this.IsApplicationDataInitalized = true;
-
-                this.ReconstructFunctionsFromFileInport(savedFunctions);
-            }
-            this.IsApplicationDataInitalized = true;
-
-            this.XAxisData = new AxisData(this.TextBoxXAxisMin, this.TextBoxXAxisMax, this.ColorPickerXAxisColor, this.CheckBoxXAxisVisibility);
-            this.YAxisData = new AxisData(this.TextBoxYAxisMin, this.TextBoxYAxisMax, this.ColorPickerYAxisColor, this.CheckBoxYAxisVisibility);
-            this.XAxisGrid = new AxisGridData(this.TextBoxXAxisGridIntervall, this.ColorPickerXAxisGridColor, this.CheckBoxXAxisGridVisibility);
-            this.YAxisGrid = new AxisGridData(this.TextBoxYAxisGridIntervall, this.ColorPickerYAxisGridColor, this.CheckBoxYAxisGridVisibility);
-
-            //// Setting the properties to the start values, also binding them by refernc i hope, i could also try to first initialzie the properties and then make a grid of them
-
-            this.MainGraphCanvas = new TwoDimensionalGraphCanvas(this.PixelWidhtCanvas, this.PixelHeightCanvas, this.XAxisData, this.YAxisData, this.XAxisGrid, this.YAxisGrid);
-            this.CanvasFunctionConverter = new FunctionToCanvasFunctionConverter(this.MainGraphCanvas);
-
-            this.UpdateDrawInformationForFunctions();
-            this.UpdateDrawInformationForAxis();
-            this.UpdateDrawInformationForGridLines();
-
-            BindingOperations.EnableCollectionSynchronization(this.CurrentGraphicalFunctions, this.lockObjectFunctions);
-            BindingOperations.EnableCollectionSynchronization(this.DrawInformationForAxis, this.lockObjectFunctions);
-            BindingOperations.EnableCollectionSynchronization(this.DrawInformationForGridLines, this.lockObjectFunctions);
-
-            this.PropertyChanged += this.UpdateCanvasAttributes;
-
-            //// I have no idea if this is good , or necessary to cast here, but i am going to do it becouse i couldnt get it to work otherwise
-            try
-            {
-                MainWindow plotterWindowWithCanvas = (MainWindow)Application.Current.MainWindow;
-                plotterWindowWithCanvas.OnCanvasZoomStart += this.UpdateStartPoint;
-                plotterWindowWithCanvas.OnCanvasZoomEnd += this.ZoomIntoCanvas;
-            }
-            catch (Exception)
-            {
             }
         }
 
@@ -1176,7 +1162,7 @@
             }
         }
 
-        public void UpdateFullCanvas()
+        private void UpdateFullCanvas()
         {
             this.UpdateDrawInformationForAxis();
 
@@ -1215,7 +1201,7 @@
 
         //// yeah i know every function gets updated, but for now this is good enough
         //// TODO fix, only the function that has changed needs updates to its information.
-        public void UpdateDrawInformationForFunctions(object sender, UserInputFunctionChangedEventArgs e)
+        private void UpdateDrawInformationForFunctions(object sender, UserInputFunctionChangedEventArgs e)
         {
             if (this.IsApplicationDataInitalized)
             {
@@ -1235,7 +1221,7 @@
             }
         }
 
-        public void UpdateDrawInformationForAxis()
+        private void UpdateDrawInformationForAxis()
         {
             if (this.IsApplicationDataInitalized)
             {
@@ -1246,7 +1232,7 @@
             }
         }
 
-        public void UpdateDrawInformationForGridLines()
+        private void UpdateDrawInformationForGridLines()
         {
             if (this.IsApplicationDataInitalized)
             {
@@ -1256,7 +1242,5 @@
                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.DrawInformationForGridLines)));
             }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

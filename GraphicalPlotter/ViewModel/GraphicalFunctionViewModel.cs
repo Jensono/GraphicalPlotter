@@ -1,6 +1,4 @@
-﻿
-
-namespace GraphicalPlotter
+﻿namespace GraphicalPlotter
 {
     using System;
     using System.Collections.Generic;
@@ -13,132 +11,11 @@ namespace GraphicalPlotter
         //// This is so dumb i fucking hate events in C# WHY WHY do i need  a callback to call an event please microsoft
         private bool isInitialized = false;
 
-        private bool IsInitialized
-        {
-            get
-            {
-                return this.isInitialized;
-            }
-            set
-            {
-                if (this.isInitialized != value)
-                {
-                    this.isInitialized = value;
-                }
-            }
-        }
-
-        public event EventHandler<UserInputFunctionChangedEventArgs> OnUserFunctionChanged;
-
         private bool functionVisibility = true;
-
-        public bool FunctionVisibility
-        {
-            get
-            {
-                return this.functionVisibility;
-            }
-            set
-            {
-                if (this.functionVisibility != value)
-                {
-                    this.functionVisibility = value;
-
-                    if (this.IsInitialized)
-                    {
-                        this.OnUserFunctionChanged(this, new UserInputFunctionChangedEventArgs());
-                    }
-
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.FunctionVisibility)));
-                }
-            }
-        }
-
         private Color functionColor;
-
-        public Color FunctionColor
-        {
-            get
-            {
-                return this.functionColor;
-            }
-            set
-            {
-                // not nullable
-
-                this.functionColor = value;
-
-                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.FunctionColor)));
-            }
-        }
-
-        private List<FunctionParts> functionParts;
-
-        public List<FunctionParts> FunctionParts
-        {
-            get
-            {
-                return this.functionParts;
-            }
-            set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException($"{nameof(this.FunctionParts)} can not be null");
-                }
-                else
-                {
-                    this.functionParts = value;
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.FunctionParts)));
-                }
-            }
-        }
-
         private string functionDisplayName;
-
-        public string FunctionDisplayName
-        {
-            get
-            {
-                return this.functionDisplayName;
-            }
-            set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException($"{nameof(this.FunctionDisplayName)} can not be null");
-                }
-                else
-                {
-                    this.functionDisplayName = value;
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.FunctionDisplayName)));
-                }
-            }
-        }
-
         private string customUserSetName;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public string CustomUserSetName
-        {
-            get
-            {
-                return this.customUserSetName;
-            }
-            set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException($"{nameof(this.CustomUserSetName)} can not be null");
-                }
-                else
-                {
-                    this.customUserSetName = value;
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CustomUserSetName)));
-                }
-            }
-        }
+        private List<FunctionParts> functionParts;
 
         public GraphicalFunctionViewModel(GraphicalFunction graphicalFunction)
         {
@@ -159,6 +36,10 @@ namespace GraphicalPlotter
             this.FunctionVisibility = visibility;
             this.IsInitialized = true;
         }
+
+        public event EventHandler<UserInputFunctionChangedEventArgs> OnUserFunctionChanged;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand OpenColorPicker
         {
@@ -191,9 +72,121 @@ namespace GraphicalPlotter
 
                             this.FunctionColor = selectedColor;
                             this.OnUserFunctionChanged(this, new UserInputFunctionChangedEventArgs());
-                            
                         }
                     });
+            }
+        }
+
+        private bool IsInitialized
+        {
+            get
+            {
+                return this.isInitialized;
+            }
+            set
+            {
+                if (this.isInitialized != value)
+                {
+                    this.isInitialized = value;
+                }
+            }
+        }
+
+        public bool FunctionVisibility
+        {
+            get
+            {
+                return this.functionVisibility;
+            }
+            set
+            {
+                if (this.functionVisibility != value)
+                {
+                    this.functionVisibility = value;
+
+                    if (this.IsInitialized)
+                    {
+                        this.OnUserFunctionChanged(this, new UserInputFunctionChangedEventArgs());
+                    }
+
+                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.FunctionVisibility)));
+                }
+            }
+        }
+
+        public Color FunctionColor
+        {
+            get
+            {
+                return this.functionColor;
+            }
+            set
+            {
+                // not nullable
+
+                this.functionColor = value;
+
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.FunctionColor)));
+            }
+        }
+
+        public List<FunctionParts> FunctionParts
+        {
+            get
+            {
+                return this.functionParts;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException($"{nameof(this.FunctionParts)} can not be null");
+                }
+                else
+                {
+                    this.functionParts = value;
+                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.FunctionParts)));
+                }
+            }
+        }
+
+        public string FunctionDisplayName
+        {
+            get
+            {
+                return this.functionDisplayName;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException($"{nameof(this.FunctionDisplayName)} can not be null");
+                }
+                else
+                {
+                    this.functionDisplayName = value;
+                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.FunctionDisplayName)));
+                }
+            }
+        }
+
+        public string CustomUserSetName
+        {
+            get
+            {
+                return this.customUserSetName;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException($"{nameof(this.CustomUserSetName)} can not be null");
+                }
+                else
+                {
+                    this.customUserSetName = value;
+                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CustomUserSetName)));
+                }
             }
         }
 
@@ -208,6 +201,7 @@ namespace GraphicalPlotter
             }
             return sum;
         }
+
         //// Todo no used right now - delete maybe
         public string CreateFunctionFullName()
         {
