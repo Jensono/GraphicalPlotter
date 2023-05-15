@@ -9,8 +9,12 @@
 //-----------------------------------------------------------------------
 namespace GraphicalPlotter
 {
+    using System;
     using System.Windows;
-    public class CanvasZoomEventArguments
+    /// <summary>
+    /// This class is used as the Event Arguments for the Canvas zoom event.
+    /// </summary>
+    public class CanvasZoomEventArguments : EventArgs
     {
         /// <summary>
         /// The field for the Point that is transfered by the event.
@@ -24,6 +28,11 @@ namespace GraphicalPlotter
             this.currentMouseLocationOnCanvas = mouseLocation;
         }
 
+        /// <summary>
+        /// Gets or sets the axis minimum value.
+        /// </summary>
+        /// <value> The double representing the axis minimum.</value>
+        /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public Point CurrentMouseLocationOnCanvas
         {
             get 
@@ -33,7 +42,11 @@ namespace GraphicalPlotter
 
             set
             {
-                if (value != null)
+                if (value == null)
+                {
+                    throw new ArgumentNullException($"{nameof(this.CurrentMouseLocationOnCanvas)} can not be null");
+                }
+                else
                 {
                     this.currentMouseLocationOnCanvas = value;
                 }

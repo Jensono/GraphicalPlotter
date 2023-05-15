@@ -12,6 +12,9 @@ namespace GraphicalPlotter
     using System.ComponentModel;
     using System.Windows.Media;
 
+    /// <summary>
+    /// This class is used as the view model for the color picker window.
+    /// </summary>
     public class ColorPickerViewModel : INotifyPropertyChanged
     {
         /// <summary>
@@ -48,7 +51,10 @@ namespace GraphicalPlotter
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-
+        /// <summary>
+        /// Gets or sets the red byte value for the color.
+        /// </summary>
+        /// <value> The current amount of red for the color.</value>
         public byte RedValue
         {
             get 
@@ -63,6 +69,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the green byte value for the color.
+        /// </summary>
+        /// <value> The current amount of green for the color.</value>
         public byte GreenValue
         {
             get 
@@ -77,6 +87,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the blue byte value for the color.
+        /// </summary>
+        /// <value> The current amount of blue for the color.</value>
         public byte BlueValue
         {
             get 
@@ -91,8 +105,11 @@ namespace GraphicalPlotter
             }
         }
 
-        
 
+        /// <summary>
+        /// Gets or sets the SolidColorBrush for the ColorPickerViewModel.
+        /// </summary>
+        /// <value> The current SolidColorBrush selected.</value>
         public SolidColorBrush SelectedColor
         {
             get

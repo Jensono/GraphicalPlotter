@@ -40,7 +40,16 @@ namespace GraphicalPlotter
             this.DataContext = this.colorPickerViewModel;
         }
 
+        /// <summary>
+        /// Gets or sets the SolidColorBrush for the ColorPickerWindow
+        /// </summary>
+        /// <value> The current SolidColorBrush selected.</value>
         public SolidColorBrush SelectedColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the color has been picked.
+        /// </summary>
+        /// <value> The visbility of the grid.</value>
         public bool IsColorPicked { get; set; }
 
         private void OKButton_Click(object sender, RoutedEventArgs e)

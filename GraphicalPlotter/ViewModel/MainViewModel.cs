@@ -261,6 +261,10 @@ namespace GraphicalPlotter
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Gets or sets the textbox contents for the minimum value of the x-axis.
+        /// </summary>
+        /// <value> The textbox contents for the minimum value of the x-axis.</value>
         public double TextBoxXAxisMin
         {
             get
@@ -280,6 +284,11 @@ namespace GraphicalPlotter
             }
         }
 
+
+        /// <summary>
+        /// Gets or sets the textbox contents for the maximum value of the x-axis.
+        /// </summary>
+        /// <value> The textbox contents for the maximum value of the x-axis.</value>
         public double TextBoxXAxisMax
         {
             get
@@ -298,6 +307,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the check box for the x-axis visibility is checked.
+        /// </summary>
+        /// <value> The boolean indicating whether or not the check box for the x-axis visibility is checked. </value>
         public bool CheckBoxXAxisVisibility
         {
             get
@@ -316,6 +329,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the Color for the x-axis.
+        /// </summary>
+        /// <value> The Color for the x-axis.</value>
         public Color ColorPickerXAxisColor
         {
             get
@@ -334,6 +351,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the distance between two x-axis grid lines as an actual value, not in pixels.
+        /// </summary>
+        /// <value> The distance between two x-axis grid lines as an actual value, not in pixels.</value>
         public double TextBoxXAxisGridIntervall
         {
             get
@@ -353,6 +374,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the Color for the x-axis grid.
+        /// </summary>
+        /// <value> The Color for the x-axis grid .</value>
         public Color ColorPickerXAxisGridColor
         {
             get
@@ -371,6 +396,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the check box for the x-axis grid visibility is checked.
+        /// </summary>
+        /// <value> The boolean indicating whether or not the check box for the x-axis grid visibility is checked. </value>
         public bool CheckBoxXAxisGridVisibility
         {
             get
@@ -389,6 +418,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the textbox contents for the minimum value of the y-axis.
+        /// </summary>
+        /// <value> The textbox contents for the minimum value of the y-axis.</value>
         public double TextBoxYAxisMin
         {
             get
@@ -408,6 +441,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the textbox contents for the maximum value of the y-axis.
+        /// </summary>
+        /// <value> The textbox contents for the maximum value of the y-axis.</value>
         public double TextBoxYAxisMax
         {
             get
@@ -427,6 +464,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the check box for the y-axis visibility is checked.
+        /// </summary>
+        /// <value> The boolean indicating whether or not the check box for the y-axis visibility is checked. </value>
         public bool CheckBoxYAxisVisibility
         {
             get
@@ -445,6 +486,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the Color for the y-axis line.
+        /// </summary>
+        /// <value> The Color for the y-axis line.</value>
         public Color ColorPickerYAxisColor
         {
             get
@@ -463,6 +508,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the distance between two y-axis grid lines as an actual value, not in pixels.
+        /// </summary>
+        /// <value> The distance between two y-axis grid lines as an actual value, not in pixels.</value>
         public double TextBoxYAxisGridIntervall
         {
             get
@@ -481,6 +530,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the Color for the y-axis grid lines.
+        /// </summary>
+        /// <value> The Color for the y-axis grid lines.</value>
         public Color ColorPickerYAxisGridColor
         {
             get
@@ -499,6 +552,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the check box for the y-axis grid visibility is checked.
+        /// </summary>
+        /// <value> The boolean indicating whether or not the check box for the y-axis grid visibility is checked. </value>
         public bool CheckBoxYAxisGridVisibility
         {
             get
@@ -517,6 +574,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the width of the Main window in pixels.
+        /// </summary>
+        /// <value> The the width of the Main window in pixels.</value>
         public int PixelWidhtApp
         {
             get
@@ -535,6 +596,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the height of the Main window in pixels.
+        /// </summary>
+        /// <value> The height of the Main window in pixels.</value>
         public int PixelHeightApp
         {
             get
@@ -553,6 +618,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the widht of the canvas inside the main window in pixels.
+        /// </summary>
+        /// <value> The widht of the canvas inside the main window in pixels.</value>
         public int PixelWidhtCanvas
         {
             get
@@ -571,6 +640,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the height of the canvas inside the main window in pixels.
+        /// </summary>
+        /// <value> The height of the canvas inside the main window in pixels.</value>
         public int PixelHeightCanvas
         {
             get
@@ -589,6 +662,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the TwoDimensionalGraphCanvas used inside the MainViewModel. Its used to have a collection of all attributes of the canvas.
+        /// </summary>
+        /// <value> The TwoDimensionalGraphCanvas used inside the MainViewModel. Its used to have a collection of all attributes of the canvas.</value>
         public TwoDimensionalGraphCanvas MainGraphCanvas
         {
             get
@@ -607,6 +684,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the FunctionToCanvasFunctionConverter used inside the MainViewModel. Its used to calculate the drawing points for the functions.
+        /// </summary>
+        /// <value> The FunctionToCanvasFunctionConverter used inside the MainViewModel. Its used to calculate the drawing points for the functions.</value>
         public FunctionToCanvasFunctionConverter CanvasFunctionConverter
         {
             get 
@@ -627,6 +708,11 @@ namespace GraphicalPlotter
 
         //// TODO do i actually need the lock here???
 
+        /// <summary>
+        /// Gets or sets the Obserable collection that contain all of the GraphicalFunctionViewModels used to display all the functions attributes.
+        /// </summary>
+        /// <value> The Obserable collection that contain all of the GraphicalFunctionViewModels used to display all the functions attributes.</value>
+        /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public ObservableCollection<GraphicalFunctionViewModel> CurrentGraphicalFunctions
         {
             get
@@ -639,7 +725,7 @@ namespace GraphicalPlotter
 
             set
             {
-                if (value is null)
+                if (value == null)
                 {
                     throw new ArgumentNullException($"{nameof(CurrentGraphicalFunctions)} can not be null");
                 }
@@ -653,6 +739,11 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the List that contain the draw information for the functions.
+        /// </summary>
+        /// <value> The List that contain the draw information for the functions.</value>
+        /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public List<FunctionDrawInformation> DrawInformationForFunctions
         {
             get
@@ -679,6 +770,11 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the List that contain the draw information for the axis lines.
+        /// </summary>
+        /// <value> The  List that contain the draw information for the axis lines.</value>
+        /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public List<FunctionDrawInformation> DrawInformationForAxis
         {
             get
@@ -705,6 +801,11 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the List that contain the draw information for the grid lines.
+        /// </summary>
+        /// <value> The  List that contain the draw information for the grid lines.</value>
+        /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public List<FunctionDrawInformation> DrawInformationForGridLines
         {
             get
@@ -731,6 +832,11 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the AxisData for the x-axis.
+        /// </summary>
+        /// <value> The AxisData for the x-axis.</value>
+        /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public AxisData XAxisData
         {
             get
@@ -749,6 +855,11 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the AxisData for the y-axis.
+        /// </summary>
+        /// <value> The AxisData for the y-axis.</value>
+        /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public AxisData YAxisData
         {
             get
@@ -767,6 +878,11 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the AxisGridData for the x-axis.
+        /// </summary>
+        /// <value> The AxisGridData for the x-axis.</value>
+        /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public AxisGridData XAxisGrid
         {
             get
@@ -785,6 +901,11 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the AxisGridData for the y-axis.
+        /// </summary>
+        /// <value> The AxisGridData for the y-axis.</value>
+        /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public AxisGridData YAxisGrid
         {
             get
@@ -802,7 +923,12 @@ namespace GraphicalPlotter
                 this.yAxisGrid = value;
             }
         }
-                
+
+        /// <summary>
+        /// Gets or sets the StringToFunctionConverter used to convert a user input string into a mathematical function.
+        /// </summary>
+        /// <value> The StringToFunctionConverter used to convert a user input string into a mathematical function.</value>
+        /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public StringToFunctionConverter StringToFunctionConverter
         {
             get
@@ -820,7 +946,12 @@ namespace GraphicalPlotter
                 this.stringToFunctionConverter = value;
             }
         }
-                
+
+        /// <summary>
+        /// Gets or sets the ApplicationStatusSaveDataHandler used to save the application data when the window is closed to garantee persistance of data.
+        /// </summary>
+        /// <value> The ApplicationStatusSaveDataHandler used to save the application data when the window is closed to garantee persistance of data.</value>
+        /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public ApplicationStatusSaveDataHandler SaveDataHandler
         {
             get 
@@ -839,10 +970,22 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the string that is used as a tooltip for the user, to explain to him how to enter a mathematical function to guarantee good results.
+        /// </summary>
+        /// <value> The string that is used as a tooltip for the user, to explain to him how to enter a mathematical function to guarantee good results.</value>
         public string TextBoxUserInputFunctionToolTip { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the user has changed the y-axis settings. If the user has changed values for the y-axis autoscaling will stop.
+        /// </summary>
+        /// <value> A value indicating whether or not the user has changed the y-axis settings. If the user has changed values for the y-axis autoscaling will stop.</value>
         public bool HasUserChangedYAxisSettings { get; set; }
 
+        /// <summary>
+        /// Gets or sets the current user input string inside the TextBoxUserInputFunction.
+        /// </summary>
+        /// <value> The current user input string inside the TextBoxUserInputFunction.</value>
         public string TextBoxUserInputFunction
         {
             get
@@ -861,6 +1004,12 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the the application data has been completly set. 
+        /// If the data is not set there are no updates to the canvas and some property will not set event when they are changed.
+        /// </summary>
+        /// <value> A value indicating whether or not the the application data has been completly set.
+        /// If the data is not set there are no updates to the canvas and some property will not set event when they are changed.</value>
         public bool IsApplicationDataInitalized
         {
             get
@@ -877,6 +1026,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the current used Zoom start Point that was set when the user started zooming into the canvas by opening a window with this mouse.
+        /// </summary>
+        /// <value> The current used Zoom start Point that was set when the user started zooming into the canvas by opening a window with this mouse.</value>
         public CanvasPixel ZoomStartPoint
         {
             get
@@ -893,6 +1046,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets a command to open a new user input string as a function to the list of current functions.
+        /// </summary>
+        /// <value> A command to open a new user input string as a function to the list of current functions.</value>
         public ICommand AddFunctionCommand
         {
             get
@@ -917,6 +1074,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets a command that opens a new ColorPickerWindow in which the user can select a color for the bound element of the WPF application.
+        /// </summary>
+        /// <value> A command that opens a new ColorPickerWindow in which the user can select a color for the bound element of the WPF application.</value>
         public ICommand OpenColorPicker
         {
             get
@@ -965,6 +1126,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets a command that saves the current Functions to a file for later use.
+        /// </summary>
+        /// <value> A command that saves the current Functions to a file for later use.</value>
         public ICommand SaveFunctionsToFile
         {
             get
@@ -999,6 +1164,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets a command that imports files that contain functions. The functions that were in the application before will be removed and replaced with the imported ones.
+        /// </summary>
+        /// <value> A command that imports files that contain functions. The functions that were in the application before will be removed and replaced with the imported ones.</value>
         public ICommand InportFunctionsFromFile
         {
             get
@@ -1032,14 +1201,22 @@ namespace GraphicalPlotter
                                 }
                             }
 
-                            this.ReconstructFunctionsFromFileInport(deserializedFunctions);
-                            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CurrentGraphicalFunctions)));
-                            this.UpdateDrawInformationForFunctions();
+                            if (deserializedFunctions.Count > 0)
+                            {
+                                this.ReconstructFunctionsFromFileInport(deserializedFunctions);
+                                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CurrentGraphicalFunctions)));
+                                this.UpdateDrawInformationForFunctions();
+                            }
+                            
                         }
                     });
             }
         }
 
+        /// <summary>
+        /// Gets a command that restores all the axis and grid values to the default values.
+        /// </summary>
+        /// <value> A command that restores all the axis and grid values to the default values.</value>
         public ICommand RestoreDefaultValuesForAxisAndGridData
         {
             get
@@ -1080,6 +1257,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets a command that deletes all current functions.
+        /// </summary>
+        /// <value> A command that deletes all current functions.</value>
         public ICommand DeleteAllCurrentFunctions
         {
             get
@@ -1103,6 +1284,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets a command that resets the automatic scaling. Can be used if the user already added a function that can not be automaticly scaled and removed that function.
+        /// </summary>
+        /// <value> A command that resets the automatic scaling. Can be used if the user already added a function that can not be automaticly scaled and removed that function.</value>
         public ICommand ResetAutomaticScaling
         {
             get

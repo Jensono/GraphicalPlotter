@@ -29,9 +29,28 @@ namespace GraphicalPlotter
         {
         }
 
+        /// <summary>
+        /// Gets or sets the string that is used to show the mathematical function.
+        /// </summary>
+        /// <value> The string that is used to show the mathematical function.</value>
         public string FunctionName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the string that is set by the user to name the function.
+        /// </summary>
+        /// <value> The string  that is set by the user to name the function.</value>
         public string UserSetNameForFunction { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Color of the Function.
+        /// </summary>
+        /// <value> The current color for the function.</value>
         public Color FunctionColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the function is visible.
+        /// </summary>
+        /// <value> The visbility of the function.</value>
         public bool FunctionVisibility { get; set; }
     }
 }

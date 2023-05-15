@@ -14,6 +14,10 @@ namespace GraphicalPlotter
     using System.IO;
     using System.Windows.Media;
     using System.Xml.Serialization;
+
+    /// <summary>
+    /// The class used for saving the current status of the application as an xml file.
+    /// </summary>
     public class ApplicationStatusSaveDataHandler
     {
         public ApplicationStatusSaveDataHandler()
@@ -59,7 +63,8 @@ namespace GraphicalPlotter
             out List<GraphicalFunctionDisplayNameForSerialization> functions,
             out bool hasUserChangedYAxisValues)
 
-        {   xAxisData = new AxisData(-10, 10, Colors.Azure, true);
+        {
+            xAxisData = new AxisData(-10, 10, Colors.Azure, true);
             yAxisData = new AxisData(-10, 10, Colors.Azure, true);
             xGridData = new AxisGridData(1, Colors.LightSlateGray, true);
             yGridData = new AxisGridData(1, Colors.LightSlateGray, true);
@@ -75,7 +80,7 @@ namespace GraphicalPlotter
                     XmlSerializer plotterDeserializer = new XmlSerializer(typeof(PlotterFullSaveData));
 
                     using (FileStream fileStream = new FileStream(backupPath, FileMode.Open))
-                    {              
+                    {
                         PlotterFullSaveData fullSaveData = (PlotterFullSaveData)plotterDeserializer.Deserialize(fileStream);
 
                         xAxisData = new AxisData(fullSaveData.XAxisSaveData.AxisMin, fullSaveData.XAxisSaveData.AxisMax, fullSaveData.XAxisSaveData.AxisLineColor, fullSaveData.XAxisSaveData.AxisLineVisibility);
@@ -84,7 +89,6 @@ namespace GraphicalPlotter
                         yAxisData = new AxisData(fullSaveData.YAxisSaveData.AxisMin, fullSaveData.YAxisSaveData.AxisMax, fullSaveData.YAxisSaveData.AxisLineColor, fullSaveData.YAxisSaveData.AxisLineVisibility);
                         yGridData = new AxisGridData(fullSaveData.YAxisSaveData.GridIntervall, fullSaveData.YAxisSaveData.GridLineColor, fullSaveData.YAxisSaveData.GridVisibility);
 
-                        
                         functions = fullSaveData.SerializationFunctionList;
                         hasUserChangedYAxisValues = fullSaveData.HasUserChangedYAxis;
                     }
@@ -96,13 +100,12 @@ namespace GraphicalPlotter
                     return false;
                 }
             }
-            catch (InvalidOperationException) 
+            catch (InvalidOperationException)
             {
                 return false;
             }
             catch (Exception)
             {
-               
                 return false;
             }
         }

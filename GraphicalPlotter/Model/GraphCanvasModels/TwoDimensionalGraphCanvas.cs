@@ -13,11 +13,34 @@ namespace GraphicalPlotter
 
     public class TwoDimensionalGraphCanvas
     {
+        /// <summary>
+        /// The field for the Pixel width of the canvas in pixel.
+        /// </summary>
         private int widthInPixel;
+
+        /// <summary>
+        /// The field for the Pixel height of the canvas in pixel.
+        /// </summary>
         private int heightInPixel;
+
+        /// <summary>
+        /// The field for Axis data for the x-axis.
+        /// </summary>
         private AxisData xAxisData;
+
+        /// <summary>
+        /// The field for Axis data for the y-axis.
+        /// </summary>
         private AxisData yAxisData;
+
+        /// <summary>
+        /// The field for Axis grid data for the x-axis.
+        /// </summary>
         private AxisGridData xAxisGridData;
+
+        /// <summary>
+        /// The field for Axis grid data for the y-axis.
+        /// </summary>
         private AxisGridData yAxisGridData;
 
         public TwoDimensionalGraphCanvas(int widthPixel, int heightPixel, AxisData xAxisData, AxisData yAxisData, AxisGridData xAxisGrid, AxisGridData yAxisGrid)
@@ -30,18 +53,31 @@ namespace GraphicalPlotter
             this.YAxisGridData = yAxisGrid;
         }
 
+        /// <summary>
+        /// Gets or sets the Width in pixel for the Graph canvas.
+        /// </summary>
+        /// <value> The Width in pixel for the Graph canvas.</value>
         public int WidthInPixel
         {
             get { return this.widthInPixel; }
             set { this.widthInPixel = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the Height in pixel for the Graph canvas.
+        /// </summary>
+        /// <value> The Height in pixel for the Graph canvas.</value>
         public int HeightInPixel
         {
             get { return this.heightInPixel; }
             set { this.heightInPixel = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the AxisData used for the x-axis inside the two dimensional Canvas.
+        /// </summary>
+        /// <value> The AxisData used for the x-axis inside the two dimensional Canvas. </value>
+        /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public AxisData XAxisData
         {
             get
@@ -60,6 +96,11 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the AxisData used for the y-axis inside the two dimensional Canvas.
+        /// </summary>
+        /// <value> The AxisData used for the y-axis inside the two dimensional Canvas. </value>
+        /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public AxisData YAxisData
         {
             get
@@ -78,6 +119,11 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the AxisGridData used for the x-axis inside the two dimensional Canvas.
+        /// </summary>
+        /// <value> The AxisGridData used for the x-axis inside the two dimensional Canvas. </value>
+        /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public AxisGridData XAxisGridData
         {
             get 
@@ -96,6 +142,11 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the AxisGridData used for the y-axis inside the two dimensional Canvas.
+        /// </summary>
+        /// <value> The AxisGridData used for the y-axis inside the two dimensional Canvas. </value>
+        /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public AxisGridData YAxisGridData
         {
             get 

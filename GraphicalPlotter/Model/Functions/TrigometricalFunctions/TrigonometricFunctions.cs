@@ -11,6 +11,9 @@ namespace GraphicalPlotter
 {
     public abstract class TrigonometricFunctions : FunctionParts
     {
+        /// <summary>
+        /// The field for the degree multiplier of the the trigometric function.
+        /// </summary>
         private double degreeMultiplier;
       
 
@@ -19,6 +22,10 @@ namespace GraphicalPlotter
             this.DegreeMultiplier = degreeMultiplier;
         }
 
+        /// <summary>
+        /// Gets or sets the degree multiplier for the trigonometric function.
+        /// </summary>
+        /// <value> The degree multiplier for the trigonometric function.</value>
         public double DegreeMultiplier
         {
             get

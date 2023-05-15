@@ -15,6 +15,9 @@ namespace GraphicalPlotter
 
     public class GraphicalFunction
     {
+        /// <summary>
+        /// The field for display name of the function as a string.
+        /// </summary>
         private string functionDisplayName;
 
         //// is a list than can hold a multitute of polynomial components eg.: 5x^3,2x^1,5, | that can then be used to struture a polynomial. Can also hold Trigonometric functions but then the list is only 1 long.
@@ -22,10 +25,19 @@ namespace GraphicalPlotter
         ////  if a user can not just input a string then this will have to be generated when initzializing the class.
         //// if you want to add a contant to any of the functions or the trig ones you need to add a polynom of order 0
 
+        /// <summary>
+        /// The field for the collection of function componets for this graphical function.
+        /// </summary>
         private List<FunctionParts> functionComponents = new List<FunctionParts>();
 
+        /// <summary>
+        /// The field for the color of the Graphical function.
+        /// </summary>
         private Color functionColor;
 
+        /// <summary>
+        /// The field for the visbility of the function.
+        /// </summary>
         private bool visibility;
 
         public GraphicalFunction(List<FunctionParts> functionParts, Color functionColor)
@@ -36,6 +48,10 @@ namespace GraphicalPlotter
             this.Visibility = true;
         }
 
+        /// <summary>
+        /// Gets or sets the display name of the function as a string.
+        /// </summary>
+        /// <value> The display name of the function as a string.</value>
         public string FunctionDisplayName
         {
             get
@@ -49,6 +65,11 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the collection of function componets for this graphical function.
+        /// </summary>
+        /// <value> The collection of function componets for this graphical function.</value>
+        /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public List<FunctionParts> FunctionComponents
         {
             get
@@ -67,6 +88,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the color of the function.
+        /// </summary>
+        /// <value> The  color of the function.</value>
         public Color FunctionColor
         {
             get
@@ -80,6 +105,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the the function is visible.
+        /// </summary>
+        /// <value> The visbility of the function.</value>
         public bool Visibility
         {
             get

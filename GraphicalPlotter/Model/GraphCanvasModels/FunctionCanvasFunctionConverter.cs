@@ -15,6 +15,9 @@ namespace GraphicalPlotter
 
     public class FunctionToCanvasFunctionConverter
     {
+        /// <summary>
+        /// The field for the TwoDimensionalGraphCanvas for the Function converter.
+        /// </summary>
         private TwoDimensionalGraphCanvas graphicalCanvas;
 
         public FunctionToCanvasFunctionConverter(TwoDimensionalGraphCanvas graphCanvas)
@@ -22,6 +25,11 @@ namespace GraphicalPlotter
             this.GraphicalCanvas = graphCanvas;
         }
 
+        /// <summary>
+        /// Gets or sets the graphical canvas used inside the function converter.
+        /// </summary>
+        /// <value> The graphical canvas used inside the function converter.</value>
+        /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public TwoDimensionalGraphCanvas GraphicalCanvas
         {
             get
@@ -31,13 +39,14 @@ namespace GraphicalPlotter
 
             set
             {
-                if (value != null)
+                if (value == null)
                 {
-                    this.graphicalCanvas = value;
+                    throw new ArgumentNullException($"{nameof(this.GraphicalCanvas)} can not be null!");
+                    
                 }
                 else
                 {
-                    throw new ArgumentNullException($"{nameof(this.GraphicalCanvas)} can not be null!");
+                    this.graphicalCanvas = value;
                 }
             }
         }

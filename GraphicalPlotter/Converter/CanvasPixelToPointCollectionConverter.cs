@@ -15,7 +15,11 @@ namespace GraphicalPlotter
     using System.Windows;
     using System.Windows.Data;
     using System.Windows.Media;
-    internal class CanvasPixelToPointCollectionConverter : IValueConverter
+
+    /// <summary>
+    /// This class is used 
+    /// </summary>
+    public class CanvasPixelToPointCollectionConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

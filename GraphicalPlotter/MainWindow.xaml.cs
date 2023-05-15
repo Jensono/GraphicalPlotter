@@ -19,7 +19,9 @@ namespace GraphicalPlotter
     /// </summary>>
     public partial class MainWindow : Window
     {
-       
+        /// <summary>
+        /// The field for point that was first selected when drawing open a window / zooming into the canvas.
+        /// </summary>
         private Point zoomSelectionStartPoint;
 
         public MainWindow()

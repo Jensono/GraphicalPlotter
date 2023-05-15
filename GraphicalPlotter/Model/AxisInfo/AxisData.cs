@@ -45,6 +45,10 @@ namespace GraphicalPlotter
         public AxisData()
         { }
 
+        /// <summary>
+        /// Gets or sets the max visible value for the axis data.
+        /// </summary>
+        /// <value> The max value that is visible on the axis.</value>
         public double MaxVisibleValue
         {
             get
@@ -58,6 +62,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the min visible value for the axis data.
+        /// </summary>
+        /// <value> The min value that is visible on the axis.</value>
         public double MinVisibleValue
         {
             get
@@ -71,6 +79,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the Color for the Axis line.
+        /// </summary>
+        /// <value> The Color for the Axis line.</value>
         public Color AxisColor
         {
             get
@@ -84,6 +96,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the the axis line is visible.
+        /// </summary>
+        /// <value> The visbility of the axis line.</value>
         public bool Visibility
         {
             get

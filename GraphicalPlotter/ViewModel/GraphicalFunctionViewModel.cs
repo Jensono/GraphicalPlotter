@@ -18,12 +18,35 @@ namespace GraphicalPlotter
     public class GraphicalFunctionViewModel : INotifyPropertyChanged
     {
         //// This is so dumb i fucking hate events in C# WHY WHY do i need  a callback to call an event please microsoft
+        
+        /// <summary>
+        /// The field indicating whether or not the GraphicalFunction is initialized and ready to be bound to events.
+        /// </summary>
         private bool isInitialized = false;
 
+        /// <summary>
+        /// The field indicating whether or not the GraphicalFunction is visible.
+        /// </summary>
         private bool functionVisibility = true;
+
+        /// <summary>
+        /// The field for the Color of the function.
+        /// </summary>
         private Color functionColor;
+
+        /// <summary>
+        /// The field for the displayed name of the function.
+        /// </summary>
         private string functionDisplayName;
+
+        /// <summary>
+        /// The field for the user set string that can be takes as the name of the function for example f(x).
+        /// </summary>
         private string customUserSetName;
+
+        /// <summary>
+        /// The field for the List of Function Parts that comprise the function.
+        /// </summary>
         private List<FunctionParts> functionParts;
 
         public GraphicalFunctionViewModel(GraphicalFunction graphicalFunction)
@@ -50,6 +73,10 @@ namespace GraphicalPlotter
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Gets a command for to open up a new window for a ColorPicker that can be used to set the color of an element in the WPF application.
+        /// </summary>
+        /// <value> A command to open up a new window for a ColorPicker that can be used to set the color of an element in the WPF application.</value>
         public ICommand OpenColorPicker
         {
             get
@@ -86,8 +113,11 @@ namespace GraphicalPlotter
             }
         }
 
-        
 
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the function is visible.
+        /// </summary>
+        /// <value> The visibility of the function.</value>
         public bool FunctionVisibility
         {
             get
@@ -111,6 +141,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the Color for the GraphicalFunctionViewModel.
+        /// </summary>
+        /// <value> The Color for the GraphicalFunctionViewModel.</value>
         public Color FunctionColor
         {
             get
@@ -128,6 +162,11 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the list of function parts that make up the mathematical function for the View Model.
+        /// </summary>
+        /// <value> The list of function parts that make up the mathematical function for the View Model.</value>
+        /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public List<FunctionParts> FunctionParts
         {
             get
@@ -149,6 +188,11 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the functions display name for the mathematical reading of the function.
+        /// </summary>
+        /// <value> The functions display name for the mathematical reading of the function.</value>
+        /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public string FunctionDisplayName
         {
             get
@@ -170,6 +214,11 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the custom user set string that represents the name for the function.
+        /// </summary>
+        /// <value> The custom user set string that represents the name for the function.</value>
+        /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public string CustomUserSetName
         {
             get
@@ -191,6 +240,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the function is already initialized. Used to first modify a function and then bind events on it.
+        /// </summary>
+        /// <value> A value indicating whether or not the function is already initialized. Used to first modify a function and then bind events on it.</value>
         private bool IsInitialized
         {
             get

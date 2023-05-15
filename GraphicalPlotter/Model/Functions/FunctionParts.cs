@@ -15,6 +15,9 @@ namespace GraphicalPlotter
     /// </summary>
     public abstract class FunctionParts
     {
+        /// <summary>
+        /// The field for constant multiplier of the function part.
+        /// </summary>
         private double constantMultiplier;
 
         // right now the multiplier can also be null
@@ -23,6 +26,10 @@ namespace GraphicalPlotter
             this.ConstantMultiplier = constantMultiplier;
         }
 
+        /// <summary>
+        /// Gets or sets the constant multiplier of the function part.
+        /// </summary>
+        /// <value> The constant multiplier of the function part.</value>
         public double ConstantMultiplier
         {
             get

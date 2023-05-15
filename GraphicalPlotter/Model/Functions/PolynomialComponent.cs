@@ -13,7 +13,11 @@ namespace GraphicalPlotter
 
     public class PolynomialComponent : FunctionParts
     {
-        // The degree for the exponent for x,eg. 2 would create x^2.
+        //// The degree for the exponent for x,eg. 2 would create x^2.
+        
+        /// <summary>
+        /// The field for the exponent degree of the polynomial function
+        /// </summary>
         private double exponentDegree;
 
         public PolynomialComponent(double exponentenDegree, double constantMultiplier) : base(constantMultiplier)
@@ -21,6 +25,10 @@ namespace GraphicalPlotter
             this.ExponentDegree = exponentenDegree;
         }
 
+        /// <summary>
+        /// Gets or sets the exponent degree for the polynomial function.
+        /// </summary>
+        /// <value> The exponent degree for the polynomial function.</value>
         public double ExponentDegree
         {
             get

@@ -15,8 +15,14 @@ namespace GraphicalPlotter
 
     public class FunctionDrawInformation
     {
+        /// <summary>
+        /// The field for the List of canvas Pixel that indicate how to draw the function.
+        /// </summary>
         private List<CanvasPixel> canvasPixels;
 
+        /// <summary>
+        /// The field for the Color of the function.
+        /// </summary>
         private Color functionColor;
 
         public FunctionDrawInformation(List<CanvasPixel> canvasPixel, Color functionColor)
@@ -25,6 +31,10 @@ namespace GraphicalPlotter
             this.CanvasPixels = canvasPixel;
         }
 
+        /// <summary>
+        /// Gets or sets the color for the FunctionDrawInformation.
+        /// </summary>
+        /// <value> The color for the FunctionDrawInformation.</value>
         public Color FunctionColor
         {
             get 
@@ -38,6 +48,11 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the list that was generated for the canvas pixel that make up this function.
+        /// </summary>
+        /// <value> The list that was generated for the canvas pixel that make up this function.</value>
+        /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public List<CanvasPixel> CanvasPixels
         {
             get

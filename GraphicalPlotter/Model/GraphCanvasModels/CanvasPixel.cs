@@ -11,8 +11,14 @@ namespace GraphicalPlotter
 {
     public class CanvasPixel
     {
+        /// <summary>
+        /// The field for the x axis position of the canvas pixel measured from the left of the canvas.
+        /// </summary>
         private int xAxisValue;
 
+        /// <summary>
+        /// The field for the y axis position of the canvas pixel measured from the top of the canvas.
+        /// </summary>
         private int yAxisValue;
 
         public CanvasPixel(int xAxisValue, int yAxisValue)
@@ -21,6 +27,10 @@ namespace GraphicalPlotter
             this.YAxisValue = yAxisValue;
         }
 
+        /// <summary>
+        /// Gets or sets the y axis value for the canvas pixel measured from the left of the canvas.
+        /// </summary>
+        /// <value> The  y axis value for the canvas pixel measured from the left of the canvas.</value>
         public int YAxisValue
         {
             get
@@ -34,6 +44,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the x axis value for the canvas pixel measured from the top of the canvas.
+        /// </summary>
+        /// <value> The  x axis value for the canvas pixel measured from the top of the canvas.</value>
         public int XAxisValue
         {
             get

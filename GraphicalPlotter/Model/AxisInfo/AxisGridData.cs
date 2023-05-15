@@ -13,8 +13,19 @@ namespace GraphicalPlotter
 
     public class AxisGridData
     {
+        /// <summary>
+        /// The field for distance between two grid lines.
+        /// </summary>
         private double intervalBetweenLines;
+
+        /// <summary>
+        /// The field for the color of the grid lines.
+        /// </summary>
         private Color gridColor;
+
+        /// <summary>
+        /// The field indicating whether or not the grid lines are visible.
+        /// </summary>
         private bool visibility;
 
         public AxisGridData(double intervallBetweenLines, Color gridColor, bool isVisible)
@@ -24,6 +35,11 @@ namespace GraphicalPlotter
             this.Visibility = isVisible;
         }
 
+
+        /// <summary>
+        /// Gets or sets the intervall or distance between two grid lines on the orthogal axis.
+        /// </summary>
+        /// <value> The intervall or distance between two grid lines inside the grid.</value>
         public double IntervallBetweenLines
         {
             get
@@ -37,6 +53,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the Color for the grid lines.
+        /// </summary>
+        /// <value> The Color for the grid lines.</value>
         public Color GridColor
         {
             get
@@ -50,6 +70,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the the grid lines are visible
+        /// </summary>
+        /// <value> The visbility of the grid.</value>
         public bool Visibility
         {
             get
