@@ -1,5 +1,12 @@
-﻿
-
+﻿//-----------------------------------------------------------------------
+// <copyright file="MainWindow.cs" company="FHWN">
+//     Copyright (c) Monkey with a Typewriter GMBH. All rights reserved.
+// </copyright>
+// <author>Jens Hanssen</author>
+// <summary>
+// This class is used the main interface between the view and the model.
+// </summary>
+//-----------------------------------------------------------------------
 namespace GraphicalPlotter
 {
     using System;
@@ -8,13 +15,12 @@ namespace GraphicalPlotter
     using System.Windows.Input;
 
     /// <summary>
-    /// Interaktionslogik für MainWindow.xaml
+    /// Interactionlogic for the main window.
     /// </summary>>
     public partial class MainWindow : Window
     {
        
-        //TODO make a property for this / field
-        public Point ZoomSelectionStartPoint;
+        private Point zoomSelectionStartPoint;
 
         public MainWindow()
         {
@@ -37,15 +43,13 @@ namespace GraphicalPlotter
                 this.OnCanvasZoomStart(this, zoomStartEventArgs);
 
                 //// start the window that shows the zoomselection so the user knows where he is
-                this.ZoomSelectionStartPoint = eventArgs.GetPosition(this.PlotterCanvas);
-                Canvas.SetLeft(this.ZoomSelectionRectangle, this.ZoomSelectionStartPoint.X);
-                Canvas.SetTop(this.ZoomSelectionRectangle, this.ZoomSelectionStartPoint.Y);
+                this.zoomSelectionStartPoint = eventArgs.GetPosition(this.PlotterCanvas);
+                Canvas.SetLeft(this.ZoomSelectionRectangle, this.zoomSelectionStartPoint.X);
+                Canvas.SetTop(this.ZoomSelectionRectangle, this.zoomSelectionStartPoint.Y);
                 ZoomSelectionRectangle.Width = 0;
                 ZoomSelectionRectangle.Height = 0;
 
-                ZoomSelectionRectangle.Visibility = Visibility.Visible;
-
-               
+                ZoomSelectionRectangle.Visibility = Visibility.Visible;                             
             }
         }
 
@@ -54,10 +58,10 @@ namespace GraphicalPlotter
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 Point currentSelectionEndPointPosition = e.GetPosition(PlotterCanvas);
-                double width = Math.Abs(currentSelectionEndPointPosition.X - this.ZoomSelectionStartPoint.X);
-                double height = Math.Abs(currentSelectionEndPointPosition.Y - this.ZoomSelectionStartPoint.Y);
-                double left = Math.Min(this.ZoomSelectionStartPoint.X, currentSelectionEndPointPosition.X);
-                double top = Math.Min(this.ZoomSelectionStartPoint.Y, currentSelectionEndPointPosition.Y);
+                double width = Math.Abs(currentSelectionEndPointPosition.X - this.zoomSelectionStartPoint.X);
+                double height = Math.Abs(currentSelectionEndPointPosition.Y - this.zoomSelectionStartPoint.Y);
+                double left = Math.Min(this.zoomSelectionStartPoint.X, currentSelectionEndPointPosition.X);
+                double top = Math.Min(this.zoomSelectionStartPoint.Y, currentSelectionEndPointPosition.Y);
                 ZoomSelectionRectangle.Width = width;
                 ZoomSelectionRectangle.Height = height;
                 Canvas.SetLeft(this.ZoomSelectionRectangle, left);

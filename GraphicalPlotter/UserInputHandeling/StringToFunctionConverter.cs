@@ -1,4 +1,13 @@
-﻿namespace GraphicalPlotter
+﻿//-----------------------------------------------------------------------
+// <copyright file="StringToFunctionConverter.cs" company="FHWN">
+//     Copyright (c) Monkey with a Typewriter GMBH. All rights reserved.
+// </copyright>
+// <author>Jens Hanssen</author>
+// <summary>
+// This class is used to convert a given user input string into a mathematical function that can be used to calculate y values for any given x value.
+// </summary>
+//-----------------------------------------------------------------------
+namespace GraphicalPlotter
 {
     using System;
     using System.Collections.Generic;

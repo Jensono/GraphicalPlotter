@@ -1,11 +1,20 @@
-﻿namespace GraphicalPlotter
+﻿//-----------------------------------------------------------------------
+// <copyright file="PolynomialComponent.cs" company="FHWN">
+//     Copyright (c) Monkey with a Typewriter GMBH. All rights reserved.
+// </copyright>
+// <author>Jens Hanssen</author>
+// <summary>
+// This class is used to represent a mathematical polynomial function.
+// </summary>
+//-----------------------------------------------------------------------
+namespace GraphicalPlotter
 {
     using System;
 
     public class PolynomialComponent : FunctionParts
     {
         // The degree for the exponent for x,eg. 2 would create x^2.
-        public double exponentDegree;
+        private double exponentDegree;
 
         public PolynomialComponent(double exponentenDegree, double constantMultiplier) : base(constantMultiplier)
         {
@@ -18,9 +27,10 @@
             {
                 return this.exponentDegree;
             }
+
             set
             {
-                // can this handle negativ exponents? x^-2 Maybe later used for diffrentiation..
+                //// can this handle negativ exponents? x^-2 Maybe later used for diffrentiation..
 
                 this.exponentDegree = value;
             }
@@ -54,7 +64,9 @@
                 {
                     returnstring += "+";
                 }
+
                 returnstring += $"{this.ConstantMultiplier}";
+
                 if (this.ExponentDegree != 0)
                 {
                     returnstring += "*";

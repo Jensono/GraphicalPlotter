@@ -1,4 +1,13 @@
-﻿namespace GraphicalPlotter
+﻿//-----------------------------------------------------------------------
+// <copyright file="AxisGridData.cs" company="FHWN">
+//     Copyright (c) Monkey with a Typewriter GMBH. All rights reserved.
+// </copyright>
+// <author>Jens Hanssen</author>
+// <summary>
+// This class is used to store information for a grid that is associated with an axis on a mathematical dimension.
+// </summary>
+//-----------------------------------------------------------------------
+namespace GraphicalPlotter
 {
     using System.Windows.Media;
 
@@ -21,6 +30,7 @@
             {
                 return this.intervalBetweenLines;
             }
+
             set
             {
                 this.intervalBetweenLines = value;
@@ -33,6 +43,7 @@
             {
                 return this.gridColor;
             }
+
             set
             {
                 this.gridColor = value;
@@ -45,6 +56,7 @@
             {
                 return this.visibility;
             }
+
             set
             {
                 this.visibility = value;

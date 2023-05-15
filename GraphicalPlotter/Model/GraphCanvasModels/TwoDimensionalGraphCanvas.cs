@@ -1,5 +1,12 @@
-﻿
-
+﻿//-----------------------------------------------------------------------
+// <copyright file="TwoDimensionalGraphCanvas.cs" company="FHWN">
+//     Copyright (c) Monkey with a Typewriter GMBH. All rights reserved.
+// </copyright>
+// <author>Jens Hanssen</author>
+// <summary>
+// This class contains all the information needed to draw or concept out a two dimensional Canvas used for graphing function.
+// </summary>
+//-----------------------------------------------------------------------
 namespace GraphicalPlotter
 {
     using System;

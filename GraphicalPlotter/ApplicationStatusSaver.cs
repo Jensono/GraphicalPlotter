@@ -1,5 +1,12 @@
-﻿
-
+﻿//-----------------------------------------------------------------------
+// <copyright file="ApplicationStatusSaveDataHandler.cs" company="FHWN">
+//     Copyright (c) Monkey with a Typewriter GMBH. All rights reserved.
+// </copyright>
+// <author>Jens Hanssen</author>
+// <summary>
+// This class handles all the necessary steps to serialize and save the current application status.
+// </summary>
+//-----------------------------------------------------------------------
 namespace GraphicalPlotter
 {
     using System;
@@ -52,8 +59,7 @@ namespace GraphicalPlotter
             out List<GraphicalFunctionDisplayNameForSerialization> functions,
             out bool hasUserChangedYAxisValues)
 
-        {
-            xAxisData = new AxisData(-10, 10, Colors.Azure, true);
+        {   xAxisData = new AxisData(-10, 10, Colors.Azure, true);
             yAxisData = new AxisData(-10, 10, Colors.Azure, true);
             xGridData = new AxisGridData(1, Colors.LightSlateGray, true);
             yGridData = new AxisGridData(1, Colors.LightSlateGray, true);
@@ -66,13 +72,11 @@ namespace GraphicalPlotter
 
                 if (File.Exists(backupPath))
                 {
-                    XmlSerializer PlotterDeserializer = new XmlSerializer(typeof(PlotterFullSaveData));
+                    XmlSerializer plotterDeserializer = new XmlSerializer(typeof(PlotterFullSaveData));
 
                     using (FileStream fileStream = new FileStream(backupPath, FileMode.Open))
-                    {
-                       
-
-                        PlotterFullSaveData fullSaveData = (PlotterFullSaveData)PlotterDeserializer.Deserialize(fileStream);
+                    {              
+                        PlotterFullSaveData fullSaveData = (PlotterFullSaveData)plotterDeserializer.Deserialize(fileStream);
 
                         xAxisData = new AxisData(fullSaveData.XAxisSaveData.AxisMin, fullSaveData.XAxisSaveData.AxisMax, fullSaveData.XAxisSaveData.AxisLineColor, fullSaveData.XAxisSaveData.AxisLineVisibility);
                         xGridData = new AxisGridData(fullSaveData.XAxisSaveData.GridIntervall, fullSaveData.XAxisSaveData.GridLineColor, fullSaveData.XAxisSaveData.GridVisibility);
@@ -99,7 +103,6 @@ namespace GraphicalPlotter
             catch (Exception)
             {
                
-
                 return false;
             }
         }

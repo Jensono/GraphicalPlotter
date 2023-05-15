@@ -1,4 +1,13 @@
-﻿namespace GraphicalPlotter
+﻿//-----------------------------------------------------------------------
+// <copyright file="GraphicalFunctionViewModel.cs" company="FHWN">
+//     Copyright (c) Monkey with a Typewriter GMBH. All rights reserved.
+// </copyright>
+// <author>Jens Hanssen</author>
+// <summary>
+// This class is used as a viewmodel for the graphical functions to be displayed in the view.
+// </summary>
+//-----------------------------------------------------------------------
+namespace GraphicalPlotter
 {
     using System;
     using System.Collections.Generic;
@@ -85,6 +94,7 @@
             {
                 return this.functionVisibility;
             }
+
             set
             {
                 if (this.functionVisibility != value)
@@ -107,9 +117,10 @@
             {
                 return this.functionColor;
             }
+
             set
             {
-                // not nullable
+                //// not nullable
 
                 this.functionColor = value;
 
@@ -123,6 +134,7 @@
             {
                 return this.functionParts;
             }
+
             set
             {
                 if (value == null)
@@ -143,6 +155,7 @@
             {
                 return this.functionDisplayName;
             }
+
             set
             {
                 if (value == null)
@@ -163,6 +176,7 @@
             {
                 return this.customUserSetName;
             }
+
             set
             {
                 if (value == null)
@@ -183,6 +197,7 @@
             {
                 return this.isInitialized;
             }
+
             set
             {
                 if (this.isInitialized != value)
@@ -201,6 +216,7 @@
             {
                 sum += part.CalculateItsOwnValue(value);
             }
+
             return sum;
         }
 
@@ -212,6 +228,7 @@
             {
                 returnstring += function.GetFunctionName();
             }
+
             return returnstring;
         }
     }

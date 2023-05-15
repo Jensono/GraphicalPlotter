@@ -1,4 +1,13 @@
-﻿namespace GraphicalPlotter
+﻿//-----------------------------------------------------------------------
+// <copyright file="GraphicalFunction.cs" company="FHWN">
+//     Copyright (c) Monkey with a Typewriter GMBH. All rights reserved.
+// </copyright>
+// <author>Jens Hanssen</author>
+// <summary>
+// This class is used to represent a mathematical function made of multiple smaller FunctionParts.
+// </summary>
+//-----------------------------------------------------------------------
+namespace GraphicalPlotter
 {
     using System;
     using System.Collections.Generic;
@@ -8,10 +17,10 @@
     {
         private string functionDisplayName;
 
-        // is a list than can hold a multitute of polynomial components eg.: 5x^3,2x^1,5, | that can then be used to struture a polynomial. Can also hold Trigonometric functions but then the list is only 1 long.
+        //// is a list than can hold a multitute of polynomial components eg.: 5x^3,2x^1,5, | that can then be used to struture a polynomial. Can also hold Trigonometric functions but then the list is only 1 long.
 
-        // if a user can not just input a string then this will have to be generated when initzializing the class.
-        // if you want to add a contant to any of the functions or the trig ones you need to add a polynom of order 0
+        ////  if a user can not just input a string then this will have to be generated when initzializing the class.
+        //// if you want to add a contant to any of the functions or the trig ones you need to add a polynom of order 0
 
         private List<FunctionParts> functionComponents = new List<FunctionParts>();
 
@@ -33,6 +42,7 @@
             {
                 return this.functionDisplayName;
             }
+
             set
             {
                 this.functionDisplayName = value;
@@ -45,12 +55,14 @@
             {
                 return this.functionComponents;
             }
+
             set
             {
                 if (value == null)
                 {
                     throw new ArgumentNullException($"{nameof(this.FunctionComponents)} can not be null.");
                 }
+
                 this.functionComponents = value;
             }
         }
@@ -61,6 +73,7 @@
             {
                 return this.functionColor;
             }
+
             set
             {
                 this.functionColor = value;
@@ -73,6 +86,7 @@
             {
                 return this.visibility;
             }
+
             set
             {
                 this.visibility = value;
@@ -86,6 +100,7 @@
             {
                 sum += part.CalculateItsOwnValue(value);
             }
+
             return sum;
         }
 
@@ -96,6 +111,7 @@
             {
                 returnstring += function.GetFunctionName();
             }
+
             return returnstring;
         }
 

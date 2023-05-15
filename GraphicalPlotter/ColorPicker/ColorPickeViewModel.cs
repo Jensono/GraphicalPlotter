@@ -1,4 +1,12 @@
-﻿
+﻿//-----------------------------------------------------------------------
+// <copyright file="ColorPickerViewModel.cs" company="FHWN">
+//     Copyright (c) Monkey with a Typewriter GMBH. All rights reserved.
+// </copyright>
+// <author>Jens Hanssen</author>
+// <summary>
+// This class is used as the viewmodel for the color picker window in which a user can choose a color for an element of the WPF application.
+// </summary>
+//-----------------------------------------------------------------------
 namespace GraphicalPlotter
 {
     using System.ComponentModel;
@@ -6,12 +14,27 @@ namespace GraphicalPlotter
 
     public class ColorPickerViewModel : INotifyPropertyChanged
     {
+        /// <summary>
+        /// The field for the green value part of a color.
+        /// </summary>
         private byte greenValue;
+
+        /// <summary>
+        /// The field for the red value part of a color.
+        /// </summary>
         private byte redValue;
+
+        /// <summary>
+        /// The field for the blue value part of a color.
+        /// </summary>
         private byte blueValue;
+
+        /// <summary>
+        /// The field for the selected color as a SolidColorBrush.
+        /// </summary>
         private SolidColorBrush selectedColor;
 
-        
+
 
         public ColorPickerViewModel(Color color)
         {

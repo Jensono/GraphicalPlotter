@@ -1,4 +1,13 @@
-﻿namespace GraphicalPlotter
+﻿//-----------------------------------------------------------------------
+// <copyright file="MainViewModel.cs" company="FHWN">
+//     Copyright (c) Monkey with a Typewriter GMBH. All rights reserved.
+// </copyright>
+// <author>Jens Hanssen</author>
+// <summary>
+// This class is the main view model used by the wpf app as a big interface for the model.
+// </summary>
+//-----------------------------------------------------------------------
+namespace GraphicalPlotter
 {
    
     using System;
@@ -16,48 +25,176 @@
     public class MainViewModel : INotifyPropertyChanged
     {
       
-
+        /// <summary>
+        /// The field for the Text Box that describes the min value for the x-axis.
+        /// </summary>
         private double textBoxXAxisMin = -10;
+
+        /// <summary>
+        /// The field for the Text Box that describes the max value for the x-axis.
+        /// </summary>
         private double textBoxXAxisMax = 10;
+
+        /// <summary>
+        /// The field for the Check box that describes whether or not the x-axis is visible.
+        /// </summary>
         private bool checkBoxXAxisVisibility = true;
+
+        /// <summary>
+        /// The field for Color of the x-axis.
+        /// </summary>
         private Color colorPickerXAxisColor = Colors.DarkSlateBlue;
 
+        /// <summary>
+        /// The field for Color of the x-axis grid.
+        /// </summary>
         private Color colorPickerXAxisGridColor = Colors.LightGray;
+
+        /// <summary>
+        /// The field for the Check box that describes whether or not the x-axis grid is visible.
+        /// </summary>
         private bool checkBoxXAxisGridVisibility = true;
+
+        /// <summary>
+        /// The field for the Text Box that describes distance between two y-axis grid lines. Not in Pixels but actual values.
+        /// </summary>
         private double textBoxYAxisGridIntervall = 2;
 
+        /// <summary>
+        /// The field for the Text Box that describes the min value for the y-axis.
+        /// </summary>
         private double textBoxYAxisMin = -10;
+
+        /// <summary>
+        /// The field for the Text Box that describes the max value for the y-axis.
+        /// </summary>
         private double textBoxYAxisMax = 10;
+
+        /// <summary>
+        /// The field for the Check box that describes whether or not the y-axis is visible.
+        /// </summary>
         private bool checkBoxYAxisVisibility = true;
+
+        /// <summary>
+        /// The field for Color of the y-axis.
+        /// </summary>
         private Color colorPickerYAxisColor = Colors.DarkSlateBlue;
 
+        /// <summary>
+        /// The field for Color of the y-axis grid.
+        /// </summary>
         private Color colorPickerYAxisGridColor = Colors.LightGray;
+
+        /// <summary>
+        /// The field for the Check box that describes whether or not the y-axis grid is visible.
+        /// </summary>
         private bool checkBoxYAxisGridVisibility = true;
+
+        /// <summary>
+        /// The field for the Text Box that describes distance between two x-axis grid lines. Not in Pixels but actual values.
+        /// </summary>
         private double textBoxXAxisGridIntervall = 2;
 
+        /// <summary>
+        /// The field for widht of the main window of the app.
+        /// </summary>
         private int pixelWidhtApp = 900;
+
+        /// <summary>
+        /// The field for height of the main window of the app.
+        /// </summary>
         private int pixelHeightApp = 600;
+
+        /// <summary>
+        /// The field for widht of the canvas where functions are drawn.
+        /// </summary>
         private int pixelWidhtCanvas = 630;
+
+        /// <summary>
+        /// The field for height of the canvas where functions are drawn.
+        /// </summary>
         private int pixelHeightCanvas = 380;
 
+
+        /// <summary>
+        /// The field for the GraphicalFunctionViewModel that are currently in use.
+        /// </summary>
         private ObservableCollection<GraphicalFunctionViewModel> currentGraphicalFunctions;
+
+        /// <summary>
+        /// The field for the FunctionDrawInformation for the Functions to draw them in the canvas.
+        /// </summary>
         private List<FunctionDrawInformation> drawInformationForFunctions;
+
+        /// <summary>
+        /// The field for the FunctionDrawInformation for the Axis lines to draw them in the canvas.
+        /// </summary>
         private List<FunctionDrawInformation> drawInformationForAxis;
+
+        /// <summary>
+        /// The field for the FunctionDrawInformation for the Grid Lines to draw them in the canvas.
+        /// </summary>
         private List<FunctionDrawInformation> drawInformationForGridLines;
+
+        /// <summary>
+        /// The field for the string of the current function input from the user.
+        /// </summary>
         private string textBoxUserInputFunction = string.Empty;
+
+        /// <summary>
+        /// The field for boolean flag indicating whether the Application is currently initialized. Meaning that all values are set and function displaying can begin.
+        /// </summary>
         private bool isApplicationDataInitalized;
+
+        /// <summary>
+        /// The field for the lock object used inside the GraphicalFunctionViewModel, to synchronise the model and the views access to it.
+        /// </summary>
         private object lockObjectFunctions = new object();
+
+        /// <summary>
+        /// The field for the canvas pixel that is the pixel that was pressed inside the canvas when the zoom event was started.
+        /// </summary>
         private CanvasPixel zoomStartPoint;
 
+        /// <summary>
+        /// The field for AxisData for the x-axis. 
+        /// </summary>
         private AxisData xAxisData;
+
+        /// <summary>
+        /// The field for AxisData for the y-axis. 
+        /// </summary>
         private AxisData yAxisData;
+
+        /// <summary>
+        /// The field for AxisGridData for the x-axis. 
+        /// </summary>
         private AxisGridData xAxisGrid;
+
+        /// <summary>
+        /// The field for AxisGridData for the y-axis. 
+        /// </summary>
         private AxisGridData yAxisGrid;
 
+        /// <summary>
+        /// The field for TwoDimensionalGraphCanvas that holds all the information needed for a two dimensional graph.
+        /// </summary>
         private TwoDimensionalGraphCanvas mainGraphCanvas;
+
+        /// <summary>
+        /// The field for FunctionToCanvasFunctionConverter used to convert from a GraphicalFunction to DrawInformation for the canvas.
+        /// </summary>
         private FunctionToCanvasFunctionConverter canvasFunctionConverter;
 
+        /// <summary>
+        /// The field for StringToFunctionConverter used to convert from a user input string to a mathematical functin object.
+        /// </summary>
         private StringToFunctionConverter stringToFunctionConverter;
+
+
+        /// <summary>
+        /// The field for ApplicationStatusSaveDataHandler that is used to save the applications status to a file and also read that information when initialzing the app.
+        /// </summary>
         private ApplicationStatusSaveDataHandler saveDataHandler;
 
         public MainViewModel()

@@ -1,4 +1,12 @@
-﻿
+﻿//-----------------------------------------------------------------------
+// <copyright file="ColorPickerWindow.xaml.cs" company="FHWN">
+//     Copyright (c) Monkey with a Typewriter GMBH. All rights reserved.
+// </copyright>
+// <author>Jens Hanssen</author>
+// <summary>
+// This class is the code behind for the ColorPickerWindow used to choose a color by the user
+// </summary>
+//-----------------------------------------------------------------------
 
 namespace GraphicalPlotter
 {
@@ -21,7 +29,9 @@ namespace GraphicalPlotter
     /// </summary>
     public partial class ColorPickerWindow : Window
     {
-                      
+        /// <summary>
+        /// The field for ColorPickerViewModel that represents the color picker view model and holds all the color values.
+        /// </summary>      
         private ColorPickerViewModel colorPickerViewModel = new ColorPickerViewModel(Color.FromRgb(127, 127, 127));
 
         public ColorPickerWindow()

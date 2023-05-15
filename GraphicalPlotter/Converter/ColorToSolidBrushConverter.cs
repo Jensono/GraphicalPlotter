@@ -1,5 +1,12 @@
-﻿
-
+﻿//-----------------------------------------------------------------------
+// <copyright file=" ColorToSolidBrushConverter.cs" company="FHWN">
+//     Copyright (c) Monkey with a Typewriter GMBH. All rights reserved.
+// </copyright>
+// <author>Jens Hanssen</author>
+// <summary>
+// This class is a converter that takes a Color and converts it into a SolidBrush, used to draw inside the view.
+// </summary>
+//-----------------------------------------------------------------------
 namespace GraphicalPlotter
 {
     using System;
@@ -14,6 +21,7 @@ namespace GraphicalPlotter
             {
                 return new SolidColorBrush(color);
             }
+
             return null;
         }
 

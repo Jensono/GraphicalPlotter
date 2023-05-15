@@ -1,4 +1,13 @@
-﻿namespace GraphicalPlotter
+﻿//-----------------------------------------------------------------------
+// <copyright file="AxisSaveData.cs" company="FHWN">
+//     Copyright (c) Monkey with a Typewriter GMBH. All rights reserved.
+// </copyright>
+// <author>Jens Hanssen</author>
+// <summary>
+// This class used to serialize an a mathematical axis and grid for one dimension, combined in one class.
+// </summary>
+//-----------------------------------------------------------------------
+namespace GraphicalPlotter
 {
     using System;
     using System.Windows.Media;
@@ -6,9 +15,7 @@
     [Serializable]
     public class AxisSaveData
     {
-        //TODO fields but i dont need any nullchecks, min smaller then max maybe
-       
-
+      
         public AxisSaveData(AxisData axis, AxisGridData grid)
         {
             this.AxisMin = axis.MinVisibleValue;
@@ -22,7 +29,9 @@
         }
 
         public AxisSaveData()
-        { }
+        {
+
+        }
 
         public double AxisMin { get; set; }
 

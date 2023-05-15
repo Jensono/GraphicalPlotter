@@ -1,15 +1,36 @@
-﻿namespace GraphicalPlotter
+﻿//-----------------------------------------------------------------------
+// <copyright file="AxisData.cs" company="FHWN">
+//     Copyright (c) Monkey with a Typewriter GMBH. All rights reserved.
+// </copyright>
+// <author>Jens Hanssen</author>
+// <summary>
+// This class is used to store information for an mathemical axis of one dimension.
+// </summary>
+//-----------------------------------------------------------------------
+namespace GraphicalPlotter
 {
     using System.Windows.Media;
 
     public class AxisData
-    {
-        // When min and max are set there need to some rules in which order they are set, or many they can only be set , maybe if one value is smaller then the other they just switch places?
-        // TODO  fields
-
+    {     
+        /// <summary>
+        /// The field for the maximum visible value on the axis.
+        /// </summary>
         private double maxVisibleValue;
+
+        /// <summary>
+        /// The field for the minimum visible value on the axis.
+        /// </summary>
         private double minVisibleValue;
+
+        /// <summary>
+        /// The field for the color of the axis line.
+        /// </summary>
         private Color axisColor;
+
+        /// <summary>
+        /// The field for the boolflag 
+        /// </summary>
         private bool visibility;
 
         public AxisData(double minValue, double maxValue, Color axisColor, bool isVisible)
@@ -30,6 +51,7 @@
             {
                 return this.maxVisibleValue;
             }
+
             set
             {
                 this.maxVisibleValue = value;
@@ -42,6 +64,7 @@
             {
                 return this.minVisibleValue;
             }
+
             set
             {
                 this.minVisibleValue = value;
@@ -54,6 +77,7 @@
             {
                 return this.axisColor;
             }
+
             set
             {
                 this.axisColor = value;
@@ -66,6 +90,7 @@
             {
                 return this.visibility;
             }
+
             set
             {
                 this.visibility = value;

@@ -1,5 +1,12 @@
-﻿
-
+﻿//-----------------------------------------------------------------------
+// <copyright file="TangentFunction.cs" company="FHWN">
+//     Copyright (c) Monkey with a Typewriter GMBH. All rights reserved.
+// </copyright>
+// <author>Jens Hanssen</author>
+// <summary>
+// This class is used to represent a tangent function.
+// </summary>
+//-----------------------------------------------------------------------
 namespace GraphicalPlotter
 {
     using System;

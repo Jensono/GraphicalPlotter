@@ -1,4 +1,13 @@
-﻿namespace GraphicalPlotter
+﻿//-----------------------------------------------------------------------
+// <copyright file="FunctionCanvasFunctionConverter.cs" company="FHWN">
+//     Copyright (c) Monkey with a Typewriter GMBH. All rights reserved.
+// </copyright>
+// <author>Jens Hanssen</author>
+// <summary>
+// This class is used to convert from a function or a function view model to a class that can be used for drawing a function on a canvas.
+// </summary>
+//-----------------------------------------------------------------------
+namespace GraphicalPlotter
 {
     using System;
     using System.Collections.Generic;
@@ -19,6 +28,7 @@
             {
                 return this.graphicalCanvas;
             }
+
             set
             {
                 if (value != null)
@@ -60,7 +70,7 @@
 
             while (currentXPixel <= xPixels - 1)
             {
-                List<CanvasPixel> PixelValuesForthisPartOfFunction = new List<CanvasPixel>();
+                List<CanvasPixel> pixelValuesForthisPartOfFunction = new List<CanvasPixel>();
 
                 for (int xPixelPosition = currentXPixel; xPixelPosition < xPixels; xPixelPosition++)
                 {
@@ -74,7 +84,7 @@
                     if (roundedYPixelPosition > yPixels || roundedYPixelPosition < 0)
                     {
                         /// /if this happens begin a new list item but start at the last x pixel for the next loop
-                        PixelValuesForthisPartOfFunction.Add(new CanvasPixel(xPixelPosition, roundedYPixelPosition));
+                        pixelValuesForthisPartOfFunction.Add(new CanvasPixel(xPixelPosition, roundedYPixelPosition));
 
                         //// add the last point for this part of function and add the function to the list
 
@@ -84,24 +94,24 @@
 
                     if (lastThrownAwayPixel != null)
                     {
-                        PixelValuesForthisPartOfFunction.Add(lastThrownAwayPixel);
+                        pixelValuesForthisPartOfFunction.Add(lastThrownAwayPixel);
                         lastThrownAwayPixel = null;
                     }
 
-                    PixelValuesForthisPartOfFunction.Add(new CanvasPixel(xPixelPosition, roundedYPixelPosition));
+                    pixelValuesForthisPartOfFunction.Add(new CanvasPixel(xPixelPosition, roundedYPixelPosition));
                     currentXPixel++;
                 }
 
                 //// we will only land here if the function didnt have any values smaller or bigger than the yMax/yMin or if we have reached the last part of the function
-                if (PixelValuesForthisPartOfFunction.Count > 1)
+                if (pixelValuesForthisPartOfFunction.Count > 1)
                 {
-                    drawingPathsForFunction.Add(new FunctionDrawInformation(PixelValuesForthisPartOfFunction, function.FunctionColor));
+                    drawingPathsForFunction.Add(new FunctionDrawInformation(pixelValuesForthisPartOfFunction, function.FunctionColor));
                     //// reset the lastpixel becouse the current functions was closed
                     lastThrownAwayPixel = null;
                 }
                 else
                 {
-                    lastThrownAwayPixel = PixelValuesForthisPartOfFunction[0];
+                    lastThrownAwayPixel = pixelValuesForthisPartOfFunction[0];
                 }
             }
 
@@ -229,11 +239,12 @@
                     gridLines.Add(new FunctionDrawInformation(new List<CanvasPixel>() { topPixelThisGridLine, bottomPixelThisGridLine }, xGridColor));
                 }
             }
+
             return gridLines;
         }
 
         [Obsolete]
-        private double GetGridStartingPostionForGridIntervalAndMinValue(double MinValue, double gridInterval, bool isMinAndMaxSmallerThanZero)
+        private double GetGridStartingPostionForGridIntervalAndMinValue(double minValue, double gridInterval, bool isMinAndMaxSmallerThanZero)
         {
             double logExponendForGridIntervall = Math.Log10(gridInterval);
             double roundedStartingValue;
@@ -242,27 +253,28 @@
             {
                 //// log is bigger then zero
                 double newGridLog = Math.Ceiling(logExponendForGridIntervall);
-                double startingValueForXnotRounded = Math.Abs(MinValue) / Math.Pow(10, newGridLog);
+                double startingValueForXnotRounded = Math.Abs(minValue) / Math.Pow(10, newGridLog);
                 roundedStartingValue = Math.Ceiling(startingValueForXnotRounded) * Math.Pow(10, newGridLog);
             }
             else if (logExponendForGridIntervall >= 0)
             {
                 //// else if bigger then zero but smaller then one
                 double newGridLog = 0;
-                double startingValueForXnotRounded = Math.Abs(MinValue) / Math.Pow(10, newGridLog);
+                double startingValueForXnotRounded = Math.Abs(minValue) / Math.Pow(10, newGridLog);
                 roundedStartingValue = Math.Ceiling(startingValueForXnotRounded) * Math.Pow(10, newGridLog);
             }
             else
             {
                 //// if the log is negativ but smaller then -1
                 int newGridLog = (int)Math.Ceiling(Math.Abs(logExponendForGridIntervall));
-                roundedStartingValue = Math.Round(MinValue, newGridLog);
+                roundedStartingValue = Math.Round(minValue, newGridLog);
             }
 
-            if (MinValue < 0 && !isMinAndMaxSmallerThanZero)
+            if (minValue < 0 && !isMinAndMaxSmallerThanZero)
             {
                 roundedStartingValue *= -1;
             }
+
             return roundedStartingValue;
         }
 
@@ -275,7 +287,7 @@
             double yMax = this.GraphicalCanvas.YAxisData.MaxVisibleValue;
             double yMin = this.GraphicalCanvas.YAxisData.MinVisibleValue;
 
-            List<CanvasPixel> PixelValuesForthisFunction = new List<CanvasPixel>();
+            List<CanvasPixel> pixelValuesForthisFunction = new List<CanvasPixel>();
 
             for (int xPixelPosition = 0; xPixelPosition < xPixels; xPixelPosition++)
             {
@@ -285,9 +297,10 @@
 
                 int roundedYPixelPosition = this.CalculateYPixelPositionForYValue(yPixels, yValueForCurrentXValue, yMin, yMax);
 
-                PixelValuesForthisFunction.Add(new CanvasPixel(xPixelPosition, roundedYPixelPosition));
+                pixelValuesForthisFunction.Add(new CanvasPixel(xPixelPosition, roundedYPixelPosition));
             }
-            FunctionDrawInformation drawInformation = new FunctionDrawInformation(PixelValuesForthisFunction, function.FunctionColor);
+
+            FunctionDrawInformation drawInformation = new FunctionDrawInformation(pixelValuesForthisFunction, function.FunctionColor);
             return drawInformation;
         }
 

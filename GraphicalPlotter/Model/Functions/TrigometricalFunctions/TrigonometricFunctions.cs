@@ -1,4 +1,13 @@
-﻿namespace GraphicalPlotter
+﻿//-----------------------------------------------------------------------
+// <copyright file="TrigonometricFunctions.cs" company="FHWN">
+//     Copyright (c) Monkey with a Typewriter GMBH. All rights reserved.
+// </copyright>
+// <author>Jens Hanssen</author>
+// <summary>
+// This class is the parent class for all the fundamental trigonometric functions.
+// </summary>
+//-----------------------------------------------------------------------
+namespace GraphicalPlotter
 {
     public abstract class TrigonometricFunctions : FunctionParts
     {
@@ -16,6 +25,7 @@
             {
                 return this.degreeMultiplier;
             }
+
             set
             {
                 this.degreeMultiplier = value;
