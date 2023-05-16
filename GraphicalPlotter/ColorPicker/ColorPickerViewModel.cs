@@ -51,6 +51,9 @@ namespace GraphicalPlotter
             this.PropertyChanged += this.UpdateBrushColor;
         }
 
+        /// <summary>
+        /// The event that can be raised when a property inside the class is changed. Needed to be implemented for the INotifyPropertyChanged interface.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>

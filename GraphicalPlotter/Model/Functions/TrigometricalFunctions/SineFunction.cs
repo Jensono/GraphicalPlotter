@@ -35,7 +35,6 @@ namespace GraphicalPlotter
             return this.ConstantMultiplier * Math.Sin(angle * this.DegreeMultiplier);
         }
 
-
         /// <summary>
         /// Returns the mathematical symbol for the sine function.
         /// </summary>

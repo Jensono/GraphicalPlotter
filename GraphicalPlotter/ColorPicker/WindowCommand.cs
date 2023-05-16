@@ -37,6 +37,7 @@ namespace GraphicalPlotter
         {
             this.CanExecuteFunction = canExecute;
             this.OnExecute = onExecute;
+            this.CanExecuteChanged?.Invoke(this, new EventArgs());
         }
 
         /// <summary>

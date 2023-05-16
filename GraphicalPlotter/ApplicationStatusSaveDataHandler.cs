@@ -27,8 +27,6 @@ namespace GraphicalPlotter
         {
         }
 
-        //TODO NULL CHECK FOR ALL PARAMETERS ; AlSO DOWN IN THE OTHER METHOD
-
         ////TODO it would make sense to paramterise the filename that is generated for the save data file, and also the name for the old save data file.
         ////TODO encrypt the file in a format of your choosing.
 
@@ -42,8 +40,39 @@ namespace GraphicalPlotter
         /// <param name="yGrid"> The AxisGridData for the y-axis of application that should be saved.</param>
         /// <param name="functionList"> The list of functions for the application that should be saved.</param>
         /// <param name="hasUserchangedYAxisValues"> The boolean indicating whether or not the user ever changed an attribute in the y-axis.</param>
+        /// <exception cref="ArgumentNullException"> Is raised if ..... xAxis is null
+        ///                                                       ..... yAxis is null
+        ///                                                       ..... yGrid is null
+        ///                                                       ..... xGrid is null
+        ///                                                       ..... functionList is null.
+        /// </exception>
         public void CreateApplicationSaveData(AxisData xAxis, AxisGridData xGrid, AxisData yAxis, AxisGridData yGrid, List<GraphicalFunctionForSerialization> functionList, bool hasUserchangedYAxisValues)
         {
+            if (xAxis == null)
+            {
+                throw new ArgumentNullException($"{nameof(xAxis)} can not be null!");
+            }
+
+            if (xGrid == null)
+            {
+                throw new ArgumentNullException($"{nameof(xGrid)} cannot be null!");
+            }
+
+            if (yAxis == null)
+            {
+                throw new ArgumentNullException($"{nameof(yAxis)} cannot be null!");
+            }
+
+            if (yGrid == null)
+            {
+                throw new ArgumentNullException($"{nameof(yGrid)} cannot be null!");
+            }
+
+            if (functionList == null)
+            {
+                throw new ArgumentNullException($"{nameof(functionList)} cannot be null!");
+            }
+
             //// The save data is currently just a xml file , but if you want to decrypt it before then you just need to add a encryption method before the serialization.
             AxisSaveData xAxisSaveData = new AxisSaveData(xAxis, xGrid);
             AxisSaveData yAxisSaveData = new AxisSaveData(yAxis, yGrid);

@@ -22,14 +22,17 @@ namespace GraphicalPlotter
         /// </summary>
         private Point currentMouseLocationOnCanvas;
 
-        //TODO NULL CHECK
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CanvasZoomEventArguments" /> class.
         /// </summary>
         /// <param name="mouseLocation"> The point that represent the current mouse location.</param>
         public CanvasZoomEventArguments(Point mouseLocation)
         {
+            if (mouseLocation == null)
+            {
+                throw new ArgumentNullException($"{nameof(mouseLocation)} cannot be null!");
+            }
+
             this.currentMouseLocationOnCanvas = mouseLocation;
         }
 

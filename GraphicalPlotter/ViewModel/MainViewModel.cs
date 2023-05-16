@@ -1100,7 +1100,11 @@ namespace GraphicalPlotter
                         //// If a color is selected and the ok button is pressed
                         if (colorPickerWindow.IsColorPicked == true)
                         {
-                            //UNSAFE AS FUCK PLEASE FIX TODO TODO TODO
+                            if (!(obj is string))
+                            {
+                                throw new ArgumentException($"{nameof(obj)} must be convertable to string.");
+                            }
+
                             string propertyName = (string)obj;
 
                             // dumb design that i need to convert 2 times but not enough time to fix this TODO
@@ -1565,7 +1569,7 @@ namespace GraphicalPlotter
         }
 
         /// <summary>
-        /// This method is called when the Canvas zoom event is triggered. It sets the internal start point for the zoom.
+        /// This method is called when the Canvas zoom event end event is triggered. Rescales the canvas to fit the new constraints by the zoom , also rescales the y and x grid interval.
         /// </summary>
         /// <param name="sender"> The sender of the event.</param>
         /// <param name="eventArgs"> The event arguments for the send event.</param>
@@ -1630,6 +1634,8 @@ namespace GraphicalPlotter
                 this.TextBoxXAxisMax = newXAxisMax;
                 this.TextBoxYAxisMin = newYAxisMin;
                 this.TextBoxYAxisMax = newYAxisMax;
+                this.TextBoxXAxisGridIntervall = (newXAxisMax - newXAxisMin) / 20;
+                this.TextBoxYAxisGridIntervall = (newYAxisMax - newYAxisMin) / 20;
 
                 //// reset the start point so that the user cant just release the mouse inside the canvas and the old point is taken as the startpoint
                 this.zoomStartPoint = null;

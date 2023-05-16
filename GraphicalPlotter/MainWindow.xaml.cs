@@ -32,8 +32,14 @@ namespace GraphicalPlotter
             this.InitializeComponent();
         }
 
+        /// <summary>
+        /// The event for when the user starts the zooming process by pressing a mouse button inside the canvas.
+        /// </summary>
         public event EventHandler<CanvasZoomEventArguments> OnCanvasZoomStart;
 
+        /// <summary>
+        /// The event for when the user ends the zooming process by releasing a mouse button inside the canvas.
+        /// </summary>
         public event EventHandler<CanvasZoomEventArguments> OnCanvasZoomEnd;
 
         //// TODO right now when the user is zooming but moves out of the window to release the button, there is no zooming but the blue rectangle remains, 
@@ -65,6 +71,8 @@ namespace GraphicalPlotter
             }
         }
 
+        //// TODO SPECIFY THE MOUSE BUTTON  FOR WHICH THE ZOOM should be available, for example left mouse button.
+
         /// <summary>
         /// This method is called when the mouse is being moved while the mouse button is pressed. Draws a Rectangle to show the user where he is currently zooming in.
         /// </summary>
@@ -72,7 +80,7 @@ namespace GraphicalPlotter
         /// <param name="eventArgs"> The event arguments of the event.</param>
         private void Canvas_MouseMove(object sender, MouseEventArgs eventArgs)
         {
-            if (eventArgs.LeftButton == MouseButtonState.Pressed)
+            if (eventArgs.LeftButton == MouseButtonState.Pressed || eventArgs.RightButton == MouseButtonState.Pressed || eventArgs.MiddleButton == MouseButtonState.Pressed)
             {
                 Point currentSelectionEndPointPosition = eventArgs.GetPosition(PlotterCanvas);
                 double width = Math.Abs(currentSelectionEndPointPosition.X - this.zoomSelectionStartPoint.X);

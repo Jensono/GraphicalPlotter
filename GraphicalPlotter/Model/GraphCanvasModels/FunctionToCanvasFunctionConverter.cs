@@ -349,13 +349,16 @@ namespace GraphicalPlotter
         private int CalculateXPixelPositionForXValue(int xPixels, double xValue, double xMin, double xMax)
         {
             double xPixelPosition = xPixels - ((xValue - xMin) * xPixels / (xMax - xMin));
-
-            //// TODO delete the execption message and copy the same thing i did for the y value calculation
+                       
             //// A function could, in theory have such a drastic change in the y axis that this problem could occur
             //// TODO find a fix that just draws the first few lines of the functions.
-            if (xPixelPosition < int.MinValue || xPixelPosition > int.MaxValue)
+            if (xPixelPosition < int.MinValue)
             {
-                throw new ArgumentOutOfRangeException("Yo there is probably a problem in your function bro");
+                xPixelPosition = int.MinValue;
+            }
+            else if (xPixelPosition > int.MaxValue)
+            {
+                xPixelPosition = int.MaxValue;
             }
 
             return xPixels - (int)Math.Round(xPixelPosition);

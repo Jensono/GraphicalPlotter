@@ -84,8 +84,14 @@ namespace GraphicalPlotter
             this.IsInitialized = true;
         }
 
+        /// <summary>
+        /// The event for when the the user changes a property of a user input function.
+        /// </summary>
         public event EventHandler<UserInputFunctionChangedEventArgs> OnUserFunctionChanged;
 
+        /// <summary>
+        /// The event that can be raised when a property inside the class is changed. Needed to be implemented for the INotifyPropertyChanged interface.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
@@ -108,7 +114,11 @@ namespace GraphicalPlotter
                         //// If a color is selected and the ok button is pressed
                         if (colorPickerWindow.IsColorPicked == true)
                         {
-                            //UNSAFE AS FUCK PLEASE FIX TODO TODO TODO
+                            if (!(obj is string))
+                            {
+                                throw new ArgumentException($"{nameof(obj)} must be castable to string!");
+                            }
+
                             string propertyName = (string)obj;
 
                             ////i know that i could use the propertyInfo for this, but im not sure if we are allowed to use it.

@@ -25,7 +25,6 @@ namespace GraphicalPlotter
         {
         }
 
-
         /// <summary>
         /// This method calculates the y value for a given x in the function.
         /// </summary>
@@ -35,7 +34,6 @@ namespace GraphicalPlotter
         {
             return this.ConstantMultiplier * Math.Cos(angle * this.DegreeMultiplier);
         }
-
 
         /// <summary>
         /// Returns the mathematical symbol for the cosine function.
