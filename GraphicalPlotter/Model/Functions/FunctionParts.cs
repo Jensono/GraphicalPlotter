@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="FunctionPart.cs" company="FHWN">
+// <copyright file="FunctionParts.cs" company="FHWN">
 //     Copyright (c) Monkey with a Typewriter GMBH. All rights reserved.
 // </copyright>
 // <author>Jens Hanssen</author>
@@ -45,8 +45,17 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// The abstract method for a Function to calculate its own y value for any given x value.
+        /// </summary>
+        /// <param name="x"> The value that should be inserted into the function.</param>
+        /// <returns>  The y Value that is generated for any given </returns>
         public abstract double CalculateItsOwnValue(double x);
 
+        /// <summary>
+        /// The abstract method for the child classes to return their display name.
+        /// </summary>
+        /// <returns> A string that show the mathematical function.</returns>
         public abstract string GetFunctionName();
     }
 }

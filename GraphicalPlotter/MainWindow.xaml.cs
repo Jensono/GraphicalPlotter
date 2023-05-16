@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="MainWindow.cs" company="FHWN">
+// <copyright file="MainWindow.xaml.cs" company="FHWN">
 //     Copyright (c) Monkey with a Typewriter GMBH. All rights reserved.
 // </copyright>
 // <author>Jens Hanssen</author>
@@ -36,7 +36,14 @@ namespace GraphicalPlotter
 
         public event EventHandler<CanvasZoomEventArguments> OnCanvasZoomEnd;
 
-        //// TODO right now when the user is zooming but moves out of the window to release the button, there is no zooming but the blue rectangle remains, fix with events that reset selected point and stop visibility of the rectangle maybe
+        //// TODO right now when the user is zooming but moves out of the window to release the button, there is no zooming but the blue rectangle remains, 
+        //// fix with events that reset selected point and stop visibility of the rectangle maybe
+        
+        /// <summary>
+        /// This method that is called when the Event for the OnCanvasZoomStart is raised. It sends a event to the View model and sets the start point for the zoom.
+        /// </summary>
+        /// <param name="sender"> The sender of the event.</param>
+        /// <param name="eventArgs"> The event arguments of the event.</param>
         private void Canvas_ZoomStart(object sender, MouseButtonEventArgs eventArgs)
         {
             //// we check if the user is activly drawing open a window or not
@@ -58,11 +65,16 @@ namespace GraphicalPlotter
             }
         }
 
-        private void Canvas_MouseMove(object sender, MouseEventArgs e)
+        /// <summary>
+        /// This method is called when the mouse is being moved while the mouse button is pressed. Draws a Rectangle to show the user where he is currently zooming in.
+        /// </summary>
+        /// <param name="sender"> The sender of the event.</param>
+        /// <param name="eventArgs"> The event arguments of the event.</param>
+        private void Canvas_MouseMove(object sender, MouseEventArgs eventArgs)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
+            if (eventArgs.LeftButton == MouseButtonState.Pressed)
             {
-                Point currentSelectionEndPointPosition = e.GetPosition(PlotterCanvas);
+                Point currentSelectionEndPointPosition = eventArgs.GetPosition(PlotterCanvas);
                 double width = Math.Abs(currentSelectionEndPointPosition.X - this.zoomSelectionStartPoint.X);
                 double height = Math.Abs(currentSelectionEndPointPosition.Y - this.zoomSelectionStartPoint.Y);
                 double left = Math.Min(this.zoomSelectionStartPoint.X, currentSelectionEndPointPosition.X);
@@ -74,6 +86,11 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// The event that is called then mouse button is released inside the Plotter Canvas. Sends a event to the view model to let it know the zoom window was drawn open.
+        /// </summary>
+        /// <param name="sender"> The sender of the event.</param>
+        /// <param name="eventArgs"> The event arguments of the event.</param>
         private void Canvas_ZoomEnd(object sender, MouseButtonEventArgs eventArgs)
         {
             CanvasZoomEventArguments zoomEndEventArgs = new CanvasZoomEventArguments(eventArgs.GetPosition(PlotterCanvas));

@@ -27,8 +27,24 @@ namespace GraphicalPlotter
         {
         }
 
+        //TODO NULL CHECK FOR ALL PARAMETERS ; AlSO DOWN IN THE OTHER METHOD
+
+        ////TODO it would make sense to paramterise the filename that is generated for the save data file, and also the name for the old save data file.
+        ////TODO encrypt the file in a format of your choosing.
+
+        /// <summary>
+        /// This method creates a new save data file inside the current running directory of the application. 
+        /// While creation the save data still has a different name and only after the serialization is over the old save file will be deleted.
+        /// </summary>
+        /// <param name="xAxis"> The AxisData for the x-axis of application that should be saved.</param>
+        /// <param name="xGrid"> The AxisData for the y-axis of application that should be saved.</param>
+        /// <param name="yAxis"> The AxisGridData for the x-axis of application that should be saved.</param>
+        /// <param name="yGrid"> The AxisGridData for the y-axis of application that should be saved.</param>
+        /// <param name="functionList"> The list of functions for the application that should be saved.</param>
+        /// <param name="hasUserchangedYAxisValues"> The boolean indicating whether or not the user ever changed an attribute in the y-axis.</param>
         public void CreateApplicationSaveData(AxisData xAxis, AxisGridData xGrid, AxisData yAxis, AxisGridData yGrid, List<GraphicalFunctionForSerialization> functionList, bool hasUserchangedYAxisValues)
         {
+            //// The save data is currently just a xml file , but if you want to decrypt it before then you just need to add a encryption method before the serialization.
             AxisSaveData xAxisSaveData = new AxisSaveData(xAxis, xGrid);
             AxisSaveData yAxisSaveData = new AxisSaveData(yAxis, yGrid);
 
@@ -58,6 +74,19 @@ namespace GraphicalPlotter
             File.Move(newFilePath, oldbackupPath);
         }
 
+        //// TODO the setting to default values should happen wherever tis method is called not inside the method. If it directly sets the values to default values the name is misleading and two functions are combined in one
+
+        /// <summary>
+        /// This method tries to locate a file in the current running directory, and read the application status from it. 
+        /// If the file does not exits, default values are set for the attributes of the Graph Plotter.
+        /// </summary>
+        /// <param name="xAxisData"> The AxisData for the x-axis of application was read from the file or set to a default value.</param>
+        /// <param name="yAxisData"> The AxisData for the y-axis of application was read from the file or set to a default value..</param>
+        /// <param name="xGridData"> The AxisGridData for the x-axis of application that was read from the file or set to a default value.</param>
+        /// <param name="yGridData"> The AxisGridData for the y-axis of application was read from the file or set to a default value.</param>
+        /// <param name="functions"> The list of functions for the application that was read from the file or set to a default value.</param>
+        /// <param name="hasUserChangedYAxisValues"> The boolean indicating whether or not the user ever changed an attribute in the y-axis that was read from the file or set to a default value.</param>
+        /// <returns> Returns a boolean value indicating whether or not it succeeded in reading the save data. </returns>
         public bool TryToExtractBackupDataForApplication(
             out AxisData xAxisData,
             out AxisData yAxisData,

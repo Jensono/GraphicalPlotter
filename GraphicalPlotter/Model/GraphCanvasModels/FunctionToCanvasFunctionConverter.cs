@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="FunctionCanvasFunctionConverter.cs" company="FHWN">
+// <copyright file="FunctionToCanvasFunctionConverter.cs" company="FHWN">
 //     Copyright (c) Monkey with a Typewriter GMBH. All rights reserved.
 // </copyright>
 // <author>Jens Hanssen</author>

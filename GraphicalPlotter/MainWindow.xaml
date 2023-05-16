@@ -12,7 +12,7 @@
     </Window.DataContext>
 
     <Window.Resources>
-        <local:CanvasPixelToPointCollectionConverter x:Key="CanvasPixelToPointConverter"></local:CanvasPixelToPointCollectionConverter>
+        <local:CanvasPixelListToPointCollectionConverter x:Key="CanvasPixelToPointConverter"></local:CanvasPixelListToPointCollectionConverter>
         <local:ColorToSolidBrushConverter x:Key="ColorToSolidBrushConverter"></local:ColorToSolidBrushConverter>
     </Window.Resources>
 

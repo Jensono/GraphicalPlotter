@@ -55,6 +55,11 @@ namespace GraphicalPlotter
         /// <value> The visibility of the grid.</value>
         public bool IsColorPicked { get; set; }
 
+        /// <summary>
+        /// This method is called when the button inside the Color Picker window is pressed. 
+        /// </summary>
+        /// <param name="sender"> The sender of the click event.</param>
+        /// <param name="e"> The event arguments for the event.</param>
         private void OKButton_Click(object sender, RoutedEventArgs e)
         {
             this.SelectedColor = this.colorPickerViewModel.SelectedColor;

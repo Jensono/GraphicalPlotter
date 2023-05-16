@@ -124,6 +124,11 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// This method is used to receive a property changed event argument from inside the class and updates the Selected color accordingly.
+        /// </summary>
+        /// <param name="sender"> The sender of the event.</param>
+        /// <param name="e"> The event arguments of the event.</param>
         private void UpdateBrushColor(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(this.SelectedColor))

@@ -55,16 +55,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ApplicationStatusSaver.cs" />
+    <Compile Include="ApplicationStatusSaveDataHandler.cs" />
     <Compile Include="AxisSaveData.cs" />
     <Compile Include="CanvasZoomEventArguments.cs" />
     <Compile Include="ColorPicker\ColorPickerWindow.xaml.cs">
       <DependentUpon>ColorPickerWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ColorPicker\ColorPickeViewModel.cs" />
+    <Compile Include="ColorPicker\ColorPickerViewModel.cs" />
     <Compile Include="Converter\ColorToSolidBrushConverter.cs" />
-    <Compile Include="Converter\CanvasPixelToPointCollectionConverter.cs" />
-    <Compile Include="GraphicalFunctionDisplayNameForSerialization.cs" />
+    <Compile Include="Converter\CanvasPixelListToPointCollectionConverter.cs" />
+    <Compile Include="GraphicalFunctionForSerialization.cs" />
     <Compile Include="PlotterFullSaveData.cs" />
     <Compile Include="ViewModel\GraphicalFunctionViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
@@ -101,7 +101,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\GraphCanvasModels\FunctionCanvasFunctionConverter.cs" />
+    <Compile Include="Model\GraphCanvasModels\FunctionToCanvasFunctionConverter.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

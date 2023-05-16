@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="GraphicalFunctionDisplayNameForSerialization.cs" company="FHWN">
+// <copyright file="GraphicalFunctionForSerialization.cs" company="FHWN">
 //     Copyright (c) Monkey with a Typewriter GMBH. All rights reserved.
 // </copyright>
 // <author>Jens Hanssen</author>
