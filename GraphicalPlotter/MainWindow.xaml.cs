@@ -15,7 +15,7 @@ namespace GraphicalPlotter
     using System.Windows.Input;
 
     /// <summary>
-    /// Interactionlogic for the main window.
+    /// Interaction logic for the main window.
     /// </summary>>
     public partial class MainWindow : Window
     {
@@ -80,6 +80,5 @@ namespace GraphicalPlotter
             this.OnCanvasZoomEnd(this, zoomEndEventArgs);
             ZoomSelectionRectangle.Visibility = Visibility.Hidden;
         }
-
     }
 }

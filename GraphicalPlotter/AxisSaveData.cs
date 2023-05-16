@@ -13,17 +13,16 @@ namespace GraphicalPlotter
     using System.Windows.Media;
 
     /// <summary>
-    /// This class is used to serialize the axisdata and axidgriddata class combined in one class.
+    /// This class is used to serialize the AxisData and AxisGridData class combined in one class.
     /// </summary>
     [Serializable]    
     public class AxisSaveData
     {
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="AxisSaveData" /> class.	
+        /// Initializes a new instance of the <see cref="AxisSaveData" /> class.
         /// </summary>
-        /// <param name="axis"> The axisdata fopr the axissavedata.</param>
-        /// <param name="grid">The grid for the axissavedata.</param>
+        /// <param name="axis"> The AxisData for the AxisSaveData.</param>
+        /// <param name="grid"> The grid for the AxisSaveData.</param>
         public AxisSaveData(AxisData axis, AxisGridData grid)
         {
             this.AxisMin = axis.MinVisibleValue;
@@ -41,7 +40,6 @@ namespace GraphicalPlotter
         /// </summary>
         public AxisSaveData()
         {
-
         }
 
         /// <summary>

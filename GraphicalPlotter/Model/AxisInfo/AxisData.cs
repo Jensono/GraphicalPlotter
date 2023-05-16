@@ -32,7 +32,7 @@ namespace GraphicalPlotter
         private Color axisColor;
 
         /// <summary>
-        /// The field for the boolflag indicating visibility.
+        /// The field for the boolean flag indicating visibility.
         /// </summary>
         private bool visibility;
 
@@ -40,9 +40,9 @@ namespace GraphicalPlotter
         /// Initializes a new instance of the <see cref="AxisData" /> class. 
         /// </summary>
         /// <param name="minValue"> The minimum value that is shown on the axis. </param>
-        /// <param name="maxValue"> The minimum value that is shown on the axis.</param>
+        /// <param name="maxValue"> The maximum value that is shown on the axis.</param>
         /// <param name="axisColor"> The Color for the axis line.</param>
-        /// <param name="isVisible"> The boolean value indicating wether or not the axis is visible. </param>
+        /// <param name="isVisible"> The boolean value indicating whether or not the axis is visible. </param>
         public AxisData(double minValue, double maxValue, Color axisColor, bool isVisible)
         {
             this.MinVisibleValue = minValue;
@@ -50,8 +50,7 @@ namespace GraphicalPlotter
             this.AxisColor = axisColor;
             this.Visibility = isVisible;
         }
-
-       
+               
         /// <summary>
         /// Initializes a new instance of the <see cref="AxisData" /> class. Used for Serialization.
         /// </summary>

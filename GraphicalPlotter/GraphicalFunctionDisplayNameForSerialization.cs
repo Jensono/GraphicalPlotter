@@ -13,12 +13,11 @@ namespace GraphicalPlotter
     using System.Windows.Media;
 
     /// <summary>
-    /// This class is used for as the serializing equivilant for the GraphicalFunction class.
+    /// This class is used for as the serializing equivalent for the GraphicalFunction class.
     /// </summary>
     [Serializable]
     public class GraphicalFunctionForSerialization
     {
-
         /// <summary>
         ///  Initializes a new instance of the <see cref="GraphicalFunctionForSerialization" /> class.
         /// </summary>

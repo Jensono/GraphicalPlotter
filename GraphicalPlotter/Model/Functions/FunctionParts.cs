@@ -8,10 +8,9 @@
 // </summary>
 //-----------------------------------------------------------------------
 namespace GraphicalPlotter
-
 {
     /// <summary>
-    /// Is the parent class to all other function classes, uses a constant multiplier to multiply whatever came before eg. with a multiplies of 3 a cos(x) functions looks like this: 3*cos(x).
+    /// Is the parent class to all other function classes, uses a constant multiplier to multiply whatever came before for example with a multiplies of 3 a cos(x) functions looks like this: 3*cos(x).
     /// </summary>
     public abstract class FunctionParts
     {
@@ -23,7 +22,7 @@ namespace GraphicalPlotter
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionParts" /> class.
         /// </summary>
-        /// <param name="constantMultiplier"> The contanst multiplier set before the function. </param>
+        /// <param name="constantMultiplier"> The constant multiplier set before the function. </param>
         public FunctionParts(double constantMultiplier)
         {
             this.ConstantMultiplier = constantMultiplier;

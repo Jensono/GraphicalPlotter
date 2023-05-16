@@ -12,7 +12,7 @@ namespace GraphicalPlotter
     using System;
 
     /// <summary>
-    /// The class for a polynomial componenten. This componentn can look something like this : a0*x^a1 , in which the a0 and a1  can be double values for the x.
+    /// The class for a polynomial component. This component can look something like this : a0*x^a1 , in which the a0 and a1  can be double values for the x.
     /// </summary>
     public class PolynomialComponent : FunctionParts
     {

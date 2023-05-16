@@ -36,7 +36,7 @@ namespace GraphicalPlotter
         /// </summary>
         /// <param name="intervallBetweenLines"> The distance value between two grid lines. Not a Pixel value but a mathematical one.</param>
         /// <param name="gridColor"> The color for the grid.</param>
-        /// <param name="isVisible"> The boolean value indicating wether or not the grid lines are visible.</param>
+        /// <param name="isVisible"> The boolean value indicating whether or not the grid lines are visible.</param>
         public AxisGridData(double intervallBetweenLines, Color gridColor, bool isVisible)
         {
             this.IntervallBetweenLines = intervallBetweenLines;
@@ -44,9 +44,8 @@ namespace GraphicalPlotter
             this.Visibility = isVisible;
         }
 
-
         /// <summary>
-        /// Gets or sets the interval or distance between two grid lines on the orthogal axis.
+        /// Gets or sets the interval or distance between two grid lines on the orthogonal axis.
         /// </summary>
         /// <value> The interval or distance between two grid lines inside the grid.</value>
         public double IntervallBetweenLines

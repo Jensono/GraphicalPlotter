@@ -39,7 +39,7 @@ namespace GraphicalPlotter
         /// <param name="xAxisSaveData"> The AxisSaveData for the x-axis of the Plotter Canvas. </param>
         /// <param name="yAxisSaveData"> The AxisSaveData for the y-axis of the Plotter Canvas.</param>
         /// <param name="functionList"> The list of functions that are currently saved inside the plotter application.</param>
-        /// <param name="hasUserChangedYAxis"> The boolean value indicating whehter or not the user has changed the y-axis parameters.</param>
+        /// <param name="hasUserChangedYAxis"> The boolean value indicating whether or not the user has changed the y-axis parameters.</param>
         public PlotterFullSaveData(AxisSaveData xAxisSaveData, AxisSaveData yAxisSaveData, List<GraphicalFunctionForSerialization> functionList, bool hasUserChangedYAxis)
         {
             this.XAxisSaveData = xAxisSaveData;
@@ -101,7 +101,6 @@ namespace GraphicalPlotter
             }
         }
 
-
         /// <summary>
         /// Gets or sets the List of functions that were generated for serialization.
         /// </summary>
@@ -126,7 +125,7 @@ namespace GraphicalPlotter
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the user has ever changed something in the y axis attributes, meaning there is no more autoscaling.
+        /// Gets or sets a value indicating whether or not the user has ever changed something in the y axis attributes, meaning there is no more auto-scaling.
         /// </summary>
         /// <value> The boolean flag used to find out, if the user has ever changed y-axis values.</value>
         public bool HasUserChangedYAxis { get; set; }

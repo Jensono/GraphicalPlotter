@@ -8,8 +8,7 @@
 // </summary>
 //-----------------------------------------------------------------------
 namespace GraphicalPlotter
-{
-   
+{   
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -26,8 +25,7 @@ namespace GraphicalPlotter
     /// This class acts as the main interface between the view and the model of the app.
     /// </summary>
     public class MainViewModel : INotifyPropertyChanged
-    {
-      
+    {      
         /// <summary>
         /// The field for the Text Box that describes the min value for the x-axis.
         /// </summary>
@@ -149,7 +147,7 @@ namespace GraphicalPlotter
         private bool isApplicationDataInitalized;
 
         /// <summary>
-        /// The field for the lock object used inside the GraphicalFunctionViewModel, to synchronise the model and the views access to it.
+        /// The field for the lock object used inside the GraphicalFunctionViewModel, to synchronize the model and the views access to it.
         /// </summary>
         private object lockObjectFunctions = new object();
 
@@ -189,7 +187,7 @@ namespace GraphicalPlotter
         private FunctionToCanvasFunctionConverter canvasFunctionConverter;
 
         /// <summary>
-        /// The field for StringToFunctionConverter used to convert from a user input string to a mathematical functin object.
+        /// The field for StringToFunctionConverter used to convert from a user input string to a mathematical function object.
         /// </summary>
         private StringToFunctionConverter stringToFunctionConverter;
 
@@ -289,7 +287,6 @@ namespace GraphicalPlotter
                 }
             }
         }
-
 
         /// <summary>
         /// Gets or sets the textbox contents for the maximum value of the x-axis.
@@ -625,7 +622,7 @@ namespace GraphicalPlotter
         }
 
         /// <summary>
-        /// Gets or sets the widht of the canvas inside the main window in pixels.
+        /// Gets or sets the width of the canvas inside the main window in pixels.
         /// </summary>
         /// <value> The width of the canvas inside the main window in pixels.</value>
         public int PixelWidhtCanvas
@@ -1212,8 +1209,7 @@ namespace GraphicalPlotter
                                 this.ReconstructFunctionsFromFileInport(deserializedFunctions);
                                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CurrentGraphicalFunctions)));
                                 this.UpdateDrawInformationForFunctions();
-                            }
-                            
+                            }                            
                         }
                     });
             }

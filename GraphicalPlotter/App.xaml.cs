@@ -12,7 +12,7 @@ namespace GraphicalPlotter
     using System.Windows;
 
     /// <summary>
-    /// Interactin logic for the App.xaml file.
+    /// Interaction logic for the App.
     /// </summary>
     public partial class App : Application
     {

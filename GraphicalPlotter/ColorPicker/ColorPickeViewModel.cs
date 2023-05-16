@@ -37,7 +37,6 @@ namespace GraphicalPlotter
         /// </summary>
         private SolidColorBrush selectedColor;
 
-
         /// <summary>
         ///  Initializes a new instance of the <see cref="ColorPickerViewModel" /> class.
         /// </summary>
@@ -107,7 +106,6 @@ namespace GraphicalPlotter
                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.SelectedColor)));
             }
         }
-
 
         /// <summary>
         /// Gets or sets the SolidColorBrush for the ColorPickerViewModel.

@@ -71,7 +71,7 @@ namespace GraphicalPlotter
         /// </summary>
         /// <param name="functionPartList"> The list of function parts for the view model.</param>
         /// <param name="functionColor"> The color in which the function should be drawn.</param>
-        /// <param name="customUserSetName"> The string which the user set as a custom name for the functin.</param>
+        /// <param name="customUserSetName"> The string which the user set as a custom name for the function.</param>
         /// <param name="displayName"> The mathematical display name for the function.</param>
         /// <param name="visibility"> The Visibility of the function.</param>
         public GraphicalFunctionViewModel(List<FunctionParts> functionPartList, Color functionColor, string customUserSetName, string displayName, bool visibility)
@@ -127,7 +127,6 @@ namespace GraphicalPlotter
                     });
             }
         }
-
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the function is visible.

@@ -48,8 +48,7 @@ namespace GraphicalPlotter
             {
                 if (value == null)
                 {
-                    throw new ArgumentNullException($"{nameof(this.GraphicalCanvas)} can not be null!");
-                    
+                    throw new ArgumentNullException($"{nameof(this.GraphicalCanvas)} can not be null!");                    
                 }
                 else
                 {

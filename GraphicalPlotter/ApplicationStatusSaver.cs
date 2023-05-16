@@ -21,7 +21,7 @@ namespace GraphicalPlotter
     public class ApplicationStatusSaveDataHandler
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApplicationStatusSaveDataHandler" /> class.	
+        /// Initializes a new instance of the <see cref="ApplicationStatusSaveDataHandler" /> class.
         /// </summary>
         public ApplicationStatusSaveDataHandler()
         {
@@ -65,7 +65,6 @@ namespace GraphicalPlotter
             out AxisGridData yGridData,
             out List<GraphicalFunctionForSerialization> functions,
             out bool hasUserChangedYAxisValues)
-
         {
             xAxisData = new AxisData(-10, 10, Colors.Azure, true);
             yAxisData = new AxisData(-10, 10, Colors.Azure, true);
