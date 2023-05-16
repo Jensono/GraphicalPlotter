@@ -114,12 +114,9 @@ namespace GraphicalPlotter
                         //// If a color is selected and the ok button is pressed
                         if (colorPickerWindow.IsColorPicked == true)
                         {
-                            if (!(obj is string))
-                            {
-                                throw new ArgumentException($"{nameof(obj)} must be castable to string!");
-                            }
-
-                            string propertyName = (string)obj;
+                          
+                            
+                           
 
                             ////i know that i could use the propertyInfo for this, but im not sure if we are allowed to use it.
                             ////PropertyInfo property = this.GetType().GetProperty(propertyName);

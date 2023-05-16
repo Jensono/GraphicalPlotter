@@ -1105,6 +1105,8 @@ namespace GraphicalPlotter
                                 throw new ArgumentException($"{nameof(obj)} must be convertable to string.");
                             }
 
+                            //// TODO how do i cast better, check if i can  in this or do this without a cast?
+
                             string propertyName = (string)obj;
 
                             // dumb design that i need to convert 2 times but not enough time to fix this TODO

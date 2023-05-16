@@ -231,7 +231,14 @@ namespace GraphicalPlotter
                     yAxisGridStartIndex = (int)Math.Ceiling(howManyGridsAwayFromXAxis);
                 }
 
+
+
+
                 //// as long as we havent reached yMax yet we still nee to add more intervalls
+                
+
+
+
                 for (double i = yAxisGridStartIndex; (i * yGridInterval) < yMax; i += 1)
                 {
                     double currentYValue = i * yGridInterval;
