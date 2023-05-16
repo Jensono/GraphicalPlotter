@@ -13,6 +13,9 @@ namespace GraphicalPlotter
     using System.Collections.Generic;
     using System.Windows.Media;
 
+    /// <summary>
+    /// This class acts as a collection of attributes that can be used to draw a function inside a pixel canvas.
+    /// </summary>
     public class FunctionDrawInformation
     {
         /// <summary>
@@ -25,10 +28,15 @@ namespace GraphicalPlotter
         /// </summary>
         private Color functionColor;
 
-        public FunctionDrawInformation(List<CanvasPixel> canvasPixel, Color functionColor)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FunctionDrawInformation" /> class.
+        /// </summary>
+        /// <param name="canvasPixels"> The list of canvas pixels for the draw information.</param>
+        /// <param name="functionColor"> The color in which the function should be drawn.</param>
+        public FunctionDrawInformation(List<CanvasPixel> canvasPixels, Color functionColor)
         {
             this.FunctionColor = functionColor;
-            this.CanvasPixels = canvasPixel;
+            this.CanvasPixels = canvasPixels;
         }
 
         /// <summary>

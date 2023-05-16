@@ -11,6 +11,9 @@ namespace GraphicalPlotter
 {
     using System;
 
+    /// <summary>
+    /// This class is used as the Event Arguments for the User Input Function Changed Event.
+    /// </summary>
     public class UserInputFunctionChangedEventArgs : EventArgs
     {
     }

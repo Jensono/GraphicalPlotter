@@ -25,7 +25,7 @@ namespace GraphicalPlotter
     using System.Windows.Shapes;
 
     /// <summary>
-    ///
+    /// The partial class for the Color picker Window.
     /// </summary>
     public partial class ColorPickerWindow : Window
     {
@@ -34,6 +34,9 @@ namespace GraphicalPlotter
         /// </summary>      
         private ColorPickerViewModel colorPickerViewModel = new ColorPickerViewModel(Color.FromRgb(127, 127, 127));
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ColorPickerWindow" /> class.
+        /// </summary>
         public ColorPickerWindow()
         {
             this.InitializeComponent();
@@ -41,7 +44,7 @@ namespace GraphicalPlotter
         }
 
         /// <summary>
-        /// Gets or sets the SolidColorBrush for the ColorPickerWindow
+        /// Gets or sets the SolidColorBrush for the ColorPickerWindow.
         /// </summary>
         /// <value> The current SolidColorBrush selected.</value>
         public SolidColorBrush SelectedColor { get; set; }
@@ -49,7 +52,7 @@ namespace GraphicalPlotter
         /// <summary>
         /// Gets or sets a value indicating whether or not the color has been picked.
         /// </summary>
-        /// <value> The visbility of the grid.</value>
+        /// <value> The visibility of the grid.</value>
         public bool IsColorPicked { get; set; }
 
         private void OKButton_Click(object sender, RoutedEventArgs e)

@@ -38,7 +38,10 @@ namespace GraphicalPlotter
         private SolidColorBrush selectedColor;
 
 
-
+        /// <summary>
+        ///  Initializes a new instance of the <see cref="ColorPickerViewModel" /> class.
+        /// </summary>
+        /// <param name="color"> The Color that is the starting initial state for the Color Picker. </param>
         public ColorPickerViewModel(Color color)
         {
             this.RedValue = color.R;

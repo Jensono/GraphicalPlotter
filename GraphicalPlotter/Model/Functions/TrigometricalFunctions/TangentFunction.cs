@@ -10,8 +10,17 @@
 namespace GraphicalPlotter
 {
     using System;
+
+    /// <summary>
+    /// This class defines a mathematical tangent function.
+    /// </summary>
     public class TangentFunction : TrigonometricFunctions
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TangentFunction" /> class.
+        /// </summary>
+        /// <param name="constantMultiplier"> The constant multiplier for the tan function.</param>
+        /// <param name="degreeMultiplier"> The multiplier inside the brackets for the tan function.</param>
         public TangentFunction(double constantMultiplier, double degreeMultiplier) : base(constantMultiplier, degreeMultiplier)
         {
         }

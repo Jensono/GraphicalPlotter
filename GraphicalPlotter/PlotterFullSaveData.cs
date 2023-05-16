@@ -12,6 +12,9 @@ namespace GraphicalPlotter
     using System;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// This class is used compress all of the variables that the user can change into one class for easy serialization and deserialization.
+    /// </summary>
     [Serializable]
     public class PlotterFullSaveData
     {
@@ -28,9 +31,16 @@ namespace GraphicalPlotter
         /// <summary>
         /// The field for the list of Graphical functions that were made for serialization.
         /// </summary>
-        private List<GraphicalFunctionDisplayNameForSerialization> serializationFunctionList;
+        private List<GraphicalFunctionForSerialization> serializationFunctionList;
 
-        public PlotterFullSaveData(AxisSaveData xAxisSaveData, AxisSaveData yAxisSaveData, List<GraphicalFunctionDisplayNameForSerialization> functionList, bool hasUserChangedYAxis)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlotterFullSaveData" /> class.
+        /// </summary>
+        /// <param name="xAxisSaveData"> The AxisSaveData for the x-axis of the Plotter Canvas. </param>
+        /// <param name="yAxisSaveData"> The AxisSaveData for the y-axis of the Plotter Canvas.</param>
+        /// <param name="functionList"> The list of functions that are currently saved inside the plotter application.</param>
+        /// <param name="hasUserChangedYAxis"> The boolean value indicating whehter or not the user has changed the y-axis parameters.</param>
+        public PlotterFullSaveData(AxisSaveData xAxisSaveData, AxisSaveData yAxisSaveData, List<GraphicalFunctionForSerialization> functionList, bool hasUserChangedYAxis)
         {
             this.XAxisSaveData = xAxisSaveData;
             this.YAxisSaveData = yAxisSaveData;
@@ -38,9 +48,12 @@ namespace GraphicalPlotter
             this.HasUserChangedYAxis = hasUserChangedYAxis;
         }
 
-        //// empty construtor for serialization
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlotterFullSaveData" /> class. Used for serialization.
+        /// </summary>
         public PlotterFullSaveData()
-        { }
+        {
+        }
 
         /// <summary>
         /// Gets or sets the AxisSaveData used for the x-axis.
@@ -94,7 +107,7 @@ namespace GraphicalPlotter
         /// </summary>
         /// <value> The List of functions that were generated for serialization. </value>
         /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
-        public List<GraphicalFunctionDisplayNameForSerialization> SerializationFunctionList
+        public List<GraphicalFunctionForSerialization> SerializationFunctionList
         {
             get
             { 
@@ -115,7 +128,7 @@ namespace GraphicalPlotter
         /// <summary>
         /// Gets or sets a value indicating whether or not the user has ever changed something in the y axis attributes, meaning there is no more autoscaling.
         /// </summary>
-        /// <value> The boolflag used to find out, if the user has ever changed y-axis values.</value>
+        /// <value> The boolean flag used to find out, if the user has ever changed y-axis values.</value>
         public bool HasUserChangedYAxis { get; set; }
     }
 }

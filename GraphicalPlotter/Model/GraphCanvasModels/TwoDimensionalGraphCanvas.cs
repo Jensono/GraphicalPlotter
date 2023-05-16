@@ -11,6 +11,9 @@ namespace GraphicalPlotter
 {
     using System;
 
+    /// <summary>
+    /// This class holds all the information for a two dimensional Canvas on which functions and other objects can be displayed.
+    /// </summary>
     public class TwoDimensionalGraphCanvas
     {
         /// <summary>
@@ -43,6 +46,15 @@ namespace GraphicalPlotter
         /// </summary>
         private AxisGridData yAxisGridData;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TwoDimensionalGraphCanvas" /> class.
+        /// </summary>
+        /// <param name="widthPixel"> The width of the canvas in pixels.</param>
+        /// <param name="heightPixel"> The height of the canvas in pixels.</param>
+        /// <param name="xAxisData"> The AxisData for the x-axis.</param>
+        /// <param name="yAxisData"> The AxisData for the y-axis.</param>
+        /// <param name="xAxisGrid"> The AxisGridData for the x-axis.</param>
+        /// <param name="yAxisGrid"> The AxisGridData for the y-axis.</param>
         public TwoDimensionalGraphCanvas(int widthPixel, int heightPixel, AxisData xAxisData, AxisData yAxisData, AxisGridData xAxisGrid, AxisGridData yAxisGrid)
         {
             this.WidthInPixel = widthPixel;

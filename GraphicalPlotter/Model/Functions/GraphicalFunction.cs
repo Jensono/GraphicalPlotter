@@ -13,6 +13,9 @@ namespace GraphicalPlotter
     using System.Collections.Generic;
     using System.Windows.Media;
 
+    /// <summary>
+    /// This class is used to describe a Mathematical function, with extra attributes like a name and a color.
+    /// </summary>
     public class GraphicalFunction
     {
         /// <summary>
@@ -26,7 +29,7 @@ namespace GraphicalPlotter
         //// if you want to add a contant to any of the functions or the trig ones you need to add a polynom of order 0
 
         /// <summary>
-        /// The field for the collection of function componets for this graphical function.
+        /// The field for the collection of function components for this graphical function.
         /// </summary>
         private List<FunctionParts> functionComponents = new List<FunctionParts>();
 
@@ -36,10 +39,15 @@ namespace GraphicalPlotter
         private Color functionColor;
 
         /// <summary>
-        /// The field for the visbility of the function.
+        /// The field for the visibility of the function.
         /// </summary>
         private bool visibility;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GraphicalFunction" /> class.
+        /// </summary>
+        /// <param name="functionParts"> The list of function parts that make up the whole of this Graphical Function.</param>
+        /// <param name="functionColor"> The color for the function.</param>
         public GraphicalFunction(List<FunctionParts> functionParts, Color functionColor)
         {
             this.FunctionComponents = functionParts;
@@ -66,9 +74,9 @@ namespace GraphicalPlotter
         }
 
         /// <summary>
-        /// Gets or sets the collection of function componets for this graphical function.
+        /// Gets or sets the collection of function components for this graphical function.
         /// </summary>
-        /// <value> The collection of function componets for this graphical function.</value>
+        /// <value> The collection of function components for this graphical function.</value>
         /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public List<FunctionParts> FunctionComponents
         {
@@ -108,7 +116,7 @@ namespace GraphicalPlotter
         /// <summary>
         /// Gets or sets a value indicating whether or not the the function is visible.
         /// </summary>
-        /// <value> The visbility of the function.</value>
+        /// <value> The visibility of the function.</value>
         public bool Visibility
         {
             get

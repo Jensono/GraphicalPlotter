@@ -13,6 +13,9 @@ namespace GraphicalPlotter
     using System.Collections.Generic;
     using System.Windows.Media;
 
+    /// <summary>
+    /// This class is a converter that can turn a mathematical function into draw information that can then be used to draw it onto a canvas.
+    /// </summary>
     public class FunctionToCanvasFunctionConverter
     {
         /// <summary>
@@ -20,6 +23,10 @@ namespace GraphicalPlotter
         /// </summary>
         private TwoDimensionalGraphCanvas graphicalCanvas;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FunctionToCanvasFunctionConverter" /> class.
+        /// </summary>
+        /// <param name="graphCanvas"> The TwoDimensionalGraphCanvas for which to convert the functions.</param>
         public FunctionToCanvasFunctionConverter(TwoDimensionalGraphCanvas graphCanvas)
         {
             this.GraphicalCanvas = graphCanvas;
@@ -92,7 +99,7 @@ namespace GraphicalPlotter
                     //// if the currently calcualted pixel is not inside the canvas we start making a new drawinformation for that part
                     if (roundedYPixelPosition > yPixels || roundedYPixelPosition < 0)
                     {
-                        /// /if this happens begin a new list item but start at the last x pixel for the next loop
+                        //// if this happens begin a new list item but start at the last x pixel for the next loop
                         pixelValuesForthisPartOfFunction.Add(new CanvasPixel(xPixelPosition, roundedYPixelPosition));
 
                         //// add the last point for this part of function and add the function to the list
@@ -315,7 +322,7 @@ namespace GraphicalPlotter
 
         private int CalculateYPixelPositionForYValue(int yPixels, double yValue, double yMin, double yMax)
         {
-            /// /it took me 2 hours to come up with this function, i fucking hope it works
+            //// it took me 2 hours to come up with this function, i fucking hope it works
 
             double yPixelPosition = yPixels - ((yValue - yMin) * yPixels / (yMax - yMin));
 

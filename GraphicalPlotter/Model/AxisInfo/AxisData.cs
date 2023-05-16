@@ -11,6 +11,9 @@ namespace GraphicalPlotter
 {
     using System.Windows.Media;
 
+    /// <summary>
+    /// This class is used to store values for a Axis on one dimension.
+    /// </summary>
     public class AxisData
     {     
         /// <summary>
@@ -29,10 +32,17 @@ namespace GraphicalPlotter
         private Color axisColor;
 
         /// <summary>
-        /// The field for the boolflag 
+        /// The field for the boolflag indicating visibility.
         /// </summary>
         private bool visibility;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AxisData" /> class. 
+        /// </summary>
+        /// <param name="minValue"> The minimum value that is shown on the axis. </param>
+        /// <param name="maxValue"> The minimum value that is shown on the axis.</param>
+        /// <param name="axisColor"> The Color for the axis line.</param>
+        /// <param name="isVisible"> The boolean value indicating wether or not the axis is visible. </param>
         public AxisData(double minValue, double maxValue, Color axisColor, bool isVisible)
         {
             this.MinVisibleValue = minValue;
@@ -41,9 +51,13 @@ namespace GraphicalPlotter
             this.Visibility = isVisible;
         }
 
-        // Empty constructor for serialization
+       
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AxisData" /> class. Used for Serialization.
+        /// </summary>
         public AxisData()
-        { }
+        {
+        }
 
         /// <summary>
         /// Gets or sets the max visible value for the axis data.
@@ -99,7 +113,7 @@ namespace GraphicalPlotter
         /// <summary>
         /// Gets or sets a value indicating whether or not the the axis line is visible.
         /// </summary>
-        /// <value> The visbility of the axis line.</value>
+        /// <value> The visibility of the axis line.</value>
         public bool Visibility
         {
             get

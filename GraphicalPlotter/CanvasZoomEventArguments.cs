@@ -11,18 +11,23 @@ namespace GraphicalPlotter
 {
     using System;
     using System.Windows;
+
     /// <summary>
     /// This class is used as the Event Arguments for the Canvas zoom event.
     /// </summary>
     public class CanvasZoomEventArguments : EventArgs
     {
         /// <summary>
-        /// The field for the Point that is transfered by the event.
+        /// The field for the Point that is transferred by the event.
         /// </summary>
         private Point currentMouseLocationOnCanvas;
 
-      
+        //TODO NULL CHECK
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CanvasZoomEventArguments" /> class.
+        /// </summary>
+        /// <param name="mouseLocation"> The point that represent the current mouse location.</param>
         public CanvasZoomEventArguments(Point mouseLocation)
         {
             this.currentMouseLocationOnCanvas = mouseLocation;

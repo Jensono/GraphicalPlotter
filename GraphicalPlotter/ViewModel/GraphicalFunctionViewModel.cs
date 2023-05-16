@@ -15,6 +15,9 @@ namespace GraphicalPlotter
     using System.Windows.Input;
     using System.Windows.Media;
 
+    /// <summary>
+    /// This class is the ViewModel for the GraphicalFunction. Inside it all the important attributes of the Function are saved. It also holds commands for the functions.
+    /// </summary>
     public class GraphicalFunctionViewModel : INotifyPropertyChanged
     {
         //// This is so dumb i fucking hate events in C# WHY WHY do i need  a callback to call an event please microsoft
@@ -49,6 +52,10 @@ namespace GraphicalPlotter
         /// </summary>
         private List<FunctionParts> functionParts;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GraphicalFunctionViewModel" /> class.
+        /// </summary>
+        /// <param name="graphicalFunction"> The GraphicalFunction that should be converted to a function view model.</param>
         public GraphicalFunctionViewModel(GraphicalFunction graphicalFunction)
         {
             this.CustomUserSetName = string.Empty;
@@ -59,6 +66,14 @@ namespace GraphicalPlotter
             this.IsInitialized = true;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GraphicalFunctionViewModel" /> class. 
+        /// </summary>
+        /// <param name="functionPartList"> The list of function parts for the view model.</param>
+        /// <param name="functionColor"> The color in which the function should be drawn.</param>
+        /// <param name="customUserSetName"> The string which the user set as a custom name for the functin.</param>
+        /// <param name="displayName"> The mathematical display name for the function.</param>
+        /// <param name="visibility"> The Visibility of the function.</param>
         public GraphicalFunctionViewModel(List<FunctionParts> functionPartList, Color functionColor, string customUserSetName, string displayName, bool visibility)
         {
             this.CustomUserSetName = customUserSetName;

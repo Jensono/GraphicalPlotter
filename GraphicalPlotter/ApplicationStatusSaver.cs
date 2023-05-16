@@ -20,11 +20,14 @@ namespace GraphicalPlotter
     /// </summary>
     public class ApplicationStatusSaveDataHandler
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ApplicationStatusSaveDataHandler" /> class.	
+        /// </summary>
         public ApplicationStatusSaveDataHandler()
         {
         }
 
-        public void CreateApplicationSaveData(AxisData xAxis, AxisGridData xGrid, AxisData yAxis, AxisGridData yGrid, List<GraphicalFunctionDisplayNameForSerialization> functionList, bool hasUserchangedYAxisValues)
+        public void CreateApplicationSaveData(AxisData xAxis, AxisGridData xGrid, AxisData yAxis, AxisGridData yGrid, List<GraphicalFunctionForSerialization> functionList, bool hasUserchangedYAxisValues)
         {
             AxisSaveData xAxisSaveData = new AxisSaveData(xAxis, xGrid);
             AxisSaveData yAxisSaveData = new AxisSaveData(yAxis, yGrid);
@@ -60,7 +63,7 @@ namespace GraphicalPlotter
             out AxisData yAxisData,
             out AxisGridData xGridData,
             out AxisGridData yGridData,
-            out List<GraphicalFunctionDisplayNameForSerialization> functions,
+            out List<GraphicalFunctionForSerialization> functions,
             out bool hasUserChangedYAxisValues)
 
         {
@@ -68,7 +71,7 @@ namespace GraphicalPlotter
             yAxisData = new AxisData(-10, 10, Colors.Azure, true);
             xGridData = new AxisGridData(1, Colors.LightSlateGray, true);
             yGridData = new AxisGridData(1, Colors.LightSlateGray, true);
-            functions = new List<GraphicalFunctionDisplayNameForSerialization>();
+            functions = new List<GraphicalFunctionForSerialization>();
             hasUserChangedYAxisValues = false;
 
             try

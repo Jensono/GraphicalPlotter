@@ -11,15 +11,23 @@ namespace GraphicalPlotter
 {
     using System;
 
+    /// <summary>
+    /// The class for a polynomial componenten. This componentn can look something like this : a0*x^a1 , in which the a0 and a1  can be double values for the x.
+    /// </summary>
     public class PolynomialComponent : FunctionParts
     {
         //// The degree for the exponent for x,eg. 2 would create x^2.
         
         /// <summary>
-        /// The field for the exponent degree of the polynomial function
+        /// The field for the exponent degree of the polynomial function.
         /// </summary>
         private double exponentDegree;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PolynomialComponent" /> class.
+        /// </summary>
+        /// <param name="exponentenDegree"> The degree of the exponent for the x as a double.</param>
+        /// <param name="constantMultiplier"> The multiplier for the x.</param>
         public PolynomialComponent(double exponentenDegree, double constantMultiplier) : base(constantMultiplier)
         {
             this.ExponentDegree = exponentenDegree;

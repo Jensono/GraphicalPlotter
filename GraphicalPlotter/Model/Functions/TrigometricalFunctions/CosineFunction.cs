@@ -10,8 +10,17 @@
 namespace GraphicalPlotter
 {
     using System;
+
+    /// <summary>
+    /// This class defines a mathematical cosine function.
+    /// </summary>
     public class CosineFunction : TrigonometricFunctions
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CosineFunction" /> class.
+        /// </summary>
+        /// <param name="constantMultiplier"> The constant multiplier for the cosine function.</param>
+        /// <param name="degreeMultiplier"> The multiplier inside the brackets for the cosine function.</param>
         public CosineFunction(double constantMultiplier, double degreeMultiplier) : base(constantMultiplier, degreeMultiplier)
         {
         }

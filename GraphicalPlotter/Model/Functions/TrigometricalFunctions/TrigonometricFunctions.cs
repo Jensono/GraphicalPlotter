@@ -9,14 +9,21 @@
 //-----------------------------------------------------------------------
 namespace GraphicalPlotter
 {
+    /// <summary>
+    /// This class defines a trigonometric function and acts as a parent class for all trigonometric functions in specific.
+    /// </summary>
     public abstract class TrigonometricFunctions : FunctionParts
     {
         /// <summary>
-        /// The field for the degree multiplier of the the trigometric function.
+        /// The field for the degree multiplier of the the trigonometric function.
         /// </summary>
         private double degreeMultiplier;
-      
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TrigonometricFunctions" /> class.
+        /// </summary>
+        /// <param name="constantMultiplier"> The constant multiplier for the TrigonometricFunctions.</param>
+        /// <param name="degreeMultiplier"> The multiplier inside the brackets for the TrigonometricFunctions.</param>
         public TrigonometricFunctions(double constantMultiplier, double degreeMultiplier) : base(constantMultiplier)
         {
             this.DegreeMultiplier = degreeMultiplier;

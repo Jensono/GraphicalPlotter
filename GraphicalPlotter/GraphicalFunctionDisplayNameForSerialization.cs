@@ -12,12 +12,18 @@ namespace GraphicalPlotter
     using System;
     using System.Windows.Media;
 
+    /// <summary>
+    /// This class is used for as the serializing equivilant for the GraphicalFunction class.
+    /// </summary>
     [Serializable]
-    public class GraphicalFunctionDisplayNameForSerialization
+    public class GraphicalFunctionForSerialization
     {
-        
 
-        public GraphicalFunctionDisplayNameForSerialization(GraphicalFunctionViewModel functionViewModel)
+        /// <summary>
+        ///  Initializes a new instance of the <see cref="GraphicalFunctionForSerialization" /> class.
+        /// </summary>
+        /// <param name="functionViewModel"> The GraphicalFunction that is used as the base for the serialization class.</param>
+        public GraphicalFunctionForSerialization(GraphicalFunctionViewModel functionViewModel)
         {
             this.FunctionName = functionViewModel.FunctionDisplayName;
             this.FunctionColor = functionViewModel.FunctionColor;
@@ -25,7 +31,10 @@ namespace GraphicalPlotter
             this.FunctionVisibility = functionViewModel.FunctionVisibility;
         }
 
-        public GraphicalFunctionDisplayNameForSerialization()
+        /// <summary>
+        ///  Initializes a new instance of the <see cref="GraphicalFunctionForSerialization" /> class. Used for Serialization.
+        /// </summary>
+        public GraphicalFunctionForSerialization()
         {
         }
 
@@ -50,7 +59,7 @@ namespace GraphicalPlotter
         /// <summary>
         /// Gets or sets a value indicating whether or not the function is visible.
         /// </summary>
-        /// <value> The visbility of the function.</value>
+        /// <value> The visibility of the function.</value>
         public bool FunctionVisibility { get; set; }
     }
 }

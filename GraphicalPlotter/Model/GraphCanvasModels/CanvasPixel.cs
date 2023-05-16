@@ -9,6 +9,9 @@
 //-----------------------------------------------------------------------
 namespace GraphicalPlotter
 {
+    /// <summary>
+    /// This class defines a point on a canvas by pixel values.
+    /// </summary>
     public class CanvasPixel
     {
         /// <summary>
@@ -21,6 +24,11 @@ namespace GraphicalPlotter
         /// </summary>
         private int yAxisValue;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CanvasPixel" /> class.
+        /// </summary>
+        /// <param name="xAxisValue"> The distance in pixel from the left of medium that can portray the pixel.</param>
+        /// <param name="yAxisValue">The distance in pixel from the top of medium that can portray the pixel.</param>
         public CanvasPixel(int xAxisValue, int yAxisValue)
         {
             this.XAxisValue = xAxisValue;

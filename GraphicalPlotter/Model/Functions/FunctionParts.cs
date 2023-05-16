@@ -20,7 +20,10 @@ namespace GraphicalPlotter
         /// </summary>
         private double constantMultiplier;
 
-        // right now the multiplier can also be null
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FunctionParts" /> class.
+        /// </summary>
+        /// <param name="constantMultiplier"> The contanst multiplier set before the function. </param>
         public FunctionParts(double constantMultiplier)
         {
             this.ConstantMultiplier = constantMultiplier;

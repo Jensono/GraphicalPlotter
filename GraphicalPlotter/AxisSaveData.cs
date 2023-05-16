@@ -18,7 +18,12 @@ namespace GraphicalPlotter
     [Serializable]    
     public class AxisSaveData
     {
-      
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AxisSaveData" /> class.	
+        /// </summary>
+        /// <param name="axis"> The axisdata fopr the axissavedata.</param>
+        /// <param name="grid">The grid for the axissavedata.</param>
         public AxisSaveData(AxisData axis, AxisGridData grid)
         {
             this.AxisMin = axis.MinVisibleValue;
@@ -31,6 +36,9 @@ namespace GraphicalPlotter
             this.GridVisibility = grid.Visibility;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AxisSaveData" /> class.
+        /// </summary>
         public AxisSaveData()
         {
 

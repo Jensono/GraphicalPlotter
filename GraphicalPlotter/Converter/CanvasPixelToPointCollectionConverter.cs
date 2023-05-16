@@ -17,7 +17,7 @@ namespace GraphicalPlotter
     using System.Windows.Media;
 
     /// <summary>
-    /// This class is used 
+    /// This class is used as an converter to convert from Canvas Pixel object to a Point object.
     /// </summary>
     public class CanvasPixelToPointCollectionConverter : IValueConverter
     {

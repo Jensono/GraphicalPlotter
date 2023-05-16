@@ -14,8 +14,14 @@ namespace GraphicalPlotter
     using System.Linq;
     using System.Windows.Media;
 
+    /// <summary>
+    /// This class is a converter that takes a user string and converts it into a mathematical functions, with which y values can be calculate for any x value.
+    /// </summary>
     public class StringToFunctionConverter
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StringToFunctionConverter" /> class.
+        /// </summary>
         public StringToFunctionConverter()
         {
             //// why do i have to set a culture for a double conversion??? If your a fucking multimillion dollar business WHY WHY WHY can you just fucking write a method that works with a point and also a comma. godamnit.

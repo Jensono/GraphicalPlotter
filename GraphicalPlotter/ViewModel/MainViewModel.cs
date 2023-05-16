@@ -22,6 +22,9 @@ namespace GraphicalPlotter
     using System.Xml.Serialization;
     using Microsoft.Win32;
 
+    /// <summary>
+    /// This class acts as the main interface between the view and the model of the app.
+    /// </summary>
     public class MainViewModel : INotifyPropertyChanged
     {
       
@@ -96,7 +99,7 @@ namespace GraphicalPlotter
         private double textBoxXAxisGridIntervall = 2;
 
         /// <summary>
-        /// The field for widht of the main window of the app.
+        /// The field for width of the main window of the app.
         /// </summary>
         private int pixelWidhtApp = 900;
 
@@ -106,7 +109,7 @@ namespace GraphicalPlotter
         private int pixelHeightApp = 600;
 
         /// <summary>
-        /// The field for widht of the canvas where functions are drawn.
+        /// The field for width of the canvas where functions are drawn.
         /// </summary>
         private int pixelWidhtCanvas = 630;
 
@@ -114,7 +117,6 @@ namespace GraphicalPlotter
         /// The field for height of the canvas where functions are drawn.
         /// </summary>
         private int pixelHeightCanvas = 380;
-
 
         /// <summary>
         /// The field for the GraphicalFunctionViewModel that are currently in use.
@@ -191,12 +193,14 @@ namespace GraphicalPlotter
         /// </summary>
         private StringToFunctionConverter stringToFunctionConverter;
 
-
         /// <summary>
-        /// The field for ApplicationStatusSaveDataHandler that is used to save the applications status to a file and also read that information when initialzing the app.
+        /// The field for ApplicationStatusSaveDataHandler that is used to save the applications status to a file and also read that information when initializing the app.
         /// </summary>
         private ApplicationStatusSaveDataHandler saveDataHandler;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainViewModel" /> class. 
+        /// </summary>
         public MainViewModel()
         {
             this.SaveDataHandler = new ApplicationStatusSaveDataHandler();
@@ -206,8 +210,10 @@ namespace GraphicalPlotter
             //// Application.Current.MainWindow.Closing better alternative??
             Application.Current.Exit += this.OnWindowClosing;
 
-            this.TextBoxUserInputFunctionToolTip = "To Input a Function use the right format shown here. Using other formats may yield wrong inputs.\r\n PLEASE NOTE THAT THE NOTATION FOR DECIMALS IS BOUND TO YOUR LOCALICATION! \r\n Supported Functions are : sin,cos,tan and polynomial function up to a exponent degree of 10." +
-                                                    "\r\n a3*x^3+a2*x^2+a1*x+c \r\n a*sin(b*x)+c \r\n a*cos(b*x)+c\r\n a*tan(b*x)+c" + "\r\n \r\n it is also possible to combine polynomial functions with sin cos and tan like this: \r\n " +
+            this.TextBoxUserInputFunctionToolTip = "To Input a Function use the right format shown here. Using other formats may yield wrong inputs.\r\n PLEASE NOTE THAT THE NOTATION FOR DECIMALS IS BOUND TO YOUR LOCALICATION! " +
+                                                     "\r\n Supported Functions are : sin,cos,tan and polynomial function up to a exponent degree of 10." +
+                                                    "\r\n a3*x^3+a2*x^2+a1*x+c \r\n a*sin(b*x)+c \r\n a*cos(b*x)+c\r\n a*tan(b*x)+c" + 
+                                                    "\r\n \r\n it is also possible to combine polynomial functions with sin cos and tan like this: \r\n " +
                                                     "5x^2+9x-8*cos(0,5x)";
 
             this.CurrentGraphicalFunctions = new ObservableCollection<GraphicalFunctionViewModel>();
@@ -216,7 +222,7 @@ namespace GraphicalPlotter
                 out AxisData savedYAxisData,
                 out AxisGridData savedXAxisGrid,
                 out AxisGridData savedYAxisGrid,
-                out List<GraphicalFunctionDisplayNameForSerialization> savedFunctions,
+                out List<GraphicalFunctionForSerialization> savedFunctions,
                 out bool hasUserChangedYAxisValues))
             {
                 this.ReconstructAxisAndGridData(savedXAxisData, savedYAxisData, savedXAxisGrid, savedYAxisGrid, hasUserChangedYAxisValues);
@@ -621,7 +627,7 @@ namespace GraphicalPlotter
         /// <summary>
         /// Gets or sets the widht of the canvas inside the main window in pixels.
         /// </summary>
-        /// <value> The widht of the canvas inside the main window in pixels.</value>
+        /// <value> The width of the canvas inside the main window in pixels.</value>
         public int PixelWidhtCanvas
         {
             get
@@ -709,9 +715,9 @@ namespace GraphicalPlotter
         //// TODO do i actually need the lock here???
 
         /// <summary>
-        /// Gets or sets the Obserable collection that contain all of the GraphicalFunctionViewModels used to display all the functions attributes.
+        /// Gets or sets the Observable collection that contain all of the GraphicalFunctionViewModels used to display all the functions attributes.
         /// </summary>
-        /// <value> The Obserable collection that contain all of the GraphicalFunctionViewModels used to display all the functions attributes.</value>
+        /// <value> The Observable collection that contain all of the GraphicalFunctionViewModels used to display all the functions attributes.</value>
         /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public ObservableCollection<GraphicalFunctionViewModel> CurrentGraphicalFunctions
         {
@@ -948,9 +954,9 @@ namespace GraphicalPlotter
         }
 
         /// <summary>
-        /// Gets or sets the ApplicationStatusSaveDataHandler used to save the application data when the window is closed to garantee persistance of data.
+        /// Gets or sets the ApplicationStatusSaveDataHandler used to save the application data when the window is closed to guarantee persistence of data.
         /// </summary>
-        /// <value> The ApplicationStatusSaveDataHandler used to save the application data when the window is closed to garantee persistance of data.</value>
+        /// <value> The ApplicationStatusSaveDataHandler used to save the application data when the window is closed to guarantee persistence of data.</value>
         /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public ApplicationStatusSaveDataHandler SaveDataHandler
         {
@@ -977,9 +983,9 @@ namespace GraphicalPlotter
         public string TextBoxUserInputFunctionToolTip { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the user has changed the y-axis settings. If the user has changed values for the y-axis autoscaling will stop.
+        /// Gets or sets a value indicating whether or not the user has changed the y-axis settings. If the user has changed values for the y-axis auto-scaling will stop.
         /// </summary>
-        /// <value> A value indicating whether or not the user has changed the y-axis settings. If the user has changed values for the y-axis autoscaling will stop.</value>
+        /// <value> A value indicating whether or not the user has changed the y-axis settings. If the user has changed values for the y-axis auto-scaling will stop.</value>
         public bool HasUserChangedYAxisSettings { get; set; }
 
         /// <summary>
@@ -1005,10 +1011,10 @@ namespace GraphicalPlotter
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the the application data has been completly set. 
+        /// Gets or sets a value indicating whether or not the the application data has been completely set. 
         /// If the data is not set there are no updates to the canvas and some property will not set event when they are changed.
         /// </summary>
-        /// <value> A value indicating whether or not the the application data has been completly set.
+        /// <value> A value indicating whether or not the the application data has been completely set.
         /// If the data is not set there are no updates to the canvas and some property will not set event when they are changed.</value>
         public bool IsApplicationDataInitalized
         {
@@ -1143,14 +1149,14 @@ namespace GraphicalPlotter
                     {
                         if (this.CurrentGraphicalFunctions.Count >= 1)
                         {
-                            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<GraphicalFunctionDisplayNameForSerialization>));
+                            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<GraphicalFunctionForSerialization>));
 
-                            List<GraphicalFunctionDisplayNameForSerialization> functionsForSerialization = this.CreateSerialiationObjectsFromCurrentFunctions();
+                            List<GraphicalFunctionForSerialization> functionsForSerialization = this.CreateSerialiationObjectsFromCurrentFunctions();
 
                             SaveFileDialog dialog = new SaveFileDialog();
 
-                            dialog.Filter = "XML Files (*.xml)|*.xml";
-                            dialog.FileName = "functions";
+                            dialog.Filter = "Graphplotter Save Files (*.gpsf)|*.gpsf";
+                            dialog.FileName = "functions.gpsf";
 
                             if (dialog.ShowDialog() == true)
                             {
@@ -1179,13 +1185,13 @@ namespace GraphicalPlotter
                     },
                     (obj) =>
                     {
-                        List<GraphicalFunctionDisplayNameForSerialization> deserializedFunctions = new List<GraphicalFunctionDisplayNameForSerialization>();
+                        List<GraphicalFunctionForSerialization> deserializedFunctions = new List<GraphicalFunctionForSerialization>();
 
-                        XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<GraphicalFunctionDisplayNameForSerialization>));
+                        XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<GraphicalFunctionForSerialization>));
 
                         OpenFileDialog dialog = new OpenFileDialog();
 
-                        dialog.Filter = "XML Files (*.xml)|*.xml";
+                        dialog.Filter = "Graphplotter Save Files (*.gpsf)|*.gpsf";
 
                         if (dialog.ShowDialog() == true)
                         {
@@ -1194,7 +1200,7 @@ namespace GraphicalPlotter
                                 try
                                 {
                                     //// TODO I for sure need to check if this is even serializable or something else right? just the try catch block isnt the kind of panacea that i think it is.
-                                    deserializedFunctions = (List<GraphicalFunctionDisplayNameForSerialization>)xmlSerializer.Deserialize(fileStream);
+                                    deserializedFunctions = (List<GraphicalFunctionForSerialization>)xmlSerializer.Deserialize(fileStream);
                                 }
                                 catch (Exception)
                                 {
@@ -1285,9 +1291,9 @@ namespace GraphicalPlotter
         }
 
         /// <summary>
-        /// Gets a command that resets the automatic scaling. Can be used if the user already added a function that can not be automaticly scaled and removed that function.
+        /// Gets a command that resets the automatic scaling. Can be used if the user already added a function that can not be automatically scaled and removed that function.
         /// </summary>
-        /// <value> A command that resets the automatic scaling. Can be used if the user already added a function that can not be automaticly scaled and removed that function.</value>
+        /// <value> A command that resets the automatic scaling. Can be used if the user already added a function that can not be automatically scaled and removed that function.</value>
         public ICommand ResetAutomaticScaling
         {
             get
@@ -1481,21 +1487,21 @@ namespace GraphicalPlotter
             return true;
         }
 
-        private List<GraphicalFunctionDisplayNameForSerialization> CreateSerialiationObjectsFromCurrentFunctions()
+        private List<GraphicalFunctionForSerialization> CreateSerialiationObjectsFromCurrentFunctions()
         {
-            List<GraphicalFunctionDisplayNameForSerialization> functionsForSerialization = new List<GraphicalFunctionDisplayNameForSerialization>();
+            List<GraphicalFunctionForSerialization> functionsForSerialization = new List<GraphicalFunctionForSerialization>();
             foreach (GraphicalFunctionViewModel functionVM in this.CurrentGraphicalFunctions)
             {
-                functionsForSerialization.Add(new GraphicalFunctionDisplayNameForSerialization(functionVM));
+                functionsForSerialization.Add(new GraphicalFunctionForSerialization(functionVM));
             }
 
             return functionsForSerialization;
         }
 
-        private void ReconstructFunctionsFromFileInport(List<GraphicalFunctionDisplayNameForSerialization> deserializedFunctions)
+        private void ReconstructFunctionsFromFileInport(List<GraphicalFunctionForSerialization> deserializedFunctions)
         {
             this.CurrentGraphicalFunctions = new ObservableCollection<GraphicalFunctionViewModel>();
-            foreach (GraphicalFunctionDisplayNameForSerialization deserializedFunction in deserializedFunctions)
+            foreach (GraphicalFunctionForSerialization deserializedFunction in deserializedFunctions)
             {
                 List<FunctionParts> functionParts;
 

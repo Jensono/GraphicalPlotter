@@ -13,6 +13,10 @@ namespace GraphicalPlotter
     using System.Globalization;
     using System.Windows.Data;
     using System.Windows.Media;
+
+    /// <summary>
+    /// This class is used as a Converter for the WPF app that converts a Color to a SolidColorBrush.
+    /// </summary>
     public class ColorToSolidBrushConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
