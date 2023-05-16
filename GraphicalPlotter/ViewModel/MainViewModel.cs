@@ -263,6 +263,9 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// The event that can be raised when a property inside the class is changed. Needed to be implemented for the INotifyPropertyChanged interface.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
@@ -1315,6 +1318,11 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// This method finds out if all functions that are currently saved inside the application are scalable. 
+        /// A function is only scalable if it is cos, sin or a constant, everything else would not make sense to an average user.
+        /// </summary>
+        /// <returns> A boolean value indicating whether or not all current function are scalable.</returns>
         public bool AreAllCurrentFunctionsAutomaticlyScalable()
         {
             foreach (var functionVM in this.CurrentGraphicalFunctions)
@@ -1328,6 +1336,11 @@ namespace GraphicalPlotter
             return true;
         }
 
+        /// <summary>
+        /// This method adds a new entry to the current list of GraphicalFunctionViewModel inside the main view model. It adds a event to the function for when any property of it is changed.
+        /// And looks if the new function is scalable, if it is the canvas is rescaled.
+        /// </summary>
+        /// <param name="functionVM"> The GraphicalFunctionViewModel that should be added. </param>
         private void AddFunctionToCurrentFunction(GraphicalFunctionViewModel functionVM)
         {
             this.CurrentGraphicalFunctions.Add(functionVM);
@@ -1347,6 +1360,10 @@ namespace GraphicalPlotter
         }
 
         //// this is requirement is just so unnessary
+        
+        /// <summary>
+        /// This method rescales the canvas in the view new y min and y max values to show all the peaks of all functions.
+        /// </summary>
         private void RescaleYMinAndMaxForRescalableFunctions()
         {
             double biggestYValueOverall = double.MinValue;
@@ -1389,6 +1406,13 @@ namespace GraphicalPlotter
             ////  we need to calculate the max and min values for the sum of all functions parts and then rescale the min and max of the y axis to fit that criteria, also we need to reset the hasUserChangedYAxis too false again after doing so.
         }
 
+        //// TODO REFRACTOR into a new class , this should not belong here, but not enough time for changes now.
+
+        /// <summary>
+        /// This method searches for the biggest value a function (sin, cos or constant) can become.
+        /// </summary>
+        /// <param name="function"> The function for which to find the biggest value it can become.</param>
+        /// <returns> The biggest value a function ever can reach.</returns>
         private double FindBiggestYValue(GraphicalFunctionViewModel function)
         {
             //// since we now know that the function is scalabe it can only be one of theses possibilites : cos+c1+c2+c3...cn, sin+c1+c2+c3...cn or c1+c2+c3...cn we will move forward with this assumption
@@ -1413,6 +1437,13 @@ namespace GraphicalPlotter
             return sumOfSmallestValues;
         }
 
+        //// TODO REFRACTOR into a new class , this should not belong here, but not enough time for changes now.
+
+        /// <summary>
+        /// This method searches for the smallest value a function (sin, cos or constant) can become.
+        /// </summary>
+        /// <param name="function"> The function for which to find the smallest value it can become.</param>
+        /// <returns> The smallest value a function can ever reach.</returns>
         private double FindSmallestYValue(GraphicalFunctionViewModel function)
         {
             double sumOfBiggestValues = 0;
@@ -1436,6 +1467,11 @@ namespace GraphicalPlotter
             return sumOfBiggestValues;
         }
 
+        /// <summary>
+        /// This method is used to find out if a function is able to rescale for the y axis.
+        /// </summary>
+        /// <param name="functionVM"> The function view model that should be analyzed for the ability to rescale.</param>
+        /// <returns> A boolean indicating whether or not the function is scalable.</returns>
         private bool IsFunctionScalable(GraphicalFunctionViewModel functionVM)
         {
             //// we will count how often sinus and cosinus exist in the given function, the sum must be smaller than 2 , so there can only be one sin or one cos, else the calculation for the new max,min values
@@ -1483,6 +1519,10 @@ namespace GraphicalPlotter
             return true;
         }
 
+        /// <summary>
+        /// This method Creates a list of GraphicalFunctionForSerialization for the CurrentGraphicalFunctions list inside the main view model.
+        /// </summary>
+        /// <returns> A list of GraphicalFunctionForSerialization.</returns>
         private List<GraphicalFunctionForSerialization> CreateSerialiationObjectsFromCurrentFunctions()
         {
             List<GraphicalFunctionForSerialization> functionsForSerialization = new List<GraphicalFunctionForSerialization>();
@@ -1494,6 +1534,10 @@ namespace GraphicalPlotter
             return functionsForSerialization;
         }
 
+        /// <summary>
+        /// This method tries to reconstruct functions that came from a save file inside the active directory.
+        /// </summary>
+        /// <param name="deserializedFunctions"> The list of GraphicalFunctionForSerialization that should be converted and added to the current function inside the main view model. </param>
         private void ReconstructFunctionsFromFileInport(List<GraphicalFunctionForSerialization> deserializedFunctions)
         {
             this.CurrentGraphicalFunctions = new ObservableCollection<GraphicalFunctionViewModel>();
@@ -1520,6 +1564,11 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// This method is called when the Canvas zoom event is triggered. It sets the internal start point for the zoom.
+        /// </summary>
+        /// <param name="sender"> The sender of the event.</param>
+        /// <param name="eventArgs"> The event arguments for the send event.</param>
         private void ZoomIntoCanvas(object sender, CanvasZoomEventArguments eventArgs)
         {
             if (this.ZoomStartPoint == null)
@@ -1588,16 +1637,36 @@ namespace GraphicalPlotter
             }
         }
 
+        ////TODO REFRACTOR this method should not be inside the view model but rather inside a seperate class. But not enought time now. Im still writing fucking stlye cop 9 hour before this project needs to be send in.
+        //// give me more time and i will deliever a better product. And i did nothing but programm the last 5 days , I spent like 60 hours in 12 days on this project, i did nothing but sleep, go to university and program, i dont even remember i had free time, maybe like 4 or 5 months ago?
+        //// im not lazy , im one of the hardest workers i know but i just dont have the experience some of peers already brought to the table before even starting to study this curriculum.
+        //// goddamn im ranting , ignore everthing other then the todo.
+
+        /// <summary>
+        /// This method calculates a y values for a given y pixel.
+        /// </summary>
+        /// <param name="yPixelValue"> The y pixel for which to calculate the y value.</param>
+        /// <returns> The y value on which the y pixel lies.</returns>
         private double CalculateYValueForYPixel(int yPixelValue)
         {
             return this.TextBoxYAxisMax - (((double)yPixelValue / (double)this.PixelHeightCanvas) * ((double)this.TextBoxYAxisMax - (double)this.TextBoxYAxisMin));
         }
 
+        /// <summary>
+        /// This method calculates a x values for a given x pixel.
+        /// </summary>
+        /// <param name="xPixelValue"> The y pixel for which to calculate the y value.</param>
+        /// <returns> The x value on which the x pixel lies.</returns>
         private double CalculateXValueForXPixel(int xPixelValue)
         {
             return ((((double)xPixelValue) * (this.TextBoxXAxisMax - this.TextBoxXAxisMin)) / this.PixelWidhtCanvas) + this.TextBoxXAxisMin;
         }
 
+        /// <summary>
+        /// This method updates the start point for the zoom event, when the user wants to draw open a window to zoom inside the canvas.
+        /// </summary>
+        /// <param name="sender"> The sender of the event.</param>
+        /// <param name="eventArgs"> The event arguments for the send event.</param>
         private void UpdateStartPoint(object sender, CanvasZoomEventArguments eventArgs)
         {
             Point startPoint = eventArgs.CurrentMouseLocationOnCanvas;
@@ -1605,6 +1674,14 @@ namespace GraphicalPlotter
             this.ZoomStartPoint = new CanvasPixel((int)Math.Round(startPoint.X), (int)Math.Round(startPoint.Y));
         }
 
+        /// <summary>
+        /// This method reconstructs the axis and grid information from parameters found in a save file.
+        /// </summary>
+        /// <param name="savedXAxisData"> The AxisData for the x-axis found in the save file.</param>
+        /// <param name="savedYAxisData"> The AxisData for the y-axis found in the save file.</param>
+        /// <param name="savedXAxisGrid"> The AxisGridData for the x-axis found in the save file.</param>
+        /// <param name="savedYAxisGrid"> The AxisGridData for the Y-axis found in the save file.</param>
+        /// <param name="hasUserChangedYAxis"> The boolean value indicating whether or not he user ever changed values for the y axis found in the save file. </param>
         private void ReconstructAxisAndGridData(AxisData savedXAxisData, AxisData savedYAxisData, AxisGridData savedXAxisGrid, AxisGridData savedYAxisGrid, bool hasUserChangedYAxis)
         {
             this.TextBoxXAxisMin = savedXAxisData.MinVisibleValue;
@@ -1628,7 +1705,12 @@ namespace GraphicalPlotter
             this.HasUserChangedYAxisSettings = hasUserChangedYAxis;
         }
 
-        private void OnWindowClosing(object sender, ExitEventArgs e)
+        /// <summary>
+        /// This method is called when the window is closed. It is used to save the current application status when closing the app.
+        /// </summary>
+        /// <param name="sender"> The sender of the event.</param>
+        /// <param name="eventArgs"> The event arguments for the send event.</param>
+        private void OnWindowClosing(object sender, ExitEventArgs eventArgs)
         {
             this.SaveDataHandler.CreateApplicationSaveData(this.XAxisData, this.XAxisGrid, this.YAxisData, this.YAxisGrid, this.CreateSerialiationObjectsFromCurrentFunctions(), this.HasUserChangedYAxisSettings);
         }
@@ -1636,6 +1718,12 @@ namespace GraphicalPlotter
         ////  this is utterly retarded but i dont have enough time to think about a better solution
         //// omg this is like prp the worst code i have written to date, what else would you use?? Methods for each function?? somekind of Observer class? i dont know please help
         //// I thought that when i just use a reference for the grid and axis classes it would tranfer but apprently not
+
+        /// <summary>
+        /// This method updates attributes and properties indie the main view model when a PropertyChangedEventArgs is received.
+        /// </summary>
+        /// <param name="sender"> The sender of the event.</param>
+        /// <param name="eventArgs"> The event arguments for the event.</param>
         private void UpdateCanvasAttributes(object sender, PropertyChangedEventArgs eventArgs)
         {
             switch (eventArgs.PropertyName)
@@ -1716,6 +1804,9 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// This method updates all draw information for the canvas.
+        /// </summary>
         private void UpdateFullCanvas()
         {
             this.UpdateDrawInformationForAxis();
@@ -1724,6 +1815,11 @@ namespace GraphicalPlotter
             this.UpdateDrawInformationForGridLines();
         }
 
+        /// <summary>
+        /// This method adds on list of FunctionDrawInformation into a another list of FunctionDrawInformation.
+        /// </summary>
+        /// <param name="functionDrawInformation"> The list that should be appended with FunctionDrawInformation entries.</param>
+        /// <param name="functionDrawInformationForPathsForThisMathematicalFunction"> The list containing the new entries that should be added to the list.</param>
         private void IntegrateListOfResultingDrawingFunctionsIntoListOfDrawingFunctions(List<FunctionDrawInformation> functionDrawInformation, List<FunctionDrawInformation> functionDrawInformationForPathsForThisMathematicalFunction)
         {
             foreach (FunctionDrawInformation partOfDrawPathForOneFunctions in functionDrawInformationForPathsForThisMathematicalFunction)
@@ -1732,6 +1828,9 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// This method updates the internally saved list of the FunctionDrawInformation objects that are made for the function lines in the graph.
+        /// </summary>
         private void UpdateDrawInformationForFunctions()
         {
             if (this.IsApplicationDataInitalized)
@@ -1755,6 +1854,12 @@ namespace GraphicalPlotter
 
         //// yeah i know every function gets updated, but for now this is good enough
         //// TODO fix, only the function that has changed needs updates to its information.
+
+        /// <summary>
+        /// This method updates the internally saved list of the FunctionDrawInformation objects, for a UserInputFunctionChanged Event that are made for the function lines in the graph.
+        /// </summary>
+        /// <param name="sender"> The sender of the event.</param>
+        /// <param name="e"> The Event Arguments that are inside the triggered Event. </param>
         private void UpdateDrawInformationForFunctions(object sender, UserInputFunctionChangedEventArgs e)
         {
             if (this.IsApplicationDataInitalized)
@@ -1775,6 +1880,9 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// This method updates the internally saved list of the FunctionDrawInformation objects that are made for the axis lines in the graph.
+        /// </summary>
         private void UpdateDrawInformationForAxis()
         {
             if (this.IsApplicationDataInitalized)
@@ -1786,6 +1894,9 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// This method updates the internally saved list of the FunctionDrawInformation objects that are made for the Grid lines in the graph.
+        /// </summary>
         private void UpdateDrawInformationForGridLines()
         {
             if (this.IsApplicationDataInitalized)

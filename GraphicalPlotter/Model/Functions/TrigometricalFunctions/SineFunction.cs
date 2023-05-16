@@ -25,11 +25,21 @@ namespace GraphicalPlotter
         {
         }
 
+        /// <summary>
+        /// This method calculates the y value for a given x in the function.
+        /// </summary>
+        /// <param name="angle"> The base angle of the function. </param>
+        /// <returns> The result when substituting x with the given value in the function. The y value for any given x value. </returns>
         public override double CalculateItsOwnValue(double angle)
         {
             return this.ConstantMultiplier * Math.Sin(angle * this.DegreeMultiplier);
         }
 
+
+        /// <summary>
+        /// Returns the mathematical symbol for the sine function.
+        /// </summary>
+        /// <returns> The string containing the name of the function in mathematical writing.</returns>
         public override string GetFunctionCalling()
         {
             return "sin";

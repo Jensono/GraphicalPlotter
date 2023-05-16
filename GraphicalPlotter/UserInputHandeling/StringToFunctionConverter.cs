@@ -28,6 +28,13 @@ namespace GraphicalPlotter
         }
 
         //// Returns out null if the given string was not a function in the right format.
+
+        /// <summary>
+        /// This method tries to parse a string into Graphical function.
+        /// </summary>
+        /// <param name="input"> The input string that should be parsed.</param>
+        /// <param name="graphicalFunction"> The resulting GraphicalFunction if the parse was successful, else this out parameters becomes null.</param>
+        /// <returns> A boolean indicating whether or not the parse was successful.</returns>
         public bool TryParseStringToGraphicalFunction(string input, out GraphicalFunction graphicalFunction)
         {
             List<FunctionParts> functionsCombined;
@@ -44,6 +51,13 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// This method tries to parse a string into a list of FunctionParts. It does this by splitting the string at the + and - signs between different parts of the function.
+        /// For each function part it tries to parse the part of the string. If ANY string parts fails to be parsed, it is assumed the full string is not a valid mathematical function.
+        /// </summary>
+        /// <param name="input"> The string for which to create the list of FunctionParts for.</param>
+        /// <param name="functionComponents"> The out parameter for the list of FunctionParts. If the parse was not successful null is put into the out parameter.</param>
+        /// <returns> A boolean indicating whether or not the parse was successful.</returns>
         public bool TryParseStringToFunctionPartsList(string input, out List<FunctionParts> functionComponents)
         {
             if (!this.DoesFunctionContainOnlyValidChracters(input))
@@ -104,6 +118,11 @@ namespace GraphicalPlotter
             return true;
         }
 
+        /// <summary>
+        /// This method checks a string for allowed characters. If the string contains any other characters false is returned, else it returns true.
+        /// </summary>
+        /// <param name="input"> The string which needs to be checked for allowed symbols.</param>
+        /// <returns> A boolean indicating whether or not the string does contain only valid characters. </returns>
         public bool DoesFunctionContainOnlyValidChracters(string input)
         {
             char[] allowedSymbols = new char[] { '-', '+', '(', ')', '*', ',', 's', 'i', 'n', 'c', 'o', 't', 'x', 'a', '^', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ' ' };
@@ -124,6 +143,12 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// This method tries to parse a string that only contains constant values that are connected by +,- and * signs into a double value.
+        /// </summary>
+        /// <param name="toBeParsed"> The string for which to parse. </param>
+        /// <param name="result"> The out parameter containing the result of the multiplication,  addition and subtraction for the constant values. If the string could not be parsed this double will be zero.</param>
+        /// <returns > A boolean indicating whether or not the parse was successful.</returns>
         public bool ParseAStringWithMultituteOfSimpleMultiplication(string toBeParsed, out double result)
         {
             string[] multipliers = toBeParsed.Split('*');
@@ -148,15 +173,23 @@ namespace GraphicalPlotter
         }
 
         //// false strings like : "-15**sin(2x)"; or "-15*sin(2x*x)"; are still beeing parsed, expecially in the last case it is deceiving, but if the user wants right inputs he will just have to stick to the rules.
-        private bool TryParseSinusFunction(string sinusFunction, out FunctionParts rightFunction)
+
+        /// <summary>
+        /// This method tries to parse a string for which it was determined that it contains a sin function. 
+        /// If the parse is successful a valid SineFunction is created and the method returns true.
+        /// </summary>
+        /// <param name="sinusFunctionAsString"> The string containing the assumed sine function for which to parse.</param>
+        /// <param name="rightFunction"> The out parameter containing the SinusFunctions as a FunctionParts. If the parse fails this parameter will be set to null.</param>
+        /// <returns> A boolean indicating whether or not the parse was successful.</returns>
+        private bool TryParseSinusFunction(string sinusFunctionAsString, out FunctionParts rightFunction)
         {
             //// first strip of all whitespaces
-            sinusFunction = sinusFunction.Replace(" ", string.Empty);
+            sinusFunctionAsString = sinusFunctionAsString.Replace(" ", string.Empty);
 
             double constantMultiplier;
             double degreeMultiplier;
 
-            string constantMultiplierString = sinusFunction.Split('s')[0];
+            string constantMultiplierString = sinusFunctionAsString.Split('s')[0];
             //// sin(x),+sin(x),-sin(x)
             if (constantMultiplierString == string.Empty || constantMultiplierString == "+")
             {
@@ -172,7 +205,7 @@ namespace GraphicalPlotter
                 return false;
             }
             //// function needs an x or else it would not be a function
-            string insideBrackets = sinusFunction.Split('(', ')')[1];
+            string insideBrackets = sinusFunctionAsString.Split('(', ')')[1];
 
             if (!insideBrackets.Contains("x"))
             {
@@ -207,13 +240,20 @@ namespace GraphicalPlotter
             return true;
         }
 
-        private bool TryParseCosineFunction(string cosineFunction, out FunctionParts rightFunction)
+        /// <summary>
+        /// This method tries to parse a string for which it was determined that it contains a cos function. 
+        /// If the parse is successful a valid CosineFunction is created and the method returns true.
+        /// </summary>
+        /// <param name="cosineFunctionAsString"> The string containing the assumed sine function for which to parse.</param>
+        /// <param name="rightFunction"> The out parameter containing the CosineFunctions as a FunctionParts. If the parse fails this parameter will be set to null.</param>
+        /// <returns> A boolean indicating whether or not the parse was successful.</returns>
+        private bool TryParseCosineFunction(string cosineFunctionAsString, out FunctionParts rightFunction)
         {
             //// TODO first strip of all whitespaces
-            cosineFunction = cosineFunction.Replace(" ", string.Empty);
+            cosineFunctionAsString = cosineFunctionAsString.Replace(" ", string.Empty);
             double constantMultiplier;
             double degreeMultiplier;
-            string constantMultiplierString = cosineFunction.Split('c')[0];
+            string constantMultiplierString = cosineFunctionAsString.Split('c')[0];
             //// cos(x),+cos(x),-cos(x)
             if (constantMultiplierString == string.Empty || constantMultiplierString == "+")
             {
@@ -229,7 +269,7 @@ namespace GraphicalPlotter
                 return false;
             }
             //// function needs an x or else it would not be a function
-            string insideBrackets = cosineFunction.Split('(', ')')[1];
+            string insideBrackets = cosineFunctionAsString.Split('(', ')')[1];
 
             if (!insideBrackets.Contains("x"))
             {
@@ -263,12 +303,19 @@ namespace GraphicalPlotter
             return true;
         }
 
-        private bool TryParseTangentFunction(string tangentFunction, out FunctionParts rightFunction)
+        /// <summary>
+        /// This method tries to parse a string for which it was determined that it contains a tan function. 
+        /// If the parse is successful a valid TangentFunction is created and the method returns true.
+        /// </summary>
+        /// <param name="tangentFunctionAsString"> The string containing the assumed tangent function for which to parse.</param>
+        /// <param name="rightFunction"> The out parameter containing the TangentFunctions as a FunctionParts. If the parse fails this parameter will be set to null.</param>
+        /// <returns> A boolean indicating whether or not the parse was successful.</returns>
+        private bool TryParseTangentFunction(string tangentFunctionAsString, out FunctionParts rightFunction)
         {
-            tangentFunction = tangentFunction.Replace(" ", string.Empty);
+            tangentFunctionAsString = tangentFunctionAsString.Replace(" ", string.Empty);
             double constantMultiplier;
             double degreeMultiplier;
-            string constantMultiplierString = tangentFunction.Split('t')[0];
+            string constantMultiplierString = tangentFunctionAsString.Split('t')[0];
             //// tan(x),+tan(x),-tan(x)
             if (constantMultiplierString == string.Empty || constantMultiplierString == "+")
             {
@@ -284,7 +331,7 @@ namespace GraphicalPlotter
                 return false;
             }
             //// function needs an x or else it would not be a function
-            string insideBrackets = tangentFunction.Split('(', ')')[1];
+            string insideBrackets = tangentFunctionAsString.Split('(', ')')[1];
 
             if (!insideBrackets.Contains("x"))
             {
@@ -318,14 +365,23 @@ namespace GraphicalPlotter
             return true;
         }
 
-        //// This function is still full with holes but its better than nothing and with the current system it should work, maybe next time i need to actually save a function asa a FUNC or something like that. But i need more time to fix stuff like that
-        private bool TryParsePolynomialPart(string polyFunction, out FunctionParts rightFunction)
+        //// This function is still full with holes but its better than nothing and with the current system it should work, maybe next time i need to actually save a function asa a FUNC 
+        ////or something like that. But i need more time to fix stuff like that
+
+        /// <summary>
+        /// This method tries to parse a string for which it was determined that it contains polynomial function part. 
+        /// If the parse is successful a valid PolynomialComponent is created and the method returns true.
+        /// </summary>
+        /// <param name="polyFunctionAsString"> The string containing the assumed Polynomial Component function for which to parse.</param>
+        /// <param name="rightFunction"> The out parameter containing the PolynomialComponent as a FunctionParts. If the parse fails this parameter will be set to null.</param>
+        /// <returns> A boolean indicating whether or not the parse was successful.</returns>
+        private bool TryParsePolynomialPart(string polyFunctionAsString, out FunctionParts rightFunction)
         {
-            polyFunction = polyFunction.Replace(" ", string.Empty).Replace("(", string.Empty).Replace(")", string.Empty);
+            polyFunctionAsString = polyFunctionAsString.Replace(" ", string.Empty).Replace("(", string.Empty).Replace(")", string.Empty);
             double constantMultiplier;
             double exponentenDegree;
             //// even if there is no x and its just a constant value, it will just return the full string as the only elemnt in the list
-            string constantMultiplierString = polyFunction.Split('x')[0];
+            string constantMultiplierString = polyFunctionAsString.Split('x')[0];
             //// tan(x),+tan(x),-tan(x)
             if (constantMultiplierString == string.Empty || constantMultiplierString == "+")
             {
@@ -360,18 +416,18 @@ namespace GraphicalPlotter
             }
 
             //// at this point it must be a constant
-            if (!polyFunction.Contains('x'))
+            if (!polyFunctionAsString.Contains('x'))
             {
                 rightFunction = new PolynomialComponent(0, constantMultiplier);
                 return true;
             }
-            else if (!polyFunction.Contains('^'))
+            else if (!polyFunctionAsString.Contains('^'))
             {
                 exponentenDegree = 1;
             }
             else
             {
-                string afterExponentMark = polyFunction.Split('^')[1];
+                string afterExponentMark = polyFunctionAsString.Split('^')[1];
 
                 if (afterExponentMark == string.Empty)
                 {
@@ -394,6 +450,11 @@ namespace GraphicalPlotter
             return true;
         }
 
+        /// <summary>
+        /// This method splits a string that is suspected to be a function into a string array at the + and - operators.
+        /// </summary>
+        /// <param name="input"> The string that should be split up.</param>
+        /// <returns> An array of string containing suspected Function Parts.</returns>
         private string[] SplitFunctionStringIntoArray(string input)
         {
             input = input.Replace(" ", string.Empty);

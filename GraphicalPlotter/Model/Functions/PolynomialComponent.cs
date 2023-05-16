@@ -52,12 +52,22 @@ namespace GraphicalPlotter
             }
         }
 
-        // can this handle negativ exponents? x^-2 Maybe later used for diffrentiation. I hope x^0 works and just procudes 1.
+        //// can this handle negativ exponents? x^-2 Maybe later used for diffrentiation. I hope x^0 works and just procudes 1.
+
+        /// <summary>
+        /// This method calculates the y value for a given x in the function.
+        /// </summary>
+        /// <param name="baseValue"> The value for which to substitute the x. </param>
+        /// <returns> The result when substituting x with the given value in the function. The y value for any given x value. </returns>
         public override double CalculateItsOwnValue(double baseValue)
         {
             return this.ConstantMultiplier * Math.Pow(baseValue, this.ExponentDegree);
         }
 
+        /// <summary>
+        /// This method returns a string that looks like a mathematical function for the model behind the function.
+        /// </summary>
+        /// <returns> The polynomials function writing as a string.</returns>
         public override string GetFunctionName()
         {
             string returnstring = string.Empty;

@@ -46,6 +46,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// This method returns a string that looks like a mathematical function for the model behind the tangent function.
+        /// </summary>
+        /// <returns> The tangent function writing as a string.</returns>
         public override string GetFunctionName()
         {
             string returnstring = string.Empty;
@@ -91,6 +95,10 @@ namespace GraphicalPlotter
             return returnstring;
         }
 
+        /// <summary>
+        /// The abstract method that needs to be implemented in the child classes for returning the name of the function. For example "tan" for a tangent function or "cos" for a cosine function.
+        /// </summary>
+        /// <returns> The mathematical symbol for the Calculation Part.</returns>
         public abstract string GetFunctionCalling();
     }
 }

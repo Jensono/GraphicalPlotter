@@ -130,6 +130,11 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// This method calculates the sum of the resulting y value for all parts of the function.
+        /// </summary>
+        /// <param name="value"> The x value the functions should be set for.</param>
+        /// <returns> The sum of the functions parts as a double.</returns>
         public double CalculateSumOfAllPartsForValue(double value)
         {
             double sum = 0;
@@ -141,6 +146,10 @@ namespace GraphicalPlotter
             return sum;
         }
 
+        /// <summary>
+        /// This method creates a full mathematical string for all function parts.
+        /// </summary>
+        /// <returns> The string with the mathematical writing for the function.</returns>
         public string CreateFunctionFullName()
         {
             string returnstring = string.Empty;

@@ -276,6 +276,11 @@ namespace GraphicalPlotter
 
         //// yeah yeah i know i used them twice, but i dont want to put a whole ass graphicalfunction into this viewmodel too.
 
+        /// <summary>
+        /// This method calculates a y value for any given value x that is set into the function.
+        /// </summary>
+        /// <param name="value"> The value to which x should be set to.</param>
+        /// <returns> A value representing the result y for a given x value.</returns>
         public double CalculateSumOfAllPartsForValue(double value)
         {
             double sum = 0;
@@ -288,6 +293,11 @@ namespace GraphicalPlotter
         }
 
         //// Todo no used right now - delete maybe
+        
+        /// <summary>
+        /// This method creates a display name for the mathematic function as a string.
+        /// </summary>
+        /// <returns> A string that could be used to represent the mathematical formula.</returns>
         public string CreateFunctionFullName()
         {
             string returnstring = string.Empty;

@@ -48,7 +48,7 @@ namespace GraphicalPlotter
             {
                 if (value == null)
                 {
-                    throw new ArgumentNullException($"{nameof(this.GraphicalCanvas)} can not be null!");                    
+                    throw new ArgumentNullException($"{nameof(this.GraphicalCanvas)} can not be null!");
                 }
                 else
                 {
@@ -57,6 +57,12 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// This method converts all the current functions saved inside the application and turns them into data that can be used to draw them on a graph of pixels.
+        /// </summary>
+        /// <param name="listOfFunctions"> The list for which to convert.</param>
+        /// <returns> A list of FunctionDrawInformation filled with the converted objects.</returns>
+        [Obsolete]
         public List<FunctionDrawInformation> ConvertAllCurrentFunctionsIntoDrawData(List<GraphicalFunction> listOfFunctions)
         {
             List<FunctionDrawInformation> functionsDrawInformation = new List<FunctionDrawInformation>();
@@ -68,6 +74,11 @@ namespace GraphicalPlotter
             return functionsDrawInformation;
         }
 
+        /// <summary>
+        /// This method converts a GraphicalFunctionViewModel and turns it into one ore more FunctionDrawInformation objects that can be displayed on a pixel canvas.
+        /// </summary>
+        /// <param name="function"> The GraphicalFunctionViewModel that should be converted. </param>
+        /// <returns> A list of the resulting FunctionDrawInformation. </returns>
         public List<FunctionDrawInformation> ConvertFunctionViewModelIntoDrawInformation(GraphicalFunctionViewModel function)
         {
             int xPixels = this.GraphicalCanvas.WidthInPixel;
@@ -133,6 +144,10 @@ namespace GraphicalPlotter
             return drawingPathsForFunction;
         }
 
+        /// <summary>
+        /// This method Creates a new list of FunctionDrawInformation for the current axis that are calculates by the parameters of the Two Dimensional Graph canvas.
+        /// </summary>
+        /// <returns> A list of FunctionDrawInformation for the axis lines on the graph.</returns>
         public List<FunctionDrawInformation> CreateFunctionDrawInformationForAxis()
         {
             List<FunctionDrawInformation> axisLines = new List<FunctionDrawInformation>();
@@ -172,6 +187,10 @@ namespace GraphicalPlotter
             return axisLines;
         }
 
+        /// <summary>
+        /// This method Creates a new list of FunctionDrawInformation for the current grid lines that are calculates by the parameters of the Two Dimensional Graph canvas.
+        /// </summary>
+        /// <returns> A list of FunctionDrawInformation for the grid lines on the graph.</returns>
         public List<FunctionDrawInformation> CreateGridDrawInformation()
         {
             int xPixels = this.GraphicalCanvas.WidthInPixel;
@@ -258,41 +277,12 @@ namespace GraphicalPlotter
             return gridLines;
         }
 
+        /// <summary>
+        /// This method was used to convert one GraphicalFunction into only one FunctionDrawInformation. This means the function needs to be stable , meaning for example tan would be displayed with lines where pi/2.
+        /// </summary>
+        /// <param name="function"> The GraphicalFunction for which to create a FunctionDrawInformation object.</param>
+        /// <returns>A FunctionDrawInformation object based on the information given.</returns>
         [Obsolete]
-        private double GetGridStartingPostionForGridIntervalAndMinValue(double minValue, double gridInterval, bool isMinAndMaxSmallerThanZero)
-        {
-            double logExponendForGridIntervall = Math.Log10(gridInterval);
-            double roundedStartingValue;
-
-            if (logExponendForGridIntervall >= 1)
-            {
-                //// log is bigger then zero
-                double newGridLog = Math.Ceiling(logExponendForGridIntervall);
-                double startingValueForXnotRounded = Math.Abs(minValue) / Math.Pow(10, newGridLog);
-                roundedStartingValue = Math.Ceiling(startingValueForXnotRounded) * Math.Pow(10, newGridLog);
-            }
-            else if (logExponendForGridIntervall >= 0)
-            {
-                //// else if bigger then zero but smaller then one
-                double newGridLog = 0;
-                double startingValueForXnotRounded = Math.Abs(minValue) / Math.Pow(10, newGridLog);
-                roundedStartingValue = Math.Ceiling(startingValueForXnotRounded) * Math.Pow(10, newGridLog);
-            }
-            else
-            {
-                //// if the log is negativ but smaller then -1
-                int newGridLog = (int)Math.Ceiling(Math.Abs(logExponendForGridIntervall));
-                roundedStartingValue = Math.Round(minValue, newGridLog);
-            }
-
-            if (minValue < 0 && !isMinAndMaxSmallerThanZero)
-            {
-                roundedStartingValue *= -1;
-            }
-
-            return roundedStartingValue;
-        }
-
         private FunctionDrawInformation ConvertFunctionIntoDrawInformation(GraphicalFunction function)
         {
             int xPixels = this.GraphicalCanvas.WidthInPixel;
@@ -319,6 +309,14 @@ namespace GraphicalPlotter
             return drawInformation;
         }
 
+        /// <summary>
+        /// This method converts a given Y Value into a Y Pixel value that can be used to display a point on a Graphical canvas.
+        /// </summary>
+        /// <param name="yPixels"> The number of pixels spanning from the top of the canvas to the bottom. </param>
+        /// <param name="yValue"> The y value for which to convert to a pixel.</param>
+        /// <param name="yMin"> The minimum y value that is displayed on the graph.</param>
+        /// <param name="yMax"> The maximum y value that is displayed on the graph.</param>
+        /// <returns> A integer that can be interpreted as the number of pixels from the top where the value is located.</returns>
         private int CalculateYPixelPositionForYValue(int yPixels, double yValue, double yMin, double yMax)
         {
             //// it took me 2 hours to come up with this function, i fucking hope it works
@@ -340,6 +338,14 @@ namespace GraphicalPlotter
             return (int)Math.Round(yPixelPosition);
         }
 
+        /// <summary>
+        /// This method converts a given Y Value into a Y Pixel value that can be used to display a point on a Graphical canvas.
+        /// </summary>
+        /// <param name="xPixels"> The number of pixels spanning from the left of the canvas to the right. </param>
+        /// <param name="xValue"> The x value for which to convert to a pixel.</param>
+        /// <param name="xMin"> The minimum x value that is displayed on the graph.</param>
+        /// <param name="xMax"> The maximum x value that is displayed on the graph.</param>
+        /// <returns> A integer that can be interpreted as the number of pixels from the left where the value is located.</returns>
         private int CalculateXPixelPositionForXValue(int xPixels, double xValue, double xMin, double xMax)
         {
             double xPixelPosition = xPixels - ((xValue - xMin) * xPixels / (xMax - xMin));
