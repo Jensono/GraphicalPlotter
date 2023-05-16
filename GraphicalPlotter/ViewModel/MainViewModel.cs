@@ -14,6 +14,7 @@ namespace GraphicalPlotter
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.IO;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Data;
     using System.Windows.Input;
@@ -150,6 +151,11 @@ namespace GraphicalPlotter
         /// The field for the lock object used inside the GraphicalFunctionViewModel, to synchronize the model and the views access to it.
         /// </summary>
         private object lockObjectFunctions = new object();
+
+        /// <summary>
+        /// The field for the lock object used when  parallelizing the function calculation.
+        /// </summary>
+        private object lockObjectForFunctionCalculation = new object();
 
         /// <summary>
         /// The field for the canvas pixel that is the pixel that was pressed inside the canvas when the zoom event was started.
@@ -1845,15 +1851,20 @@ namespace GraphicalPlotter
             {
                 List<FunctionDrawInformation> functionDrawInformation = new List<FunctionDrawInformation>();
 
-                foreach (GraphicalFunctionViewModel functionVM in this.CurrentGraphicalFunctions)
+                Parallel.ForEach(
+                this.CurrentGraphicalFunctions, 
+                (functionVM) =>
                 {
                     if (functionVM.FunctionVisibility == true)
                     {
-                        // i need like a course in better naming conventions, but i hope it brings the point across.
                         List<FunctionDrawInformation> functionDrawInformationForPathsForThisMathematicalFunction = this.CanvasFunctionConverter.ConvertFunctionViewModelIntoDrawInformation(functionVM);
-                        this.IntegrateListOfResultingDrawingFunctionsIntoListOfDrawingFunctions(functionDrawInformation, functionDrawInformationForPathsForThisMathematicalFunction);
+
+                        lock (lockObjectForFunctionCalculation)
+                        {
+                            this.IntegrateListOfResultingDrawingFunctionsIntoListOfDrawingFunctions(functionDrawInformation, functionDrawInformationForPathsForThisMathematicalFunction);
+                        }
                     }
-                }
+                });
 
                 this.DrawInformationForFunctions = functionDrawInformation;
                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.DrawInformationForFunctions)));
@@ -1862,6 +1873,7 @@ namespace GraphicalPlotter
 
         //// yeah i know every function gets updated, but for now this is good enough
         //// TODO fix, only the function that has changed needs updates to its information.
+        //// these two functions also shound be here i believe just export tHEM
 
         /// <summary>
         /// This method updates the internally saved list of the FunctionDrawInformation objects, for a UserInputFunctionChanged Event that are made for the function lines in the graph.
@@ -1874,14 +1886,20 @@ namespace GraphicalPlotter
             {
                 List<FunctionDrawInformation> functionDrawInformation = new List<FunctionDrawInformation>();
 
-                foreach (GraphicalFunctionViewModel functionVM in this.CurrentGraphicalFunctions)
+                Parallel.ForEach(
+                this.CurrentGraphicalFunctions, 
+                (functionVM) =>
                 {
                     if (functionVM.FunctionVisibility == true)
                     {
                         List<FunctionDrawInformation> functionDrawInformationForPathsForThisMathematicalFunction = this.CanvasFunctionConverter.ConvertFunctionViewModelIntoDrawInformation(functionVM);
-                        this.IntegrateListOfResultingDrawingFunctionsIntoListOfDrawingFunctions(functionDrawInformation, functionDrawInformationForPathsForThisMathematicalFunction);
+
+                        lock (lockObjectForFunctionCalculation)
+                        {
+                            this.IntegrateListOfResultingDrawingFunctionsIntoListOfDrawingFunctions(functionDrawInformation, functionDrawInformationForPathsForThisMathematicalFunction);
+                        }
                     }
-                }
+                });
 
                 this.DrawInformationForFunctions = functionDrawInformation;
                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.DrawInformationForFunctions)));
