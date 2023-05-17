@@ -211,7 +211,7 @@ namespace GraphicalPlotter
             bool yGridVisbility = this.GraphicalCanvas.YAxisGridData.Visibility;
 
             //// for the grid lines that cross the x-axis
-
+            
             double numberOfGridLinesForXAxis = (xMax - xMin) / xGridInterval;
             double numberOfGridLinesForYAxis = (yMax - yMin) / yGridInterval;
 
@@ -238,8 +238,9 @@ namespace GraphicalPlotter
 
                 //// as long as we havent reached yMax yet we still nee to add more intervalls
                 int startIndexModifierY = yAxisGridStartIndex;
-                int endIndexY = (int)(Math.Ceiling(Math.Abs(yMax) / yGridInterval) + Math.Ceiling(Math.Abs(yMin) / yGridInterval));
 
+                //// Adding two to the end just to be save.
+                int endIndexY = (int)Math.Ceiling(numberOfGridLinesForYAxis + 2);
                 Parallel.For(
                 0,
                 endIndexY,
@@ -276,21 +277,23 @@ namespace GraphicalPlotter
                 }
                 //// if it is less then zero we still need to round up but to the next smaller number, so we use floor
 
-                //// as long as we havent reached yMax yet we still nee to add more intervalls               
+                //// as long as we havent reached yMax yet we still need to add more intervalls               
 
                 int startIndexModifierX = xAxisGridStartIndex;
-                int endIndeX = (int)(Math.Ceiling(Math.Abs(xMax) / xGridInterval) + Math.Ceiling(Math.Abs(xMin) / xGridInterval));
+                //// Adding two to the end just to be save.
+                int endIndexX = (int)Math.Ceiling(numberOfGridLinesForXAxis + 2);
 
                 Parallel.For(
                 0,
-                endIndeX,
+                endIndexX,
                 i =>
                 {
                     double currentXValue = (i + startIndexModifierX) * xGridInterval;
+                    
                     int xPixelForThisGridLine = this.CalculateXPixelPositionForXValue(xPixels, currentXValue, xMin, xMax);
                     var topPixelThisGridLine = new CanvasPixel(xPixelForThisGridLine, 0);
                     var bottomPixelThisGridLine = new CanvasPixel(xPixelForThisGridLine, yPixels);
-
+                                        
                     lock (gridLines) // Lock to ensure thread safety when adding to the shared list
                     {
                         gridLines.Add(new FunctionDrawInformation(new List<CanvasPixel>() { topPixelThisGridLine, bottomPixelThisGridLine }, xGridColor));
