@@ -113,11 +113,7 @@ namespace GraphicalPlotter
                         colorPickerWindow.ShowDialog();
                         //// If a color is selected and the ok button is pressed
                         if (colorPickerWindow.IsColorPicked == true)
-                        {
-                          
-                            
-                           
-
+                        {                     
                             ////i know that i could use the propertyInfo for this, but im not sure if we are allowed to use it.
                             ////PropertyInfo property = this.GetType().GetProperty(propertyName);
                             ////if (property != null && property.CanWrite)
