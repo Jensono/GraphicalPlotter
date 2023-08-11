@@ -1561,10 +1561,12 @@ namespace GraphicalPlotter
                 {
                     GraphicalFunctionViewModel graphicalFunctionVM = new GraphicalFunctionViewModel(
                         functionParts,
+                        
                         deserializedFunction.FunctionColor,
                         deserializedFunction.UserSetNameForFunction,
                         deserializedFunction.FunctionName,
-                        deserializedFunction.FunctionVisibility);
+                        deserializedFunction.FunctionVisibility,
+                        deserializedFunction.BrushWidth);
 
                     // TESTTING IF THIS WORKS WITHOUT;
                     //////graphicalFunctionVM.FunctionColor = deserializedFunction.FunctionColor;

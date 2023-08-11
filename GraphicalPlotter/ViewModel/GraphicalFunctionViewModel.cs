@@ -52,6 +52,9 @@ namespace GraphicalPlotter
         /// </summary>
         private List<FunctionParts> functionParts;
 
+
+        private int brushWidth;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="GraphicalFunctionViewModel" /> class.
         /// </summary>
@@ -63,6 +66,7 @@ namespace GraphicalPlotter
             this.FunctionDisplayName = graphicalFunction.FunctionDisplayName;
             this.FunctionParts = graphicalFunction.FunctionComponents;
             this.FunctionVisibility = graphicalFunction.Visibility;
+            this.BrushWidth = graphicalFunction.BrushWidth;
             this.IsInitialized = true;
         }
 
@@ -74,13 +78,14 @@ namespace GraphicalPlotter
         /// <param name="customUserSetName"> The string which the user set as a custom name for the function.</param>
         /// <param name="displayName"> The mathematical display name for the function.</param>
         /// <param name="visibility"> The Visibility of the function.</param>
-        public GraphicalFunctionViewModel(List<FunctionParts> functionPartList, Color functionColor, string customUserSetName, string displayName, bool visibility)
+        public GraphicalFunctionViewModel(List<FunctionParts> functionPartList, Color functionColor, string customUserSetName, string displayName, bool visibility, int brushWidth)
         {
             this.CustomUserSetName = customUserSetName;
             this.FunctionColor = functionColor;
             this.FunctionDisplayName = displayName;
             this.FunctionParts = functionPartList;
             this.FunctionVisibility = visibility;
+            this.BrushWidth = brushWidth;
             this.IsInitialized = true;
         }
 
@@ -154,6 +159,36 @@ namespace GraphicalPlotter
                     }
 
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.FunctionVisibility)));
+                }
+            }
+        }
+
+        public int BrushWidth
+        {
+            get
+            {
+                return this.brushWidth;
+            }
+
+            set
+            {
+
+                if (this.brushWidth != value)
+                {
+                    if (value > 0 && value < 100)
+                    {
+                        this.brushWidth = value;
+
+                        if (this.IsInitialized)
+                        {
+                            this.OnUserFunctionChanged(this, new UserInputFunctionChangedEventArgs());
+                        }
+
+                        this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.BrushWidth)));
+                    }
+
+
+
                 }
             }
         }

@@ -42,18 +42,20 @@ namespace GraphicalPlotter
         /// The field for the visibility of the function.
         /// </summary>
         private bool visibility;
+        private int brushwidth;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GraphicalFunction" /> class.
         /// </summary>
         /// <param name="functionParts"> The list of function parts that make up the whole of this Graphical Function.</param>
         /// <param name="functionColor"> The color for the function.</param>
-        public GraphicalFunction(List<FunctionParts> functionParts, Color functionColor)
+        public GraphicalFunction(List<FunctionParts> functionParts, Color functionColor, int standartBrushWidth)
         {
             this.FunctionComponents = functionParts;
             this.FunctionColor = functionColor;
             this.FunctionDisplayName = this.CreateFunctionFullName();
             this.Visibility = true;
+            this.BrushWidth = standartBrushWidth;
         }
 
         /// <summary>
@@ -111,6 +113,24 @@ namespace GraphicalPlotter
             {
                 this.functionColor = value;
             }
+        }
+
+        public int BrushWidth 
+        {
+            get
+            {
+                return this.brushwidth;
+            }
+
+            set
+            {
+                if (value>0 && value<100)
+                {
+                    this.brushwidth = value;
+                }
+                
+            }
+
         }
 
         /// <summary>

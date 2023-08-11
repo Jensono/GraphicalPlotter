@@ -28,6 +28,7 @@ namespace GraphicalPlotter
             this.FunctionColor = functionViewModel.FunctionColor;
             this.UserSetNameForFunction = functionViewModel.CustomUserSetName;
             this.FunctionVisibility = functionViewModel.FunctionVisibility;
+            this.BrushWidth = functionViewModel.BrushWidth;
         }
 
         /// <summary>
@@ -60,5 +61,11 @@ namespace GraphicalPlotter
         /// </summary>
         /// <value> The visibility of the function.</value>
         public bool FunctionVisibility { get; set; }
+
+        /// <summary>
+        /// Gets or sets the brush stroke width for the function.
+        /// </summary>
+        /// <value> The Brush stroke width of the function.</value>
+        public int BrushWidth { get; set; }
     }
 }

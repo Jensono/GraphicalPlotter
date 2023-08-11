@@ -24,7 +24,6 @@ namespace GraphicalPlotter
         /// </summary>
         public StringToFunctionConverter()
         {
-            //// why do i have to set a culture for a double conversion??? If your a fucking multimillion dollar business WHY WHY WHY can you just fucking write a method that works with a point and also a comma. godamnit.
         }
 
         //// Returns out null if the given string was not a function in the right format.
@@ -41,7 +40,7 @@ namespace GraphicalPlotter
 
             if (this.TryParseStringToFunctionPartsList(input, out functionsCombined))
             {
-                graphicalFunction = new GraphicalFunction(functionsCombined, Colors.Black);
+                graphicalFunction = new GraphicalFunction(functionsCombined, Colors.Black,1);
                 return true;
             }
             else

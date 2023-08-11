@@ -50,7 +50,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
 
-                                <Polyline Points="{Binding Path=CanvasPixels,Converter={StaticResource CanvasPixelToPointConverter}}" Stroke="{Binding FunctionColor, Converter={StaticResource ColorToSolidBrushConverter}}" StrokeThickness="2" IsHitTestVisible="False">
+                                <Polyline Points="{Binding Path=CanvasPixels,Converter={StaticResource CanvasPixelToPointConverter}}" Stroke="{Binding FunctionColor, Converter={StaticResource ColorToSolidBrushConverter}}" StrokeThickness="{Binding BrushWidth}" IsHitTestVisible="False">
                                 </Polyline>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -69,7 +69,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
 
-                                <Polyline Points="{Binding Path=CanvasPixels,Converter={StaticResource CanvasPixelToPointConverter}}" Stroke="{Binding FunctionColor, Converter={StaticResource ColorToSolidBrushConverter}}" IsHitTestVisible="False">
+                                <Polyline Points="{Binding Path=CanvasPixels,Converter={StaticResource CanvasPixelToPointConverter}}" StrokeThickness="{Binding BrushWidth}" Stroke="{Binding FunctionColor, Converter={StaticResource ColorToSolidBrushConverter}}" IsHitTestVisible="False">
                                 </Polyline>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -88,7 +88,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
 
-                                <Polyline Points="{Binding Path=CanvasPixels,Converter={StaticResource CanvasPixelToPointConverter}}" Stroke="{Binding FunctionColor, Converter={StaticResource ColorToSolidBrushConverter}}" StrokeThickness="3" IsHitTestVisible="False">
+                                <Polyline Points="{Binding Path=CanvasPixels,Converter={StaticResource CanvasPixelToPointConverter}}" Stroke="{Binding FunctionColor, Converter={StaticResource ColorToSolidBrushConverter}}" StrokeThickness="{Binding BrushWidth}" IsHitTestVisible="False">
                                 </Polyline>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -217,15 +217,17 @@
                     <Grid Grid.Row="3">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="60"></ColumnDefinition>
-                            <ColumnDefinition Width="80"></ColumnDefinition>
+                            <ColumnDefinition Width="50"></ColumnDefinition>
                             <ColumnDefinition Width="58"></ColumnDefinition>
-                            <ColumnDefinition Width="42"></ColumnDefinition>
+                            <ColumnDefinition Width="52"></ColumnDefinition>
+                            <ColumnDefinition Width="20"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="Function Name" FontSize="9" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
-                        <TextBlock Grid.Column="1" Text="Function" FontSize="9" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
-                        <TextBlock Grid.Column="2" Text="Function Color" FontSize="9" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
-                        <TextBlock Grid.Column="3" Text="Visibility" FontSize="9" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                        <TextBlock Grid.Column="0" Text="Function Name" FontSize="7" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                        <TextBlock Grid.Column="1" Text="Function" FontSize="7" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                        <TextBlock Grid.Column="2" Text="Function Color" FontSize="7" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                        <TextBlock Grid.Column="3" Text="Visibility" FontSize="7" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                        <TextBlock Grid.Column="4" Text="Width" FontSize="7" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
                     </Grid>
 
                     <ListView Grid.Row="4" Grid.RowSpan="2"  ItemsSource="{Binding Path=CurrentGraphicalFunctions}" Background="OldLace">
@@ -235,9 +237,10 @@
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition MinWidth="30"></ColumnDefinition>
-                                        <ColumnDefinition MinWidth="120"></ColumnDefinition>
-                                        <ColumnDefinition MinWidth="50"></ColumnDefinition>
-                                        <ColumnDefinition MinWidth="30"></ColumnDefinition>
+                                        <ColumnDefinition MinWidth="100"></ColumnDefinition>
+                                        <ColumnDefinition MinWidth="45"></ColumnDefinition>
+                                        <ColumnDefinition MinWidth="25"></ColumnDefinition>
+                                        <ColumnDefinition MinWidth="20"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
                                     <TextBox Text="{Binding Path = CustomUserSetName}" FontSize="10" Grid.Column="0" Width="30"></TextBox>
                                     <TextBlock Text="{Binding Path = FunctionDisplayName}" FontSize="10" Grid.Column="1" TextAlignment="Center">
@@ -257,6 +260,7 @@
 
                                     <CheckBox IsChecked="{Binding Path=FunctionVisibility}" Grid.Column="3" HorizontalAlignment="Right">
                                     </CheckBox>
+                                    <TextBox Text="{Binding Path = BrushWidth}" FontSize="10" Grid.Column="4" Width="30"></TextBox>
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
