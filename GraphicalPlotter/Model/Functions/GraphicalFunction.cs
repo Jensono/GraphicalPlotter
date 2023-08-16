@@ -181,6 +181,19 @@ namespace GraphicalPlotter
             return returnstring;
         }
 
+        public GraphicalFunction GetDerivateOfFunction() 
+        {
+            List<FunctionParts> derivateParts = new List<FunctionParts>();
+            foreach (FunctionParts part in this.FunctionComponents)
+            {
+                derivateParts.Add(part.GetDerivativeOfFunction());
+
+
+            }
+
+            return new GraphicalFunction(derivateParts, this.functionColor, this.BrushWidth);
+        }
+
         // i dont know if it makes more sense that a function can compute itself or that it is cumputed by a diffrent part of the system. For now it calculates itself.
     }
 }

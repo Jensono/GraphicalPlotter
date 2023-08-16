@@ -57,5 +57,8 @@ namespace GraphicalPlotter
         /// </summary>
         /// <returns> A string that show the mathematical function.</returns>
         public abstract string GetFunctionName();
+
+
+        public abstract FunctionParts GetDerivativeOfFunction();
     }
 }

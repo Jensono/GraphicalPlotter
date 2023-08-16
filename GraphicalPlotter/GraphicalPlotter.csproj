@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AnimationPointPlusCurvature.cs" />
     <Compile Include="ApplicationStatusSaveDataHandler.cs" />
     <Compile Include="AxisSaveData.cs" />
     <Compile Include="CanvasZoomEventArguments.cs" />
@@ -65,7 +66,10 @@
     <Compile Include="Converter\ColorToSolidBrushConverter.cs" />
     <Compile Include="Converter\CanvasPixelListToPointCollectionConverter.cs" />
     <Compile Include="GraphicalFunctionForSerialization.cs" />
+    <Compile Include="Model\Functions\TrigometricalFunctions\TangenDerivative.cs" />
+    <Compile Include="Model\Functions\TrigometricalFunctions\TangentDerivateDerivate.cs" />
     <Compile Include="PlotterFullSaveData.cs" />
+    <Compile Include="SteeringWheelAnimationPreparer.cs" />
     <Compile Include="ViewModel\GraphicalFunctionViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="Model\AxisInfo\AxisData.cs" />
@@ -82,6 +86,7 @@
     <Compile Include="Model\GraphCanvasModels\TwoDimensionalGraphCanvas.cs" />
     <Compile Include="EventArguments\UserInputFunctionChangedEventArgs.cs" />
     <Compile Include="ColorPicker\WindowCommand.cs" />
+    <Compile Include="EventArguments\SteeringWheelStartAnimationEventArguments.cs" />
     <Page Include="ColorPicker\ColorPickerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -124,6 +129,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Steering_Wheel.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

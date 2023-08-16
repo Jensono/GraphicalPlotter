@@ -12,6 +12,7 @@ namespace GraphicalPlotter
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Windows;
     using System.Windows.Media;
     using System.Xml.Serialization;
 
@@ -84,23 +85,37 @@ namespace GraphicalPlotter
             string newFilePath = Path.Combine(basePath, "newBackupData.dat");
 
             XmlSerializer plotterSerializer = new XmlSerializer(typeof(PlotterFullSaveData));
-
-            using (FileStream fileStream = new FileStream(newFilePath, FileMode.Create))
+            try
             {
-                //// first we allways serialize the two axis informations, we will keep this order so that when we have the same order for the Deserialization
-                PlotterFullSaveData plotterSaveData = new PlotterFullSaveData(xAxisSaveData, yAxisSaveData, functionList, hasUserchangedYAxisValues);
-                plotterSerializer.Serialize(fileStream, plotterSaveData);
+                using (FileStream fileStream = new FileStream(newFilePath, FileMode.Create))
+                {
+                    //// first we allways serialize the two axis informations, we will keep this order so that when we have the same order for the Deserialization
+                    PlotterFullSaveData plotterSaveData = new PlotterFullSaveData(xAxisSaveData, yAxisSaveData, functionList, hasUserchangedYAxisValues);
+                    plotterSerializer.Serialize(fileStream, plotterSaveData);
+                }
+                //// if an old BackupFile exits we will delete it , else we will only rename the file that was just created to the right name.
+                string oldbackupPath = Path.Combine(Environment.CurrentDirectory, "BackupData.dat");
+
+                if (File.Exists(oldbackupPath))
+                {
+                    File.Delete(oldbackupPath);
+                }
+                //// renameing the file
+                File.Move(newFilePath, oldbackupPath);
+            }
+            catch (IOException)
+            {
+
+                MessageBox.Show("Reading the File failed, probably becouse it currently is in use! Try with a diffrent File name and/or location! No save was created!");
+            }
+            catch (UnauthorizedAccessException)
+            {
+
+                MessageBox.Show("Overwritting the file failed because it is read only! Try with a diffrent File name and/or location! No save was created!");
             }
 
-            //// if an old BackupFile exits we will delete it , else we will only rename the file that was just created to the right name.
-            string oldbackupPath = Path.Combine(Environment.CurrentDirectory, "BackupData.dat");
 
-            if (File.Exists(oldbackupPath))
-            {
-                File.Delete(oldbackupPath);
-            }
-            //// renameing the file
-            File.Move(newFilePath, oldbackupPath);
+
         }
 
         //// TODO the setting to default values should happen wherever tis method is called not inside the method. If it directly sets the values to default values the name is misleading and two functions are combined in one

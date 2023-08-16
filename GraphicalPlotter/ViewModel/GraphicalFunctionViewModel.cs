@@ -346,5 +346,17 @@ namespace GraphicalPlotter
 
             return returnstring;
         }
+
+
+        public GraphicalFunction GetDerivateOfFunction()
+        {
+            List<FunctionParts> derivateParts = new List<FunctionParts>();
+            foreach (FunctionParts part in this.FunctionParts)
+            {
+                derivateParts.Add(part.GetDerivativeOfFunction());
+            }
+
+            return new GraphicalFunction(derivateParts, this.functionColor, this.BrushWidth);
+        }
     }
 }

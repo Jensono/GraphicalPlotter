@@ -100,5 +100,8 @@ namespace GraphicalPlotter
         /// </summary>
         /// <returns> The mathematical symbol for the Calculation Part.</returns>
         public abstract string GetFunctionCalling();
+
+
+        public override abstract FunctionParts GetDerivativeOfFunction();
     }
 }

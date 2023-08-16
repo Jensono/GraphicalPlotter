@@ -4,7 +4,7 @@
 // </copyright>
 // <author>Jens Hanssen</author>
 // <summary>
-// This class is used to represent a tangent function.
+// This class is used to represent a tangent function derivative derivate, this application was constructed to actually make derivatives of function so we end up with this mess.
 // </summary>
 //-----------------------------------------------------------------------
 namespace GraphicalPlotter
@@ -14,14 +14,14 @@ namespace GraphicalPlotter
     /// <summary>
     /// This class defines a mathematical tangent function.
     /// </summary>
-    public class TangentFunction : TrigonometricFunctions
+    public class TangentDerivateDerivate : TrigonometricFunctions
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TangentFunction" /> class.
         /// </summary>
         /// <param name="constantMultiplier"> The constant multiplier for the tan function.</param>
         /// <param name="degreeMultiplier"> The multiplier inside the brackets for the tan function.</param>
-        public TangentFunction(double constantMultiplier, double degreeMultiplier) : base(constantMultiplier, degreeMultiplier)
+        public TangentDerivateDerivate(double constantMultiplier, double degreeMultiplier) : base(constantMultiplier, degreeMultiplier)
         {
         }
 
@@ -32,12 +32,12 @@ namespace GraphicalPlotter
         /// <returns> The result when substituting x with the given value in the function. The y value for any given x value. </returns>
         public override double CalculateItsOwnValue(double angle)
         {
-            return this.ConstantMultiplier * Math.Tan(angle * this.DegreeMultiplier);
+            return (this.ConstantMultiplier * Math.Sin(this.DegreeMultiplier * angle)) / (Math.Cos(this.DegreeMultiplier * angle) * Math.Cos(this.DegreeMultiplier * angle) * Math.Cos(this.DegreeMultiplier * angle));
         }
 
         public override FunctionParts GetDerivativeOfFunction()
         {
-            return new TangentDerivative(this.ConstantMultiplier * this.DegreeMultiplier, this.DegreeMultiplier);
+            throw new NotImplementedException("Yeah this should never happen, the application was never build on the grounds of make derivates of functions so we have this mess now.");
         }
 
         /// <summary>
@@ -46,9 +46,9 @@ namespace GraphicalPlotter
         /// <returns> The string containing the name of the function in mathematical writing.</returns>
         public override string GetFunctionCalling()
         {
-            return "tan";
+            return "undefined";
         }
 
-        
+
     }
 }

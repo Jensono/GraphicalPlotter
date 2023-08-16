@@ -134,7 +134,7 @@ namespace GraphicalPlotter
                 //// we will only land here if the function didnt have any values smaller or bigger than the yMax/yMin or if we have reached the last part of the function
                 if (pixelValuesForthisPartOfFunction.Count > 1)
                 {
-                    drawingPathsForFunction.Add(new FunctionDrawInformation(pixelValuesForthisPartOfFunction, function.FunctionColor,function.BrushWidth)) ;
+                    drawingPathsForFunction.Add(new FunctionDrawInformation(pixelValuesForthisPartOfFunction, function.FunctionColor, function.BrushWidth));
                     //// reset the lastpixel becouse the current functions was closed
                     lastThrownAwayPixel = null;
                 }
@@ -145,6 +145,35 @@ namespace GraphicalPlotter
             }
 
             return drawingPathsForFunction;
+        }
+
+        public List<double> ConvertFunctionViewModelIntoListOfYValuesWithoutBounds(GraphicalFunctionViewModel function)
+        {
+            //// TODO there definitly is a way to parrallise this, i just need to use something with a set index like an array instead of the list, try it out! should speed up performance at least by the inverse of the number of cpu cores.
+            //// i dont have enought time to try this out anymore because it sadly is already the final day for delievering 17.05 - 01:35
+            int xPixels = this.GraphicalCanvas.WidthInPixel;
+            int yPixels = this.GraphicalCanvas.HeightInPixel;
+            double xMax = this.GraphicalCanvas.XAxisData.MaxVisibleValue;
+            double xMin = this.GraphicalCanvas.XAxisData.MinVisibleValue;
+            double yMax = this.GraphicalCanvas.YAxisData.MaxVisibleValue;
+            double yMin = this.GraphicalCanvas.YAxisData.MinVisibleValue;
+
+            int currentXPixel = 0;
+
+            List<double> yValueForFunction = new List<double>();
+
+
+            for (int xPixelPosition = currentXPixel; xPixelPosition < xPixels; xPixelPosition++)
+            {
+                double xCalculationIntervall = (xMax - xMin) / xPixels;
+                double xValueForCurrentPixel = xMin + (xPixelPosition * xCalculationIntervall);
+                double yValueForCurrentXValue = function.CalculateSumOfAllPartsForValue(xValueForCurrentPixel);
+
+                yValueForFunction.Add(yValueForCurrentXValue);
+            }
+
+           
+            return yValueForFunction;
         }
 
         /// <summary>
@@ -174,7 +203,7 @@ namespace GraphicalPlotter
                 int yPixelValueForXAxis = this.CalculateYPixelPositionForYValue(yPixels, 0, yMin, yMax);
 
                 List<CanvasPixel> axisPoints = new List<CanvasPixel>() { new CanvasPixel(0, yPixelValueForXAxis), new CanvasPixel(xPixels, yPixelValueForXAxis) };
-                FunctionDrawInformation drawInformationXAxis = new FunctionDrawInformation(axisPoints, this.GraphicalCanvas.XAxisData.AxisColor,3);
+                FunctionDrawInformation drawInformationXAxis = new FunctionDrawInformation(axisPoints, this.GraphicalCanvas.XAxisData.AxisColor, 3);
                 axisLines.Add(drawInformationXAxis);
             }
             //// only if the axis are visible we will calculate them , otherwise , weird things will happen
@@ -184,7 +213,7 @@ namespace GraphicalPlotter
                 int xPixelValueForYAxis = this.CalculateXPixelPositionForXValue(xPixels, 0, xMin, xMax);
 
                 List<CanvasPixel> axisPoints = new List<CanvasPixel>() { new CanvasPixel(xPixelValueForYAxis, 0), new CanvasPixel(xPixelValueForYAxis, yPixels) };
-                FunctionDrawInformation drawInformationXAxis = new FunctionDrawInformation(axisPoints, this.GraphicalCanvas.YAxisData.AxisColor,3);
+                FunctionDrawInformation drawInformationXAxis = new FunctionDrawInformation(axisPoints, this.GraphicalCanvas.YAxisData.AxisColor, 3);
                 axisLines.Add(drawInformationXAxis);
             }
 
@@ -211,7 +240,7 @@ namespace GraphicalPlotter
             bool yGridVisbility = this.GraphicalCanvas.YAxisGridData.Visibility;
 
             //// for the grid lines that cross the x-axis
-            
+
             double numberOfGridLinesForXAxis = (xMax - xMin) / xGridInterval;
             double numberOfGridLinesForYAxis = (yMax - yMin) / yGridInterval;
 
@@ -228,7 +257,7 @@ namespace GraphicalPlotter
                 if (howManyGridsAwayFromXAxis < 0)
                 {
                     //// we move one full number down
-                    
+
                     yAxisGridStartIndex = (int)Math.Floor(howManyGridsAwayFromXAxis);
                 }
                 else
@@ -253,7 +282,7 @@ namespace GraphicalPlotter
 
                     lock (gridLines) // Lock to ensure thread safety when adding to the shared list
                     {
-                        gridLines.Add(new FunctionDrawInformation(new List<CanvasPixel>() { topPixelThisGridLine, bottomPixelThisGridLine }, yGridColor,1));
+                        gridLines.Add(new FunctionDrawInformation(new List<CanvasPixel>() { topPixelThisGridLine, bottomPixelThisGridLine }, yGridColor, 1));
                     }
                 });
             }
@@ -277,7 +306,7 @@ namespace GraphicalPlotter
                 }
                 //// if it is less then zero we still need to round up but to the next smaller number, so we use floor
 
-                //// as long as we havent reached yMax yet we still need to add more intervalls               
+                //// as long as we havent reached yMax yet we still need to add more intervalls
 
                 int startIndexModifierX = xAxisGridStartIndex;
                 //// Adding two to the end just to be save.
@@ -289,14 +318,14 @@ namespace GraphicalPlotter
                 i =>
                 {
                     double currentXValue = (i + startIndexModifierX) * xGridInterval;
-                    
+
                     int xPixelForThisGridLine = this.CalculateXPixelPositionForXValue(xPixels, currentXValue, xMin, xMax);
                     var topPixelThisGridLine = new CanvasPixel(xPixelForThisGridLine, 0);
                     var bottomPixelThisGridLine = new CanvasPixel(xPixelForThisGridLine, yPixels);
-                                        
+
                     lock (gridLines) // Lock to ensure thread safety when adding to the shared list
                     {
-                        gridLines.Add(new FunctionDrawInformation(new List<CanvasPixel>() { topPixelThisGridLine, bottomPixelThisGridLine }, xGridColor,1));
+                        gridLines.Add(new FunctionDrawInformation(new List<CanvasPixel>() { topPixelThisGridLine, bottomPixelThisGridLine }, xGridColor, 1));
                     }
                 });
             }
@@ -332,7 +361,7 @@ namespace GraphicalPlotter
                 pixelValuesForthisFunction.Add(new CanvasPixel(xPixelPosition, roundedYPixelPosition));
             }
 
-            FunctionDrawInformation drawInformation = new FunctionDrawInformation(pixelValuesForthisFunction, function.FunctionColor,function.BrushWidth);
+            FunctionDrawInformation drawInformation = new FunctionDrawInformation(pixelValuesForthisFunction, function.FunctionColor, function.BrushWidth);
             return drawInformation;
         }
 
@@ -376,7 +405,7 @@ namespace GraphicalPlotter
         private int CalculateXPixelPositionForXValue(int xPixels, double xValue, double xMin, double xMax)
         {
             double xPixelPosition = xPixels - ((xValue - xMin) * xPixels / (xMax - xMin));
-                       
+
             //// A function could, in theory have such a drastic change in the y axis that this problem could occur
             //// TODO find a fix that just draws the first few lines of the functions.
             if (xPixelPosition < int.MinValue)

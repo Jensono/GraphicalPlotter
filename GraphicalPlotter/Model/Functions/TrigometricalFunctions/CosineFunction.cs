@@ -35,6 +35,11 @@ namespace GraphicalPlotter
             return this.ConstantMultiplier * Math.Cos(angle * this.DegreeMultiplier);
         }
 
+        public override FunctionParts GetDerivativeOfFunction()
+        {
+            return new SineFunction(this.ConstantMultiplier * -1 * this.DegreeMultiplier, this.DegreeMultiplier);
+        }
+
         /// <summary>
         /// Returns the mathematical symbol for the cosine function.
         /// </summary>

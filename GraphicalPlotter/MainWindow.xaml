@@ -32,6 +32,7 @@
                 <!-- really dumb fix to fix up the canvas, now functions that were drawn outside of the canvas a bit are covered up is clipToBounds-->
 
                 <Canvas Grid.Row="0" Grid.Column="0"  Height="{Binding PixelHeightCanvas}" Width="{Binding PixelWidhtCanvas}" x:Name="PlotterCanvas" ClipToBounds="True">
+                 
 
                     <!--the rectangle to show the zoom selection-->
                     <Rectangle x:Name="ZoomSelectionRectangle" Fill="#220000FF" Stroke="Blue" StrokeThickness="1" Opacity="0.3" Visibility="Hidden" />
@@ -93,7 +94,19 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
+                    
+                    <Image x:Name="SteeringWheelImage" Source="/Steering_Wheel.png" Width="200" Height="200" Visibility="Visible">
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform x:Name="TranslateWheel" />
+                                <RotateTransform x:Name="RotateWheel" CenterX="100" CenterY="100"/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+                    
                 </Canvas>
+
+                
 
                 <!--All the textboxes for the axis and grid information-->
                 <Grid Grid.Row="1" Grid.Column="0" MaxHeight="150" MinHeight="150" Background="LightGray" Grid.ColumnSpan="2">
@@ -201,7 +214,8 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition  MinWidth="250" MaxWidth="250"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <TextBlock  Grid.Row="0" Text="Input new Function" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" Background="Ivory" Padding="15"></TextBlock>
+                    <TextBlock  Grid.Row="0" Text="Input new Function" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="16" Background="Ivory" Padding="15"></TextBlock>
+                    <Button  Grid.Row="0" Content="Wheel"  VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Gray"  Command="{Binding StartWheelAnimation}" Margin="0,6,20,5" Height="20" Width="36"  />
 
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
@@ -230,7 +244,7 @@
                         <TextBlock Grid.Column="4" Text="Width" FontSize="7" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
                     </Grid>
 
-                    <ListView Grid.Row="4" Grid.RowSpan="2"  ItemsSource="{Binding Path=CurrentGraphicalFunctions}" Background="OldLace">
+                    <ListView Grid.Row="4" Grid.RowSpan="2"  ItemsSource="{Binding Path=CurrentGraphicalFunctions}" Background="OldLace" SelectedItem="{Binding Path=SelectedModel}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <!-- maybe at a color selection in a later stage-->

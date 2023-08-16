@@ -64,6 +64,11 @@ namespace GraphicalPlotter
             return this.ConstantMultiplier * Math.Pow(baseValue, this.ExponentDegree);
         }
 
+        public override FunctionParts GetDerivativeOfFunction()
+        {
+            return new PolynomialComponent(this.ExponentDegree-1,this.ConstantMultiplier*this.ExponentDegree);
+        }
+
         /// <summary>
         /// This method returns a string that looks like a mathematical function for the model behind the function.
         /// </summary>

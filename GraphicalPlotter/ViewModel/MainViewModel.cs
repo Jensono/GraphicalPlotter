@@ -8,7 +8,8 @@
 // </summary>
 //-----------------------------------------------------------------------
 namespace GraphicalPlotter
-{   
+{
+    using Microsoft.Win32;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -19,14 +20,14 @@ namespace GraphicalPlotter
     using System.Windows.Data;
     using System.Windows.Input;
     using System.Windows.Media;
+    using System.Windows.Media.Animation;
     using System.Xml.Serialization;
-    using Microsoft.Win32;
 
     /// <summary>
     /// This class acts as the main interface between the view and the model of the app.
     /// </summary>
     public class MainViewModel : INotifyPropertyChanged
-    {      
+    {
         /// <summary>
         /// The field for the Text Box that describes the min value for the x-axis.
         /// </summary>
@@ -163,22 +164,22 @@ namespace GraphicalPlotter
         private CanvasPixel zoomStartPoint;
 
         /// <summary>
-        /// The field for AxisData for the x-axis. 
+        /// The field for AxisData for the x-axis.
         /// </summary>
         private AxisData xAxisData;
 
         /// <summary>
-        /// The field for AxisData for the y-axis. 
+        /// The field for AxisData for the y-axis.
         /// </summary>
         private AxisData yAxisData;
 
         /// <summary>
-        /// The field for AxisGridData for the x-axis. 
+        /// The field for AxisGridData for the x-axis.
         /// </summary>
         private AxisGridData xAxisGrid;
 
         /// <summary>
-        /// The field for AxisGridData for the y-axis. 
+        /// The field for AxisGridData for the y-axis.
         /// </summary>
         private AxisGridData yAxisGrid;
 
@@ -202,8 +203,10 @@ namespace GraphicalPlotter
         /// </summary>
         private ApplicationStatusSaveDataHandler saveDataHandler;
 
+        private GraphicalFunctionViewModel selectedModel;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="MainViewModel" /> class. 
+        /// Initializes a new instance of the <see cref="MainViewModel" /> class.
         /// </summary>
         public MainViewModel()
         {
@@ -216,7 +219,7 @@ namespace GraphicalPlotter
 
             this.TextBoxUserInputFunctionToolTip = "To Input a Function use the right format shown here. Using other formats may yield wrong inputs.\r\n PLEASE NOTE THAT THE NOTATION FOR DECIMALS IS BOUND TO YOUR LOCALICATION! " +
                                                      "\r\n Supported Functions are : sin,cos,tan and polynomial function up to a exponent degree of 10." +
-                                                    "\r\n a3*x^3+a2*x^2+a1*x+c \r\n a*sin(b*x)+c \r\n a*cos(b*x)+c\r\n a*tan(b*x)+c" + 
+                                                    "\r\n a3*x^3+a2*x^2+a1*x+c \r\n a*sin(b*x)+c \r\n a*cos(b*x)+c\r\n a*tan(b*x)+c" +
                                                     "\r\n \r\n it is also possible to combine polynomial functions with sin cos and tan like this: \r\n " +
                                                     "5x^2+9x-8*cos(0,5x)";
 
@@ -230,9 +233,10 @@ namespace GraphicalPlotter
                 out bool hasUserChangedYAxisValues))
             {
                 this.ReconstructAxisAndGridData(savedXAxisData, savedYAxisData, savedXAxisGrid, savedYAxisGrid, hasUserChangedYAxisValues);
-                this.IsApplicationDataInitalized = true;
+               
 
                 this.ReconstructFunctionsFromFileInport(savedFunctions);
+                this.IsApplicationDataInitalized = true;
             }
 
             this.IsApplicationDataInitalized = true;
@@ -702,9 +706,9 @@ namespace GraphicalPlotter
         /// <value> The FunctionToCanvasFunctionConverter used inside the MainViewModel. Its used to calculate the drawing points for the functions.</value>
         public FunctionToCanvasFunctionConverter CanvasFunctionConverter
         {
-            get 
+            get
             {
-                return this.canvasFunctionConverter; 
+                return this.canvasFunctionConverter;
             }
 
             set
@@ -778,6 +782,31 @@ namespace GraphicalPlotter
                     {
                         this.drawInformationForFunctions = value;
                     }
+                }
+            }
+        }
+
+        //TODO CHECKS AND SHIT
+        public GraphicalFunctionViewModel SelectedModel
+        {
+            get
+            {
+              
+                    return this.selectedModel;
+               
+            }
+
+            set
+            {
+                if (value is null)
+                {
+                    throw new ArgumentNullException($"{nameof(DrawInformationForAxis)} can not be null");
+                }
+                else
+                {
+                   
+                        this.selectedModel = value;
+                   
                 }
             }
         }
@@ -944,7 +973,7 @@ namespace GraphicalPlotter
         public StringToFunctionConverter StringToFunctionConverter
         {
             get
-            { 
+            {
                 return this.stringToFunctionConverter;
             }
 
@@ -966,7 +995,7 @@ namespace GraphicalPlotter
         /// <example> <see cref="ArgumentNullException"/> is thrown if the given value was null. </example>
         public ApplicationStatusSaveDataHandler SaveDataHandler
         {
-            get 
+            get
             {
                 return this.saveDataHandler;
             }
@@ -1017,7 +1046,7 @@ namespace GraphicalPlotter
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the the application data has been completely set. 
+        /// Gets or sets a value indicating whether or not the the application data has been completely set.
         /// If the data is not set there are no updates to the canvas and some property will not set event when they are changed.
         /// </summary>
         /// <value> A value indicating whether or not the the application data has been completely set.
@@ -1058,6 +1087,8 @@ namespace GraphicalPlotter
             }
         }
 
+        public event EventHandler<SteeringWheelStartAnimationEventArguments> AnimationPointsGenerated;
+
         /// <summary>
         /// Gets a command to open a new user input string as a function to the list of current functions.
         /// </summary>
@@ -1078,13 +1109,49 @@ namespace GraphicalPlotter
                         {
                             GraphicalFunctionViewModel functionVM = new GraphicalFunctionViewModel(graphicalFunction);
                             this.AddFunctionToCurrentFunction(functionVM);
-
+                            
                             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CurrentGraphicalFunctions)));
+                            this.RescaleYMinAndMaxForRescalableFunctions();
                             this.UpdateFullCanvas();
                         }
                     });
             }
         }
+
+        public ICommand StartWheelAnimation
+        {
+            get
+            {
+               
+                return new WindowCommand(
+                    (obj) =>
+                    {
+                        //TODO should only return true if a item is selected--> eg selected model is not null
+                        return true;
+                    },
+                    (obj) =>
+                    {
+                        if (this.SelectedModel!=null)
+                        {
+
+                            GraphicalFunction SecondDerivateOfFunction = this.SelectedModel.GetDerivateOfFunction().GetDerivateOfFunction();
+                            GraphicalFunctionViewModel SecondDerivateViewModel = new GraphicalFunctionViewModel(SecondDerivateOfFunction);
+                            List<double> PointsCurvatureForSelectedFunction = this.CanvasFunctionConverter.ConvertFunctionViewModelIntoListOfYValuesWithoutBounds(SecondDerivateViewModel);
+                            SteeringWheelAnimationPreparer listPreparer = new SteeringWheelAnimationPreparer
+                            (this.CanvasFunctionConverter.ConvertFunctionViewModelIntoDrawInformation(this.SelectedModel),
+                            PointsCurvatureForSelectedFunction,
+                            this.MainGraphCanvas.WidthInPixel);
+                            List<AnimationPointImage> animationPoints = listPreparer.GenerateAnimationPointsWithCurvature();
+                            SteeringWheelStartAnimationEventArguments currentEventArguments = new SteeringWheelStartAnimationEventArguments(animationPoints);
+                            this.AnimationPointsGenerated(this, currentEventArguments);
+                        }
+                    });
+            }
+
+        }
+
+       
+
 
         /// <summary>
         /// Gets a command that opens a new ColorPickerWindow in which the user can select a color for the bound element of the WPF application.
@@ -1172,9 +1239,20 @@ namespace GraphicalPlotter
 
                             if (dialog.ShowDialog() == true)
                             {
-                                using (FileStream fileStream = new FileStream(dialog.FileName, FileMode.Create))
+                                try
                                 {
-                                    xmlSerializer.Serialize(fileStream, functionsForSerialization);
+                                    using (FileStream fileStream = new FileStream(dialog.FileName, FileMode.Create))
+                                    {
+                                        xmlSerializer.Serialize(fileStream, functionsForSerialization);
+                                    }
+                                }
+                                catch (UnauthorizedAccessException)
+                                {
+                                    MessageBox.Show("The file you tried to overwrite is write-protected! Try with a diffrent File name and/or location!");
+                                }
+                                catch (IOException)
+                                {
+                                    MessageBox.Show("The file you tried to overwrite is currently in use by another application! Try with a diffrent File name and/or location!");
                                 }
                             }
                         }
@@ -1207,16 +1285,27 @@ namespace GraphicalPlotter
 
                         if (dialog.ShowDialog() == true)
                         {
-                            using (FileStream fileStream = new FileStream(dialog.FileName, FileMode.Open))
+                            try
                             {
-                                try
+                                using (FileStream fileStream = new FileStream(dialog.FileName, FileMode.Open))
                                 {
-                                    //// TODO I for sure need to check if this is even serializable or something else right? just the try catch block isnt the kind of panacea that i think it is.
-                                    deserializedFunctions = (List<GraphicalFunctionForSerialization>)xmlSerializer.Deserialize(fileStream);
+                                    try
+                                    {
+                                        //// TODO I for sure need to check if this is even serializable or something else right? just the try catch block isnt the kind of panacea that i think it is.
+                                        deserializedFunctions = (List<GraphicalFunctionForSerialization>)xmlSerializer.Deserialize(fileStream);
+                                    }
+                                    catch (Exception)
+                                    {
+                                    }
                                 }
-                                catch (Exception)
-                                {
-                                }
+                            }
+                            catch (UnauthorizedAccessException)
+                            {
+                                MessageBox.Show("The file you tried to import is write-protected! Try with a diffrent File name and/or location!");
+                            }
+                            catch (IOException)
+                            {
+                                MessageBox.Show("The file you tried to import is currently in use by another application! Try with a diffrent File name and/or location!");
                             }
 
                             if (deserializedFunctions.Count > 0)
@@ -1224,7 +1313,7 @@ namespace GraphicalPlotter
                                 this.ReconstructFunctionsFromFileInport(deserializedFunctions);
                                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CurrentGraphicalFunctions)));
                                 this.UpdateDrawInformationForFunctions();
-                            }                            
+                            }
                         }
                     });
             }
@@ -1319,19 +1408,18 @@ namespace GraphicalPlotter
                         this.IsApplicationDataInitalized = false;
 
                         this.HasUserChangedYAxisSettings = false;
-                        if (this.AreAllCurrentFunctionsAutomaticlyScalable())
-                        {
-                            this.RescaleYMinAndMaxForRescalableFunctions();
-                        }
+                       
+                        this.RescaleYMinAndMaxForRescalableFunctions();
+                        
 
                         this.IsApplicationDataInitalized = true;
                         this.UpdateFullCanvas();
                     });
             }
         }
-
+        [Obsolete]
         /// <summary>
-        /// This method finds out if all functions that are currently saved inside the application are scalable. 
+        /// This method finds out if all functions that are currently saved inside the application are scalable.
         /// A function is only scalable if it is cos, sin or a constant, everything else would not make sense to an average user.
         /// </summary>
         /// <returns> A boolean value indicating whether or not all current function are scalable.</returns>
@@ -1361,7 +1449,8 @@ namespace GraphicalPlotter
 
             //// check if the user ever cahnged y-Axis Values, if not then autoscale the current Functions if they only are sin, cos and polynomials with exponent degree of zero ,
             //// but not incombination cos+sin or sin+sin , this would require a lot more code and it isnt in the requirement to begin with to be able to make a function like that so i hope that im good on that one
-            if (!this.HasUserChangedYAxisSettings && this.IsFunctionScalable(functionVM))
+            /// there used to be a check if all the functions are scalable or not, not required anymore because fu*k user experience, right?
+            if (!this.HasUserChangedYAxisSettings && this.IsApplicationDataInitalized)
             {
                 this.RescaleYMinAndMaxForRescalableFunctions();
             }
@@ -1371,8 +1460,8 @@ namespace GraphicalPlotter
             }
         }
 
-        //// this is requirement is just so unnessary
-        
+        //// this is requirement is just sooo extra
+
         /// <summary>
         /// This method rescales the canvas in the view new y min and y max values to show all the peaks of all functions.
         /// </summary>
@@ -1384,8 +1473,8 @@ namespace GraphicalPlotter
             //// since we now know that the function is scalabe it can only be one of theses possibilites : cos+c1+c2+c3...cn, sin+c1+c2+c3...cn or c1+c2+c3...cn we will move forward with this assumption
             foreach (GraphicalFunctionViewModel function in this.CurrentGraphicalFunctions)
             {
-                double thisFunctionsSmallestYValue = this.FindSmallestYValue(function);
-                double thisFunctionsBiggestYValue = this.FindBiggestYValue(function);
+                double thisFunctionsSmallestYValue = this.FindAbsoluteSmallestYValue(function);
+                double thisFunctionsBiggestYValue = this.FindAbsoluteBiggestYValue(function);
 
                 if (thisFunctionsBiggestYValue > biggestYValueOverall)
                 {
@@ -1451,11 +1540,7 @@ namespace GraphicalPlotter
 
         //// TODO REFRACTOR into a new class , this should not belong here, but not enough time for changes now.
 
-        /// <summary>
-        /// This method searches for the smallest value a function (sin, cos or constant) can become.
-        /// </summary>
-        /// <param name="function"> The function for which to find the smallest value it can become.</param>
-        /// <returns> The smallest value a function can ever reach.</returns>
+        
         private double FindSmallestYValue(GraphicalFunctionViewModel function)
         {
             double sumOfBiggestValues = 0;
@@ -1479,6 +1564,40 @@ namespace GraphicalPlotter
             return sumOfBiggestValues;
         }
 
+      
+        private double FindAbsoluteSmallestYValue(GraphicalFunctionViewModel function)
+        {
+            List<double> drawInformation = this.CanvasFunctionConverter.ConvertFunctionViewModelIntoListOfYValuesWithoutBounds(function);
+
+            double smallestYet = drawInformation[0];
+
+            foreach (long currentYValue in drawInformation)
+            {
+                if (currentYValue < smallestYet)
+                {
+                    smallestYet = currentYValue;
+                }
+            }
+            return smallestYet;
+        }
+
+        private double FindAbsoluteBiggestYValue(GraphicalFunctionViewModel function)
+        {
+            List<double> drawInformation = this.CanvasFunctionConverter.ConvertFunctionViewModelIntoListOfYValuesWithoutBounds(function);
+
+            double biggestYet = drawInformation[0];
+
+            foreach (long currentYValue in drawInformation)
+            {
+                if (currentYValue > biggestYet)
+                {
+                    biggestYet = currentYValue;
+                }
+            }
+            return biggestYet;
+        }
+
+        [Obsolete]
         /// <summary>
         /// This method is used to find out if a function is able to rescale for the y axis.
         /// </summary>
@@ -1561,7 +1680,7 @@ namespace GraphicalPlotter
                 {
                     GraphicalFunctionViewModel graphicalFunctionVM = new GraphicalFunctionViewModel(
                         functionParts,
-                        
+
                         deserializedFunction.FunctionColor,
                         deserializedFunction.UserSetNameForFunction,
                         deserializedFunction.FunctionName,
@@ -1854,7 +1973,7 @@ namespace GraphicalPlotter
                 List<FunctionDrawInformation> functionDrawInformation = new List<FunctionDrawInformation>();
 
                 Parallel.ForEach(
-                this.CurrentGraphicalFunctions, 
+                this.CurrentGraphicalFunctions,
                 (functionVM) =>
                 {
                     if (functionVM.FunctionVisibility == true)
@@ -1889,7 +2008,7 @@ namespace GraphicalPlotter
                 List<FunctionDrawInformation> functionDrawInformation = new List<FunctionDrawInformation>();
 
                 Parallel.ForEach(
-                this.CurrentGraphicalFunctions, 
+                this.CurrentGraphicalFunctions,
                 (functionVM) =>
                 {
                     if (functionVM.FunctionVisibility == true)
@@ -1935,5 +2054,8 @@ namespace GraphicalPlotter
                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.DrawInformationForGridLines)));
             }
         }
+
+
+
     }
 }
