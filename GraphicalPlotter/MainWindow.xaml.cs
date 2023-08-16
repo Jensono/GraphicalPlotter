@@ -126,7 +126,7 @@ namespace GraphicalPlotter
             DoubleAnimationUsingKeyFrames yAnimation = new DoubleAnimationUsingKeyFrames();
             DoubleAnimationUsingKeyFrames rotationAnimation = new DoubleAnimationUsingKeyFrames();
 
-            RotateWheel.Angle = 60;
+           
 
             int totalAnimationTimeInMilliseconds = 20000;
             int delayPerPoint = totalAnimationTimeInMilliseconds / animationPoints.Count;
@@ -146,6 +146,7 @@ namespace GraphicalPlotter
                     Value = point.AnimationPointXY.YAxisValue - SteeringWheelImage.Width/2
                 });
 
+                
                 rotationAnimation.KeyFrames.Add(new LinearDoubleKeyFrame
                 {
                     KeyTime = TimeSpan.FromMilliseconds(currentTime),
@@ -157,112 +158,12 @@ namespace GraphicalPlotter
             }
 
             // we start the animation for every part of the tranformation
+            
             TranslateWheel.BeginAnimation(TranslateTransform.XProperty, xAnimation);
             TranslateWheel.BeginAnimation(TranslateTransform.YProperty, yAnimation);
             RotateWheel.BeginAnimation(RotateTransform.AngleProperty, rotationAnimation);
+            
 
-
-
-
-
-
-
-
-
-
-
-
-
-            //// Set the RenderTransform to the TranslateWheel
-            //SteeringWheelImage.RenderTransform = TranslateWheel;
-
-
-
-            //int totalAnimationTimeInMilliseconds = 20000;
-            //var animationPoints = eventArgs.AnimationPoints;
-
-            //int delayPerPoint = totalAnimationTimeInMilliseconds / animationPoints.Count;
-
-
-
-            //foreach (var point in eventArgs.AnimationPoints)
-            //{
-            //    TranslateWheel.X = point.AnimationPointXY.XAxisValue;
-            //    TranslateWheel.Y = point.AnimationPointXY.YAxisValue;
-            //    RotateWheel.Angle = point.DegreeCurvatureOnPoint;
-            //    Visibility frameVisibility = Visibility.Hidden;
-            //       if (point.VisibilityOnPoint)
-            //        {
-            //            frameVisibility = Visibility.Visible;
-            //        }
-            //    SteeringWheelImage.Visibility = frameVisibility;
-            //    Thread.Sleep(100);
-            //}
-
-            //foreach (var point in animationPoints)
-            //{
-            //    DoubleAnimation xAnimation = new DoubleAnimation
-            //    {
-            //        From = TranslateWheel.X,
-            //        To = point.AnimationPointXY.XAxisValue,
-            //        BeginTime = TimeSpan.FromMilliseconds(currentTime),
-            //        Duration = TimeSpan.FromMilliseconds(delayPerPoint)
-            //    };
-            //    Storyboard.SetTarget(xAnimation, TranslateWheel);
-            //    Storyboard.SetTargetProperty(xAnimation, new PropertyPath(TranslateTransform.XProperty));
-            //    storyboard.Children.Add(xAnimation);
-
-            //    DoubleAnimation yAnimation = new DoubleAnimation
-            //    {
-            //        From = TranslateWheel.Y,
-            //        To = point.AnimationPointXY.YAxisValue,
-            //        BeginTime = TimeSpan.FromMilliseconds(currentTime),
-            //        Duration = TimeSpan.FromMilliseconds(delayPerPoint)
-            //    };
-            //    Storyboard.SetTarget(yAnimation, TranslateWheel);
-            //    Storyboard.SetTargetProperty(yAnimation, new PropertyPath(TranslateTransform.YProperty));
-            //    storyboard.Children.Add(yAnimation);
-
-            //    DoubleAnimation rotationAnimation = new DoubleAnimation
-            //    {
-            //        From = RotateWheel.Angle,
-            //        To = point.DegreeCurvatureOnPoint,
-            //        BeginTime = TimeSpan.FromMilliseconds(currentTime),
-            //        Duration = TimeSpan.FromMilliseconds(delayPerPoint)
-            //    };
-            //    Storyboard.SetTarget(rotationAnimation, RotateWheel);
-            //    Storyboard.SetTargetProperty(rotationAnimation, new PropertyPath(RotateTransform.AngleProperty));
-            //    storyboard.Children.Add(rotationAnimation);
-
-            //    ObjectAnimationUsingKeyFrames visibilityAnimation = new ObjectAnimationUsingKeyFrames
-            //    {
-            //        BeginTime = TimeSpan.FromMilliseconds(currentTime),
-            //        Duration = TimeSpan.FromMilliseconds(delayPerPoint)
-            //    };
-
-            //    Visibility frameVisibility = Visibility.Hidden;
-            //    if (point.VisibilityOnPoint)
-            //    {
-            //        frameVisibility = Visibility.Visible;
-            //    }
-
-            //    DiscreteObjectKeyFrame visibilityKeyFrame = new DiscreteObjectKeyFrame
-            //    {
-            //        KeyTime = KeyTime.FromPercent(0),
-            //        Value = frameVisibility
-            //    };
-            //    visibilityAnimation.KeyFrames.Add(visibilityKeyFrame);
-
-            //    // Setting the target and property for the visibility animation
-            //    Storyboard.SetTarget(visibilityAnimation, SteeringWheelImage);
-            //    Storyboard.SetTargetProperty(visibilityAnimation, new PropertyPath(UIElement.VisibilityProperty));
-            //    storyboard.Children.Add(visibilityAnimation);
-
-            //    currentTime += delayPerPoint;
-            //}
-
-            // Start the storyboard after all animations are added
-            //storyboard.Begin();
         }
 
 
