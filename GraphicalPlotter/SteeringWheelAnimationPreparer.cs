@@ -32,7 +32,18 @@ namespace GraphicalPlotter
                     if (fullListOfPixel[counterForPixelList].XAxisValue == i)
                     {
                         // we must move the curser for the pixel list as we found a value that was inside the list.
+                        // when the last point was set to be at 0,0 and visiblity was false then the sterring wheel was moved out of bounds, becouse the point should not be visible, to
+                        // avoid the currumstance that the animation will look choppy, eg the wheel will fly from the upper left corner to the new point i will
+                        // add a fake point to the wheel that starts at the last point but sets the wheel to invisible so that the jump to the new line doesnt look so weird.
+                        if (i>0)
+                        {
 
+                        
+                        if (animationPoints[i-1].AnimationPointXY.XAxisValue==0 && animationPoints[i - 1].AnimationPointXY.YAxisValue == 0 && animationPoints[i - 1].VisibilityOnPoint==false)
+                        {
+                            animationPoints[i - 1].AnimationPointXY = fullListOfPixel[counterForPixelList];
+                        }
+                        }
                         animationPoints.Add(new AnimationPointImage(fullListOfPixel[counterForPixelList], DegressTurnsPerPoint[i], true));
                         counterForPixelList++;
 
@@ -51,6 +62,11 @@ namespace GraphicalPlotter
                 
 
             }
+            // we add a last point for the wheel so it turns invisible after the animation was ended
+            CanvasPixel lastPixelInAnimation = animationPoints[animationPoints.Count-1].AnimationPointXY;
+            animationPoints.Add(new AnimationPointImage(lastPixelInAnimation, 0, false));
+            animationPoints.Add(new AnimationPointImage(new CanvasPixel(0,0), 0, false));
+
             return animationPoints;
 
         

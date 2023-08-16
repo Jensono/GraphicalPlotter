@@ -125,8 +125,8 @@ namespace GraphicalPlotter
             DoubleAnimationUsingKeyFrames xAnimation = new DoubleAnimationUsingKeyFrames();
             DoubleAnimationUsingKeyFrames yAnimation = new DoubleAnimationUsingKeyFrames();
             DoubleAnimationUsingKeyFrames rotationAnimation = new DoubleAnimationUsingKeyFrames();
+            DoubleAnimationUsingKeyFrames opacityAnimation = new DoubleAnimationUsingKeyFrames(); 
 
-           
 
             int totalAnimationTimeInMilliseconds = 20000;
             int delayPerPoint = totalAnimationTimeInMilliseconds / animationPoints.Count;
@@ -153,6 +153,11 @@ namespace GraphicalPlotter
                     Value = point.DegreeCurvatureOnPoint
                 });
 
+                opacityAnimation.KeyFrames.Add(new LinearDoubleKeyFrame
+                {
+                     KeyTime = TimeSpan.FromMilliseconds(currentTime),
+                     Value = point.VisibilityOnPoint ? 1.0 : 0.0 // 1 for visible, 0 for hidden
+                });
 
                 currentTime += delayPerPoint;
             }
@@ -162,10 +167,12 @@ namespace GraphicalPlotter
             TranslateWheel.BeginAnimation(TranslateTransform.XProperty, xAnimation);
             TranslateWheel.BeginAnimation(TranslateTransform.YProperty, yAnimation);
             RotateWheel.BeginAnimation(RotateTransform.AngleProperty, rotationAnimation);
+            SteeringWheelImage.BeginAnimation(UIElement.OpacityProperty, opacityAnimation); // Start the opacity animation
+
             
 
         }
 
 
-}
+    }
 }
