@@ -95,13 +95,17 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                     
-                    <Image x:Name="SteeringWheelImage" Source="/Steering_Wheel.png" Width="200" Height="200" Visibility="Visible">
+                    <Image x:Name="SteeringWheelImage" Source="/Steering_Wheel.png" Width="50" Height="50" Visibility="Visible">
                         <Image.RenderTransform>
                             <TransformGroup>
                                 <TranslateTransform x:Name="TranslateWheel" />
-                                <RotateTransform x:Name="RotateWheel" CenterX="100" CenterY="100"/>
+                                
                             </TransformGroup>
                         </Image.RenderTransform>
+                        <Image.LayoutTransform>
+                            <RotateTransform x:Name="RotateWheel" CenterX="25" CenterY="25"/>                            
+                        </Image.LayoutTransform>
+                        
                     </Image>
                     
                 </Canvas>

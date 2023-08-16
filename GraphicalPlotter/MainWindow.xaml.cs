@@ -120,34 +120,63 @@ namespace GraphicalPlotter
 
         public void OnStartSteeringWheelAnimation(object sender, SteeringWheelStartAnimationEventArguments eventArgs)
         {
+            var animationPoints = eventArgs.AnimationPoints;
 
+            DoubleAnimationUsingKeyFrames xAnimation = new DoubleAnimationUsingKeyFrames();
+            DoubleAnimationUsingKeyFrames yAnimation = new DoubleAnimationUsingKeyFrames();
+            DoubleAnimationUsingKeyFrames rotationAnimation = new DoubleAnimationUsingKeyFrames();
 
+            RotateWheel.Angle = 60;
 
-            PathFigure pathFigure = new PathFigure();
-            pathFigure.StartPoint = new Point(TranslateWheel.X, TranslateWheel.Y); // Assuming you start from the current position
+            int totalAnimationTimeInMilliseconds = 20000;
+            int delayPerPoint = totalAnimationTimeInMilliseconds / animationPoints.Count;
 
-            PolyLineSegment polyLineSegment = new PolyLineSegment();
-
-            foreach (var point in eventArgs.AnimationPoints)
+            int currentTime = 0;
+            foreach (var point in animationPoints)
             {
-                polyLineSegment.Points.Add(new Point(point.AnimationPointXY.XAxisValue, point.AnimationPointXY.YAxisValue));
+                xAnimation.KeyFrames.Add(new LinearDoubleKeyFrame
+                {
+                    KeyTime = TimeSpan.FromMilliseconds(currentTime),
+                    Value = point.AnimationPointXY.XAxisValue - SteeringWheelImage.Height/2
+                });
+
+                yAnimation.KeyFrames.Add(new LinearDoubleKeyFrame
+                {
+                    KeyTime = TimeSpan.FromMilliseconds(currentTime),
+                    Value = point.AnimationPointXY.YAxisValue - SteeringWheelImage.Width/2
+                });
+
+                rotationAnimation.KeyFrames.Add(new LinearDoubleKeyFrame
+                {
+                    KeyTime = TimeSpan.FromMilliseconds(currentTime),
+                    Value = point.DegreeCurvatureOnPoint
+                });
+
+
+                currentTime += delayPerPoint;
             }
 
-            pathFigure.Segments.Add(polyLineSegment);
+            // we start the animation for every part of the tranformation
+            TranslateWheel.BeginAnimation(TranslateTransform.XProperty, xAnimation);
+            TranslateWheel.BeginAnimation(TranslateTransform.YProperty, yAnimation);
+            RotateWheel.BeginAnimation(RotateTransform.AngleProperty, rotationAnimation);
 
-            PathGeometry pathGeometry = new PathGeometry();
-            pathGeometry.Figures.Add(pathFigure);
 
-            // Animate the TranslateWheel along the path
-            MatrixTransform matrixTransform = new MatrixTransform();
-            SteeringWheelImage.RenderTransform = matrixTransform;
 
-            DoubleAnimationUsingPath matrixAnimation = new DoubleAnimationUsingPath();
-            matrixAnimation.PathGeometry = pathGeometry;
-            matrixAnimation.Duration = TimeSpan.FromMilliseconds(20000);
-            matrixAnimation.Source = PathAnimationSource.Y; // Animate Y values; repeat for X values
 
-            matrixTransform.BeginAnimation(MatrixTransform.MatrixProperty, matrixAnimation);
+
+
+
+
+
+
+
+
+
+            //// Set the RenderTransform to the TranslateWheel
+            //SteeringWheelImage.RenderTransform = TranslateWheel;
+
+
 
             //int totalAnimationTimeInMilliseconds = 20000;
             //var animationPoints = eventArgs.AnimationPoints;
@@ -237,5 +266,5 @@ namespace GraphicalPlotter
         }
 
 
-    }
+}
 }

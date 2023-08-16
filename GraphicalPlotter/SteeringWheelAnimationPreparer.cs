@@ -27,15 +27,22 @@ namespace GraphicalPlotter
       
             for (int i = 0, counterForPixelList= 0; i < this.MaxWidthCanvas; i++)
             {
-                // when the point for x is inside the list the steering wheel has a normal position and is visible, else there is a point where the function is not displayed on the canvas.
-                if (fullListOfPixel[counterForPixelList].XAxisValue==i)
+                if (counterForPixelList<fullListOfPixel.Count)
                 {
-                    // we must move the curser for the pixel list as we found a value that was inside the list.
-                    
-                    animationPoints.Add(new AnimationPointImage(fullListOfPixel[counterForPixelList], DegressTurnsPerPoint[i], true));
-                    counterForPixelList++;
+                    if (fullListOfPixel[counterForPixelList].XAxisValue == i)
+                    {
+                        // we must move the curser for the pixel list as we found a value that was inside the list.
 
-                }
+                        animationPoints.Add(new AnimationPointImage(fullListOfPixel[counterForPixelList], DegressTurnsPerPoint[i], true));
+                        counterForPixelList++;
+
+                    }
+                    else
+                    {
+                        // we add a "fake" point for the animation, and also make the point not visible
+                        animationPoints.Add(new AnimationPointImage(new CanvasPixel(0, 0), DegressTurnsPerPoint[i], false));
+                    }
+                }              // when the point for x is inside the list the steering wheel has a normal position and is visible, else there is a point where the function is not displayed on the canvas.
                 else
                 {
                     // we add a "fake" point for the animation, and also make the point not visible
