@@ -8,8 +8,7 @@
 // </summary>
 //-----------------------------------------------------------------------
 namespace GraphicalPlotter
-{
-    using Microsoft.Win32;
+{    
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -22,6 +21,7 @@ namespace GraphicalPlotter
     using System.Windows.Media;
     using System.Windows.Media.Animation;
     using System.Xml.Serialization;
+    using Microsoft.Win32;
 
     /// <summary>
     /// This class acts as the main interface between the view and the model of the app.
@@ -203,6 +203,9 @@ namespace GraphicalPlotter
         /// </summary>
         private ApplicationStatusSaveDataHandler saveDataHandler;
 
+        /// <summary>
+        /// The field that is used for the View model used by the class.
+        /// </summary>
         private GraphicalFunctionViewModel selectedModel;
 
         /// <summary>
@@ -232,9 +235,7 @@ namespace GraphicalPlotter
                 out List<GraphicalFunctionForSerialization> savedFunctions,
                 out bool hasUserChangedYAxisValues))
             {
-                this.ReconstructAxisAndGridData(savedXAxisData, savedYAxisData, savedXAxisGrid, savedYAxisGrid, hasUserChangedYAxisValues);
-               
-
+                this.ReconstructAxisAndGridData(savedXAxisData, savedYAxisData, savedXAxisGrid, savedYAxisGrid, hasUserChangedYAxisValues);             
                 this.ReconstructFunctionsFromFileInport(savedFunctions);
                 this.IsApplicationDataInitalized = true;
             }
@@ -277,6 +278,11 @@ namespace GraphicalPlotter
         /// The event that can be raised when a property inside the class is changed. Needed to be implemented for the INotifyPropertyChanged interface.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// The event that is triggered when the Animation Points for the animation were generated.
+        /// </summary>
+        public event EventHandler<SteeringWheelStartAnimationEventArguments> AnimationPointsGenerated;
 
         /// <summary>
         /// Gets or sets the textbox contents for the minimum value of the x-axis.
@@ -786,7 +792,10 @@ namespace GraphicalPlotter
             }
         }
 
-        //TODO CHECKS AND SHIT
+        /// <summary>
+        /// Gets or sets the current Graphical function that the user has clicked on.
+        /// </summary>
+        /// <value> Retunrs the selected <see cref="GraphicalFunctionViewModel"/> for the application.</value>
         public GraphicalFunctionViewModel SelectedModel
         {
             get
@@ -1087,8 +1096,6 @@ namespace GraphicalPlotter
             }
         }
 
-        public event EventHandler<SteeringWheelStartAnimationEventArguments> AnimationPointsGenerated;
-
         /// <summary>
         /// Gets a command to open a new user input string as a function to the list of current functions.
         /// </summary>
@@ -1118,6 +1125,11 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets a command that starts a new Steering Wheel animation for the currently selected function model. The wheel will trace the graphs points 
+        /// and rotate to the left and to the right depending on the second derivate of the function.
+        /// </summary>
+        /// <value> A command that starts a new Steering wheel animation for the WPF application.</value>
         public ICommand StartWheelAnimation
         {
             get
@@ -1126,7 +1138,6 @@ namespace GraphicalPlotter
                 return new WindowCommand(
                     (obj) =>
                     {
-                        //TODO should only return true if a item is selected--> eg selected model is not null
                         return true;
                     },
                     (obj) =>
@@ -1137,8 +1148,8 @@ namespace GraphicalPlotter
                             GraphicalFunction SecondDerivateOfFunction = this.SelectedModel.GetDerivateOfFunction().GetDerivateOfFunction();
                             GraphicalFunctionViewModel SecondDerivateViewModel = new GraphicalFunctionViewModel(SecondDerivateOfFunction);
                             List<double> PointsCurvatureForSelectedFunction = this.CanvasFunctionConverter.ConvertFunctionViewModelIntoListOfYValuesWithoutBounds(SecondDerivateViewModel);
-                            SteeringWheelAnimationPreparer listPreparer = new SteeringWheelAnimationPreparer
-                            (this.CanvasFunctionConverter.ConvertFunctionViewModelIntoDrawInformation(this.SelectedModel),
+                            SteeringWheelAnimationPreparer listPreparer = new SteeringWheelAnimationPreparer(
+                            this.CanvasFunctionConverter.ConvertFunctionViewModelIntoDrawInformation(this.SelectedModel),
                             PointsCurvatureForSelectedFunction,
                             this.MainGraphCanvas.WidthInPixel);
                             List<AnimationPointImage> animationPoints = listPreparer.GenerateAnimationPointsWithCurvature();
@@ -1449,7 +1460,7 @@ namespace GraphicalPlotter
 
             //// check if the user ever cahnged y-Axis Values, if not then autoscale the current Functions if they only are sin, cos and polynomials with exponent degree of zero ,
             //// but not incombination cos+sin or sin+sin , this would require a lot more code and it isnt in the requirement to begin with to be able to make a function like that so i hope that im good on that one
-            /// there used to be a check if all the functions are scalable or not, not required anymore because fu*k user experience, right?
+            //// there used to be a check if all the functions are scalable or not, not required anymore because fu*k user experience, right?
             if (!this.HasUserChangedYAxisSettings && this.IsApplicationDataInitalized)
             {
                 this.RescaleYMinAndMaxForRescalableFunctions();
@@ -1540,7 +1551,12 @@ namespace GraphicalPlotter
 
         //// TODO REFRACTOR into a new class , this should not belong here, but not enough time for changes now.
 
-        
+        [Obsolete]
+        /// <summary>
+        /// This method searches for the smallest value inside a GraphicalFunctionViewModel.
+        /// </summary>
+        /// <param name="function"> The function which should be searched for the smallest value.</param>
+        /// <returns> The smallest value inside a function as a double.</returns>
         private double FindSmallestYValue(GraphicalFunctionViewModel function)
         {
             double sumOfBiggestValues = 0;
@@ -1564,7 +1580,11 @@ namespace GraphicalPlotter
             return sumOfBiggestValues;
         }
 
-      
+        /// <summary>
+        /// This method searches for the absolute smallest values of a function in which given canvas dimension. Meaning it finds the smallest y value that could be displayed on the a given x-axis.
+        /// </summary>
+        /// <param name="function"> The function for which to find the smallest value. </param>
+        /// <returns> The absolute smallest y value for a given function.</returns>
         private double FindAbsoluteSmallestYValue(GraphicalFunctionViewModel function)
         {
             List<double> drawInformation = this.CanvasFunctionConverter.ConvertFunctionViewModelIntoListOfYValuesWithoutBounds(function);
@@ -1582,6 +1602,11 @@ namespace GraphicalPlotter
             return smallestYet;
         }
 
+        /// <summary>
+        /// This method searches for the biggest absolute value of a function with a given canvas dimension. Meaning it finds the biggest y value that could be displayed on the a given x-axis.
+        /// </summary>
+        /// <param name="function"> The function for which to search for the biggest value.</param>
+        /// <returns> The biggest y value that could be displayed for a function as a double value.</returns>
         private double FindAbsoluteBiggestYValue(GraphicalFunctionViewModel function)
         {
             List<double> drawInformation = this.CanvasFunctionConverter.ConvertFunctionViewModelIntoListOfYValuesWithoutBounds(function);
@@ -1681,7 +1706,6 @@ namespace GraphicalPlotter
                 {
                     GraphicalFunctionViewModel graphicalFunctionVM = new GraphicalFunctionViewModel(
                         functionParts,
-
                         deserializedFunction.FunctionColor,
                         deserializedFunction.UserSetNameForFunction,
                         deserializedFunction.FunctionName,

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="TangentFunction.cs" company="FHWN">
+// <copyright file="TangentDerivateDerivate.cs" company="FHWN">
 //     Copyright (c) Monkey with a Typewriter GMBH. All rights reserved.
 // </copyright>
 // <author>Jens Hanssen</author>
@@ -12,12 +12,12 @@ namespace GraphicalPlotter
     using System;
 
     /// <summary>
-    /// This class defines a mathematical tangent function.
+    /// This class defines a mathematical tangent  derivative derivate function.
     /// </summary>
     public class TangentDerivateDerivate : TrigonometricFunctions
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TangentFunction" /> class.
+        /// Initializes a new instance of the <see cref="TangentDerivateDerivate" /> class.
         /// </summary>
         /// <param name="constantMultiplier"> The constant multiplier for the tan function.</param>
         /// <param name="degreeMultiplier"> The multiplier inside the brackets for the tan function.</param>

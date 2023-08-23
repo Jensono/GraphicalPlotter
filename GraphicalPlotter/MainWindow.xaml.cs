@@ -54,9 +54,68 @@ namespace GraphicalPlotter
         /// </summary>
         public event EventHandler<CanvasZoomEventArguments> OnCanvasZoomEnd;
 
+        /// <summary>
+        /// This method
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
+        public void OnStartSteeringWheelAnimation(object sender, SteeringWheelStartAnimationEventArguments eventArgs)
+        {
+            var animationPoints = eventArgs.AnimationPoints;
+
+            DoubleAnimationUsingKeyFrames xAnimation = new DoubleAnimationUsingKeyFrames();
+            DoubleAnimationUsingKeyFrames yAnimation = new DoubleAnimationUsingKeyFrames();
+            DoubleAnimationUsingKeyFrames rotationAnimation = new DoubleAnimationUsingKeyFrames();
+            DoubleAnimationUsingKeyFrames opacityAnimation = new DoubleAnimationUsingKeyFrames(); 
+
+
+            int totalAnimationTimeInMilliseconds = 20000;
+            int delayPerPoint = totalAnimationTimeInMilliseconds / animationPoints.Count;
+
+            int currentTime = 0;
+            foreach (var point in animationPoints)
+            {
+                xAnimation.KeyFrames.Add(new LinearDoubleKeyFrame
+                {
+                    KeyTime = TimeSpan.FromMilliseconds(currentTime),
+                    Value = point.AnimationPointXY.XAxisValue - (SteeringWheelImage.Height / 2)
+                });
+
+                yAnimation.KeyFrames.Add(new LinearDoubleKeyFrame
+                {
+                    KeyTime = TimeSpan.FromMilliseconds(currentTime),
+                    Value = point.AnimationPointXY.YAxisValue - (SteeringWheelImage.Width / 2)
+                });
+
+                
+                rotationAnimation.KeyFrames.Add(new LinearDoubleKeyFrame
+                {
+                    KeyTime = TimeSpan.FromMilliseconds(currentTime),
+                    Value = point.DegreeCurvatureOnPoint
+                });
+
+                opacityAnimation.KeyFrames.Add(new LinearDoubleKeyFrame
+                {
+                     KeyTime = TimeSpan.FromMilliseconds(currentTime),
+                     Value = point.VisibilityOnPoint ? 1.0 : 0.0 // 1 for visible, 0 for hidden
+                });
+
+                currentTime += delayPerPoint;
+            }
+
+            // we start the animation for every part of the tranformation            
+            TranslateWheel.BeginAnimation(TranslateTransform.XProperty, xAnimation);
+            TranslateWheel.BeginAnimation(TranslateTransform.YProperty, yAnimation);
+            RotateWheel.BeginAnimation(RotateTransform.AngleProperty, rotationAnimation);
+            SteeringWheelImage.BeginAnimation(UIElement.OpacityProperty, opacityAnimation); // Start the opacity animation
+
+            
+
+        }
+
         //// TODO right now when the user is zooming but moves out of the window to release the button, there is no zooming but the blue rectangle remains, 
         //// fix with events that reset selected point and stop visibility of the rectangle maybe
-        
+
         /// <summary>
         /// This method that is called when the Event for the OnCanvasZoomStart is raised. It sends a event to the View model and sets the start point for the zoom.
         /// </summary>
@@ -79,7 +138,7 @@ namespace GraphicalPlotter
                 ZoomSelectionRectangle.Width = 0;
                 ZoomSelectionRectangle.Height = 0;
 
-                ZoomSelectionRectangle.Visibility = Visibility.Visible;                             
+                ZoomSelectionRectangle.Visibility = Visibility.Visible;
             }
         }
 
@@ -111,66 +170,14 @@ namespace GraphicalPlotter
         /// </summary>
         /// <param name="sender"> The sender of the event.</param>
         /// <param name="eventArgs"> The event arguments of the event.</param>
+
+
+
         private void Canvas_ZoomEnd(object sender, MouseButtonEventArgs eventArgs)
         {
             CanvasZoomEventArguments zoomEndEventArgs = new CanvasZoomEventArguments(eventArgs.GetPosition(PlotterCanvas));
             this.OnCanvasZoomEnd(this, zoomEndEventArgs);
             ZoomSelectionRectangle.Visibility = Visibility.Hidden;
-        }
-
-        public void OnStartSteeringWheelAnimation(object sender, SteeringWheelStartAnimationEventArguments eventArgs)
-        {
-            var animationPoints = eventArgs.AnimationPoints;
-
-            DoubleAnimationUsingKeyFrames xAnimation = new DoubleAnimationUsingKeyFrames();
-            DoubleAnimationUsingKeyFrames yAnimation = new DoubleAnimationUsingKeyFrames();
-            DoubleAnimationUsingKeyFrames rotationAnimation = new DoubleAnimationUsingKeyFrames();
-            DoubleAnimationUsingKeyFrames opacityAnimation = new DoubleAnimationUsingKeyFrames(); 
-
-
-            int totalAnimationTimeInMilliseconds = 20000;
-            int delayPerPoint = totalAnimationTimeInMilliseconds / animationPoints.Count;
-
-            int currentTime = 0;
-            foreach (var point in animationPoints)
-            {
-                xAnimation.KeyFrames.Add(new LinearDoubleKeyFrame
-                {
-                    KeyTime = TimeSpan.FromMilliseconds(currentTime),
-                    Value = point.AnimationPointXY.XAxisValue - SteeringWheelImage.Height / 2
-                });
-
-                yAnimation.KeyFrames.Add(new LinearDoubleKeyFrame
-                {
-                    KeyTime = TimeSpan.FromMilliseconds(currentTime),
-                    Value = point.AnimationPointXY.YAxisValue - SteeringWheelImage.Width / 2
-                });
-
-                
-                rotationAnimation.KeyFrames.Add(new LinearDoubleKeyFrame
-                {
-                    KeyTime = TimeSpan.FromMilliseconds(currentTime),
-                    Value = point.DegreeCurvatureOnPoint
-                });
-
-                opacityAnimation.KeyFrames.Add(new LinearDoubleKeyFrame
-                {
-                     KeyTime = TimeSpan.FromMilliseconds(currentTime),
-                     Value = point.VisibilityOnPoint ? 1.0 : 0.0 // 1 for visible, 0 for hidden
-                });
-
-                currentTime += delayPerPoint;
-            }
-
-            // we start the animation for every part of the tranformation
-            
-            TranslateWheel.BeginAnimation(TranslateTransform.XProperty, xAnimation);
-            TranslateWheel.BeginAnimation(TranslateTransform.YProperty, yAnimation);
-            RotateWheel.BeginAnimation(RotateTransform.AngleProperty, rotationAnimation);
-            SteeringWheelImage.BeginAnimation(UIElement.OpacityProperty, opacityAnimation); // Start the opacity animation
-
-            
-
         }
 
 

@@ -55,7 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AnimationPointPlusCurvature.cs" />
+    <Compile Include="AnimationPointImage.cs" />
     <Compile Include="ApplicationStatusSaveDataHandler.cs" />
     <Compile Include="AxisSaveData.cs" />
     <Compile Include="CanvasZoomEventArguments.cs" />
@@ -66,7 +66,7 @@
     <Compile Include="Converter\ColorToSolidBrushConverter.cs" />
     <Compile Include="Converter\CanvasPixelListToPointCollectionConverter.cs" />
     <Compile Include="GraphicalFunctionForSerialization.cs" />
-    <Compile Include="Model\Functions\TrigometricalFunctions\TangenDerivative.cs" />
+    <Compile Include="Model\Functions\TrigometricalFunctions\TangentDerivative.cs" />
     <Compile Include="Model\Functions\TrigometricalFunctions\TangentDerivateDerivate.cs" />
     <Compile Include="PlotterFullSaveData.cs" />
     <Compile Include="SteeringWheelAnimationPreparer.cs" />

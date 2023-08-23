@@ -52,7 +52,9 @@ namespace GraphicalPlotter
         /// </summary>
         private List<FunctionParts> functionParts;
 
-
+        /// <summary>
+        /// The field for the brush width of the function.
+        /// </summary>
         private int brushWidth;
 
         /// <summary>
@@ -78,6 +80,7 @@ namespace GraphicalPlotter
         /// <param name="customUserSetName"> The string which the user set as a custom name for the function.</param>
         /// <param name="displayName"> The mathematical display name for the function.</param>
         /// <param name="visibility"> The Visibility of the function.</param>
+        /// <param name="brushWidth"> The brush width for the function.</param>
         public GraphicalFunctionViewModel(List<FunctionParts> functionPartList, Color functionColor, string customUserSetName, string displayName, bool visibility, int brushWidth)
         {
             this.CustomUserSetName = customUserSetName;
@@ -163,6 +166,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the brush width for the function.
+        /// </summary>
+        /// <value> The brush width for a given function.</value>
         public int BrushWidth
         {
             get

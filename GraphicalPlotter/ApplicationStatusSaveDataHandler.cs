@@ -105,12 +105,10 @@ namespace GraphicalPlotter
             }
             catch (IOException)
             {
-
                 MessageBox.Show("Reading the File failed, probably becouse it currently is in use! Try with a diffrent File name and/or location! No save was created!");
             }
             catch (UnauthorizedAccessException)
             {
-
                 MessageBox.Show("Overwritting the file failed because it is read only! Try with a diffrent File name and/or location! No save was created!");
             }
 

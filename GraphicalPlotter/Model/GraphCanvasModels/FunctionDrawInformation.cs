@@ -27,6 +27,10 @@ namespace GraphicalPlotter
         /// The field for the Color of the function.
         /// </summary>
         private Color functionColor;
+
+        /// <summary>
+        /// The field for the brush width of the function.
+        /// </summary>
         private int brushWidth;
 
         /// <summary>
@@ -34,7 +38,8 @@ namespace GraphicalPlotter
         /// </summary>
         /// <param name="canvasPixels"> The list of canvas pixels for the draw information.</param>
         /// <param name="functionColor"> The color in which the function should be drawn.</param>
-        public FunctionDrawInformation(List<CanvasPixel> canvasPixels, Color functionColor,int brushWidth)
+        /// <param name="brushWidth"> The brush width for the function.</param>
+        public FunctionDrawInformation(List<CanvasPixel> canvasPixels, Color functionColor, int brushWidth)
         {
             this.FunctionColor = functionColor;
             this.CanvasPixels = canvasPixels;

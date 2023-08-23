@@ -69,11 +69,13 @@ namespace GraphicalPlotter
             if (this.ExponentDegree == 0)
             {
                 return new PolynomialComponent(0, 0);
-            }           
+            }   
+            
             if (this.ConstantMultiplier == 0)
             {
                 return new PolynomialComponent(this.ExponentDegree - 1, this.ExponentDegree);
             }
+
             return new PolynomialComponent(this.ExponentDegree - 1, this.ConstantMultiplier * this.ExponentDegree);
         }
 
