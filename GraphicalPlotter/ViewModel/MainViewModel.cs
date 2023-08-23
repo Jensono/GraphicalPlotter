@@ -1131,7 +1131,7 @@ namespace GraphicalPlotter
                     },
                     (obj) =>
                     {
-                        if (this.SelectedModel!=null)
+                        if (this.SelectedModel != null)
                         {
 
                             GraphicalFunction SecondDerivateOfFunction = this.SelectedModel.GetDerivateOfFunction().GetDerivateOfFunction();
@@ -1578,6 +1578,7 @@ namespace GraphicalPlotter
                     smallestYet = currentYValue;
                 }
             }
+
             return smallestYet;
         }
 

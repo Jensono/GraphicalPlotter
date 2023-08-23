@@ -40,7 +40,7 @@ namespace GraphicalPlotter
 
             if (this.TryParseStringToFunctionPartsList(input, out functionsCombined))
             {
-                graphicalFunction = new GraphicalFunction(functionsCombined, Colors.Black,1);
+                graphicalFunction = new GraphicalFunction(functionsCombined, Colors.Black, 1);
                 return true;
             }
             else

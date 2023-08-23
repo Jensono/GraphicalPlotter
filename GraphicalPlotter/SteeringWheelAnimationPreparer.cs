@@ -25,9 +25,9 @@ namespace GraphicalPlotter
             // in theory the functiondrawinformation can only contain x values from 0 to how ever big the screen is at the present. In fact the list of double point must be the same size as the screen width. 
             // With this knowledge we can now combine these two list into one list; Points that will not be displayed on the canvas will be set to not visible , so that the animation will always be the same length:
       
-            for (int i = 0, counterForPixelList= 0; i < this.MaxWidthCanvas; i++)
+            for (int i = 0, counterForPixelList = 0; i < this.MaxWidthCanvas; i++)
             {
-                if (counterForPixelList<fullListOfPixel.Count)
+                if (counterForPixelList < fullListOfPixel.Count)
                 {
                     if (fullListOfPixel[counterForPixelList].XAxisValue == i)
                     {
@@ -35,11 +35,11 @@ namespace GraphicalPlotter
                         // when the last point was set to be at 0,0 and visiblity was false then the sterring wheel was moved out of bounds, becouse the point should not be visible, to
                         // avoid the currumstance that the animation will look choppy, eg the wheel will fly from the upper left corner to the new point i will
                         // add a fake point to the wheel that starts at the last point but sets the wheel to invisible so that the jump to the new line doesnt look so weird.
-                        if (i>0)
+                        if (i > 0)
                         {
 
                         
-                        if (animationPoints[i-1].AnimationPointXY.XAxisValue==0 && animationPoints[i - 1].AnimationPointXY.YAxisValue == 0 && animationPoints[i - 1].VisibilityOnPoint==false)
+                        if (animationPoints[i - 1].AnimationPointXY.XAxisValue == 0 && animationPoints[i - 1].AnimationPointXY.YAxisValue == 0 && animationPoints[i - 1].VisibilityOnPoint == false)
                         {
                             animationPoints[i - 1].AnimationPointXY = fullListOfPixel[counterForPixelList];
                         }
@@ -57,15 +57,15 @@ namespace GraphicalPlotter
                 else
                 {
                     // we add a "fake" point for the animation, and also make the point not visible
-                    animationPoints.Add(new AnimationPointImage(new CanvasPixel(0,0), DegressTurnsPerPoint[i], false)) ;
+                    animationPoints.Add(new AnimationPointImage(new CanvasPixel(0,0), DegressTurnsPerPoint[i], false));
                 }
                 
 
             }
             // we add a last point for the wheel so it turns invisible after the animation was ended
-            CanvasPixel lastPixelInAnimation = animationPoints[animationPoints.Count-1].AnimationPointXY;
+            CanvasPixel lastPixelInAnimation = animationPoints[animationPoints.Count - 1].AnimationPointXY;
             animationPoints.Add(new AnimationPointImage(lastPixelInAnimation, 0, false));
-            animationPoints.Add(new AnimationPointImage(new CanvasPixel(0,0), 0, false));
+            animationPoints.Add(new AnimationPointImage(new CanvasPixel(0 , 0), 0, false));
 
             return animationPoints;
 

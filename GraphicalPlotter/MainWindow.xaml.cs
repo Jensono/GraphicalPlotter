@@ -137,13 +137,13 @@ namespace GraphicalPlotter
                 xAnimation.KeyFrames.Add(new LinearDoubleKeyFrame
                 {
                     KeyTime = TimeSpan.FromMilliseconds(currentTime),
-                    Value = point.AnimationPointXY.XAxisValue - SteeringWheelImage.Height/2
+                    Value = point.AnimationPointXY.XAxisValue - SteeringWheelImage.Height / 2
                 });
 
                 yAnimation.KeyFrames.Add(new LinearDoubleKeyFrame
                 {
                     KeyTime = TimeSpan.FromMilliseconds(currentTime),
-                    Value = point.AnimationPointXY.YAxisValue - SteeringWheelImage.Width/2
+                    Value = point.AnimationPointXY.YAxisValue - SteeringWheelImage.Width / 2
                 });
 
                 

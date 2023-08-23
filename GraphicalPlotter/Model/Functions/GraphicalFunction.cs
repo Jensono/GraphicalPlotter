@@ -124,7 +124,7 @@ namespace GraphicalPlotter
 
             set
             {
-                if (value>0 && value<100)
+                if (value > 0 && value < 100)
                 {
                     this.brushwidth = value;
                 }
@@ -187,7 +187,6 @@ namespace GraphicalPlotter
             foreach (FunctionParts part in this.FunctionComponents)
             {
                 derivateParts.Add(part.GetDerivativeOfFunction());
-
 
             }
 

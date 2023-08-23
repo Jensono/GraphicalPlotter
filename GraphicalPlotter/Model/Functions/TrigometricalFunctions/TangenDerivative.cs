@@ -32,7 +32,7 @@ namespace GraphicalPlotter
         /// <returns> The result when substituting x with the given value in the function. The y value for any given x value. </returns>
         public override double CalculateItsOwnValue(double angle)
         {
-            return this.ConstantMultiplier / (Math.Cos(this.DegreeMultiplier*angle) * Math.Cos(this.DegreeMultiplier*angle));
+            return this.ConstantMultiplier / (Math.Cos(this.DegreeMultiplier * angle) * Math.Cos(this.DegreeMultiplier * angle));
         }
 
         public override FunctionParts GetDerivativeOfFunction()
