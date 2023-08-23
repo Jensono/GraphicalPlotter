@@ -120,6 +120,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the brush width of the function.
+        /// </summary>
+        /// <value> A integer value that represents the thickness of the function.</value>
         public int BrushWidth 
         {
             get
@@ -132,10 +136,8 @@ namespace GraphicalPlotter
                 if (value > 0 && value < 100)
                 {
                     this.brushwidth = value;
-                }
-                
+                }                
             }
-
         }
 
         /// <summary>
@@ -189,19 +191,17 @@ namespace GraphicalPlotter
         /// <summary>
         /// This method is used to get the derivate of a given function.
         /// </summary>
-        /// <returns> The derivate of the function itself</returns>
+        /// <returns> The derivate of the function itself.</returns>
         public GraphicalFunction GetDerivateOfFunction() 
         {
             List<FunctionParts> derivateParts = new List<FunctionParts>();
             foreach (FunctionParts part in this.FunctionComponents)
             {
                 derivateParts.Add(part.GetDerivativeOfFunction());
-
             }
 
             return new GraphicalFunction(derivateParts, this.functionColor, this.BrushWidth);
         }
-
-        // i dont know if it makes more sense that a function can compute itself or that it is cumputed by a diffrent part of the system. For now it calculates itself.
+        //// i dont know if it makes more sense that a function can compute itself or that it is cumputed by a diffrent part of the system. For now it calculates itself.
     }
 }

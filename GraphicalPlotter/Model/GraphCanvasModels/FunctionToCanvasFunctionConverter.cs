@@ -152,7 +152,7 @@ namespace GraphicalPlotter
         /// The doubles are not bound to a max value so the returned list will always be the same size as the number of points given.
         /// </summary>
         /// <param name="function"> The function for which to generate the y values.</param>
-        /// <returns> The list of double values that reprent the y values for the function.</returns>
+        /// <returns> The list of double values that represents the y values for the function.</returns>
         public List<double> ConvertFunctionViewModelIntoListOfYValuesWithoutBounds(GraphicalFunctionViewModel function)
         {
             //// TODO there definitly is a way to parrallise this, i just need to use something with a set index like an array instead of the list, try it out! should speed up performance at least by the inverse of the number of cpu cores.
@@ -168,7 +168,6 @@ namespace GraphicalPlotter
 
             List<double> yValueForFunction = new List<double>();
 
-
             for (int xPixelPosition = currentXPixel; xPixelPosition < xPixels; xPixelPosition++)
             {
                 double xCalculationIntervall = (xMax - xMin) / xPixels;
@@ -177,7 +176,6 @@ namespace GraphicalPlotter
 
                 yValueForFunction.Add(yValueForCurrentXValue);
             }
-
            
             return yValueForFunction;
         }

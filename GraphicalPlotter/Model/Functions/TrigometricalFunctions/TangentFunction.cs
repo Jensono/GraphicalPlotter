@@ -35,7 +35,6 @@ namespace GraphicalPlotter
             return this.ConstantMultiplier * Math.Tan(angle * this.DegreeMultiplier);
         }
 
-
         /// <summary>
         /// This method returns the derivate of the tangent function.
         /// </summary>
@@ -52,8 +51,6 @@ namespace GraphicalPlotter
         public override string GetFunctionCalling()
         {
             return "tan";
-        }
-
-        
+        }        
     }
 }

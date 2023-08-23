@@ -795,14 +795,12 @@ namespace GraphicalPlotter
         /// <summary>
         /// Gets or sets the current Graphical function that the user has clicked on.
         /// </summary>
-        /// <value> Retunrs the selected <see cref="GraphicalFunctionViewModel"/> for the application.</value>
+        /// <value> Returns the selected <see cref="GraphicalFunctionViewModel"/> for the application.</value>
         public GraphicalFunctionViewModel SelectedModel
         {
             get
-            {
-              
-                    return this.selectedModel;
-               
+            {              
+                return this.selectedModel;
             }
 
             set
@@ -812,10 +810,8 @@ namespace GraphicalPlotter
                     throw new ArgumentNullException($"{nameof(DrawInformationForAxis)} can not be null");
                 }
                 else
-                {
-                   
-                        this.selectedModel = value;
-                   
+                {                   
+                    this.selectedModel = value;                   
                 }
             }
         }
@@ -1133,8 +1129,7 @@ namespace GraphicalPlotter
         public ICommand StartWheelAnimation
         {
             get
-            {
-               
+            {               
                 return new WindowCommand(
                     (obj) =>
                     {
@@ -1144,7 +1139,6 @@ namespace GraphicalPlotter
                     {
                         if (this.SelectedModel != null)
                         {
-
                             GraphicalFunction SecondDerivateOfFunction = this.SelectedModel.GetDerivateOfFunction().GetDerivateOfFunction();
                             GraphicalFunctionViewModel SecondDerivateViewModel = new GraphicalFunctionViewModel(SecondDerivateOfFunction);
                             List<double> PointsCurvatureForSelectedFunction = this.CanvasFunctionConverter.ConvertFunctionViewModelIntoListOfYValuesWithoutBounds(SecondDerivateViewModel);
@@ -1158,11 +1152,7 @@ namespace GraphicalPlotter
                         }
                     });
             }
-
         }
-
-       
-
 
         /// <summary>
         /// Gets a command that opens a new ColorPickerWindow in which the user can select a color for the bound element of the WPF application.
@@ -1420,20 +1410,20 @@ namespace GraphicalPlotter
 
                         this.HasUserChangedYAxisSettings = false;
                        
-                        this.RescaleYMinAndMaxForRescalableFunctions();
-                        
+                        this.RescaleYMinAndMaxForRescalableFunctions();                        
 
                         this.IsApplicationDataInitalized = true;
                         this.UpdateFullCanvas();
                     });
             }
         }
-        [Obsolete]
+
         /// <summary>
         /// This method finds out if all functions that are currently saved inside the application are scalable.
         /// A function is only scalable if it is cos, sin or a constant, everything else would not make sense to an average user.
         /// </summary>
         /// <returns> A boolean value indicating whether or not all current function are scalable.</returns>
+        [Obsolete]
         public bool AreAllCurrentFunctionsAutomaticlyScalable()
         {
             foreach (var functionVM in this.CurrentGraphicalFunctions)
@@ -1551,12 +1541,12 @@ namespace GraphicalPlotter
 
         //// TODO REFRACTOR into a new class , this should not belong here, but not enough time for changes now.
 
-        [Obsolete]
         /// <summary>
         /// This method searches for the smallest value inside a GraphicalFunctionViewModel.
         /// </summary>
         /// <param name="function"> The function which should be searched for the smallest value.</param>
         /// <returns> The smallest value inside a function as a double.</returns>
+        [Obsolete]
         private double FindSmallestYValue(GraphicalFunctionViewModel function)
         {
             double sumOfBiggestValues = 0;
@@ -1620,15 +1610,16 @@ namespace GraphicalPlotter
                     biggestYet = currentYValue;
                 }
             }
+
             return biggestYet;
         }
 
-        [Obsolete]
         /// <summary>
         /// This method is used to find out if a function is able to rescale for the y axis.
         /// </summary>
         /// <param name="functionVM"> The function view model that should be analyzed for the ability to rescale.</param>
         /// <returns> A boolean indicating whether or not the function is scalable.</returns>
+        [Obsolete]
         private bool IsFunctionScalable(GraphicalFunctionViewModel functionVM)
         {
             //// we will count how often sinus and cosinus exist in the given function, the sum must be smaller than 2 , so there can only be one sin or one cos, else the calculation for the new max,min values
@@ -2079,8 +2070,5 @@ namespace GraphicalPlotter
                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.DrawInformationForGridLines)));
             }
         }
-
-
-
     }
 }

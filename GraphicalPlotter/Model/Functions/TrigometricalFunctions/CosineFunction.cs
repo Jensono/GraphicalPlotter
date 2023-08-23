@@ -35,11 +35,10 @@ namespace GraphicalPlotter
             return this.ConstantMultiplier * Math.Cos(angle * this.DegreeMultiplier);
         }
 
-
         /// <summary>
-        /// This method returns the derivate of the cosinus function.
+        /// This method returns the derivate of the cosine function.
         /// </summary>
-        /// <returns> The derivate of the function of the cosinus as a new sinus function.</returns>
+        /// <returns> The derivate of the function of the cosine as a new sinus function.</returns>
         public override FunctionParts GetDerivativeOfFunction()
         {
             return new SineFunction(this.ConstantMultiplier * -1 * this.DegreeMultiplier, this.DegreeMultiplier);

@@ -104,7 +104,7 @@ namespace GraphicalPlotter
         /// <summary>
         /// This method is used to return the derivate of a given trigonometric function.
         /// </summary>
-        /// <returns></returns>
+        /// <returns> The derivate of the function.</returns>
         public override abstract FunctionParts GetDerivativeOfFunction();
     }
 }

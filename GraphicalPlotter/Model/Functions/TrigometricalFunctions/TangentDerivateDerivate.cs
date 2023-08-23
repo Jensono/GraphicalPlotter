@@ -35,11 +35,10 @@ namespace GraphicalPlotter
             return (this.ConstantMultiplier * Math.Sin(this.DegreeMultiplier * angle)) / (Math.Cos(this.DegreeMultiplier * angle) * Math.Cos(this.DegreeMultiplier * angle) * Math.Cos(this.DegreeMultiplier * angle));
         }
 
-
         /// <summary>
-        /// This method returns the derivate of the tanget derivate derivate compount. Currently is not supported and should never be used in the program.
+        /// This method returns the derivate of the tangent derivate derivate compound. Currently is not supported and should never be used in the program.
         /// </summary>
-        /// <returns> The derivate the tanget derivate derivate.</returns>
+        /// <returns> The derivate the tangent derivate derivate.</returns>
         public override FunctionParts GetDerivativeOfFunction()
         {
             throw new NotImplementedException("Yeah this should never happen, the application was never build on the grounds of make derivates of functions so we have this mess now.");
@@ -53,7 +52,5 @@ namespace GraphicalPlotter
         {
             return "undefined";
         }
-
-
     }
 }

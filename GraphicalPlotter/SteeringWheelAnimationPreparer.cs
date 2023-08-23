@@ -37,11 +37,11 @@ namespace GraphicalPlotter
         /// <summary>
         /// Gets or sets the max width of the canvas for which to animate the steering wheel for.
         /// </summary>
-        /// <value> The maxium width of the currently used canvas.</value>
+        /// <value> The max width of the currently used canvas.</value>
         private int MaxWidthCanvas { get; set; }
 
         /// <summary>
-        /// Gets or setsa list of Draw information that is used for identfing points for the animation.
+        /// Gets or sets a list of Draw information that is used for identifying points for the animation.
         /// </summary>
         /// <value> The Draw information used for the animation.</value>
         private List<FunctionDrawInformation> FunctionsDrawInfomration { get; set; }
@@ -66,12 +66,12 @@ namespace GraphicalPlotter
                     newFullCanvasPixelList.Add(pixel);
                 }
             }
-            return newFullCanvasPixelList;
 
+            return newFullCanvasPixelList;
         }
 
         /// <summary>
-        /// This method combines the points on which the image should be animated on which the list of curvates, that is given to rotate the image, to return a list of animation
+        /// This method combines the points on which the image should be animated on which the list of curvatures, that is given to rotate the image, to return a list of animation
         /// points that can be used to animate the steering wheel along the graph with the right rotation.
         /// </summary>
         /// <returns> A list of animation points that contain all the information needed to animate the steering wheel on the canvas.</returns>
@@ -80,8 +80,9 @@ namespace GraphicalPlotter
             List<AnimationPointImage> animationPoints = new List<AnimationPointImage>();
             List<CanvasPixel> fullListOfPixel = this.GenerateOneFunctionDrawInformation();
             List<double> degressTurnsPerPoint = this.GenerateNormalisedTurnsForCurvatureList(this.CurvatureOnPoints);
-            // in theory the functiondrawinformation can only contain x values from 0 to how ever big the screen is at the present. In fact the list of double point must be the same size as the screen width. 
-            // With this knowledge we can now combine these two list into one list; Points that will not be displayed on the canvas will be set to not visible , so that the animation will always be the same length:      
+
+            //// in theory the functiondrawinformation can only contain x values from 0 to how ever big the screen is at the present. In fact the list of double point must be the same size as the screen width. 
+            //// With this knowledge we can now combine these two list into one list; Points that will not be displayed on the canvas will be set to not visible , so that the animation will always be the same length:      
             for (int i = 0, counterForPixelList = 0; i < this.MaxWidthCanvas; i++)
             {
                 if (counterForPixelList < fullListOfPixel.Count)
@@ -94,16 +95,14 @@ namespace GraphicalPlotter
                         // add a fake point to the wheel that starts at the last point but sets the wheel to invisible so that the jump to the new line doesnt look so weird.
                         if (i > 0)
                         {
-
-
                             if (animationPoints[i - 1].AnimationPointXY.XAxisValue == 0 && animationPoints[i - 1].AnimationPointXY.YAxisValue == 0 && animationPoints[i - 1].VisibilityOnPoint == false)
                             {
                                 animationPoints[i - 1].AnimationPointXY = fullListOfPixel[counterForPixelList];
                             }
                         }
+
                         animationPoints.Add(new AnimationPointImage(fullListOfPixel[counterForPixelList], degressTurnsPerPoint[i], true));
                         counterForPixelList++;
-
                     }
                     else
                     {
@@ -117,26 +116,21 @@ namespace GraphicalPlotter
                     // we add a "fake" point for the animation, and also make the point not visible
                     animationPoints.Add(new AnimationPointImage(new CanvasPixel(0, 0), degressTurnsPerPoint[i], false));
                 }
-
-
             }
-            // we add a last point for the wheel so it turns invisible after the animation was ended
+            //// we add a last point for the wheel so it turns invisible after the animation was ended
             CanvasPixel lastPixelInAnimation = animationPoints[animationPoints.Count - 1].AnimationPointXY;
             animationPoints.Add(new AnimationPointImage(lastPixelInAnimation, 0, false));
             animationPoints.Add(new AnimationPointImage(new CanvasPixel(0, 0), 0, false));
 
             return animationPoints;
-
-
         }
-
        
         /// <summary>
-        /// This method generates a list of normalised values for a given list of doubles. The absolute biggest value will represent the maximum of 90 degrees.
+        /// This method generates a list of normalized values for a given list of doubles. The absolute biggest value will represent the maximum of 90 degrees.
         /// The value in the returned list will go from -90 to 90 degrees and represent rotation for another object.
         /// </summary>
-        /// <param name="curvatureOnPoints"> The orignal list of double values for a rotation that wasnt normalised</param>
-        /// <returns> A normalised list of doubles that only contains value from -90 to 90.</returns>
+        /// <param name="curvatureOnPoints"> The original list of double values for a rotation that was not normalized.</param>
+        /// <returns> A normalized list of doubles that only contains value from -90 to 90.</returns>
         private List<double> GenerateNormalisedTurnsForCurvatureList(List<double> curvatureOnPoints)
         {
             // first find the biggest value in the list, as an abosulte value , we will use this value as an anchor for the 90 degreee rotation.
@@ -151,7 +145,6 @@ namespace GraphicalPlotter
             List<double> normalizedTurns = curvatureOnPoints.Select(curvature => (curvature / maxCurvature) * 90).ToList();
 
             return normalizedTurns;
-
         }
     }
 }

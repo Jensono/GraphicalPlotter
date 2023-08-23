@@ -39,11 +39,11 @@ namespace GraphicalPlotter
             this.DegreeCurvatureOnPoint = degreeCurvature;
             this.VisibilityOnPoint = visibiltyAtThatPoint;
         }
-
         
         /// <summary>
         /// Gets or sets the curvature on a point.
         /// </summary>
+        /// <value> Returns the degrees of rotation the image should be rotated.</value>
         public double DegreeCurvatureOnPoint 
         {
             get 
@@ -59,15 +59,19 @@ namespace GraphicalPlotter
                 }
 
                 this.degreeCurvatureOnPoint = value;
-            }
-        
+            }        
         }
 
+        /// <summary>
+        /// Gets or sets Canvas Pixel on the point.
+        /// </summary>
+        /// <value> The canvas pixel point for the animation where the image should be displayed.</value>
         public CanvasPixel AnimationPointXY { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the image is visible at that point.
+        /// </summary>
+        /// <value> The visibility of the image at that point.</value>
         public bool VisibilityOnPoint { get; set; }
-
-
-
     }
 }

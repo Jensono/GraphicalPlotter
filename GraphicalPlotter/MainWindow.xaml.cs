@@ -41,9 +41,6 @@ namespace GraphicalPlotter
             }
         }
 
-           
-
-
         /// <summary>
         /// The event for when the user starts the zooming process by pressing a mouse button inside the canvas.
         /// </summary>
@@ -55,10 +52,10 @@ namespace GraphicalPlotter
         public event EventHandler<CanvasZoomEventArguments> OnCanvasZoomEnd;
 
         /// <summary>
-        /// This method is triggered when an Steering Wheel Animation Event is raised. It creates keyframes for all of the points on the animation and adds them to double animation using key frame objects. That are then executed.
+        /// This method is triggered when an Steering Wheel Animation Event is raised. It creates key-frames for all of the points on the animation and adds them to double animation using key frame objects. That are then executed.
         /// </summary>
         /// <param name="sender"> The sender of the event.</param>
-        /// <param name="eventArgs"> The event arguments for the method that are send with the event  </param>
+        /// <param name="eventArgs"> The event arguments for the method that are send with the event.</param>
         public void OnStartSteeringWheelAnimation(object sender, SteeringWheelStartAnimationEventArguments eventArgs)
         {
             var animationPoints = eventArgs.AnimationPoints;
@@ -67,7 +64,6 @@ namespace GraphicalPlotter
             DoubleAnimationUsingKeyFrames yAnimation = new DoubleAnimationUsingKeyFrames();
             DoubleAnimationUsingKeyFrames rotationAnimation = new DoubleAnimationUsingKeyFrames();
             DoubleAnimationUsingKeyFrames opacityAnimation = new DoubleAnimationUsingKeyFrames(); 
-
 
             int totalAnimationTimeInMilliseconds = 20000;
             int delayPerPoint = totalAnimationTimeInMilliseconds / animationPoints.Count;
@@ -86,7 +82,6 @@ namespace GraphicalPlotter
                     KeyTime = TimeSpan.FromMilliseconds(currentTime),
                     Value = point.AnimationPointXY.YAxisValue - (SteeringWheelImage.Width / 2)
                 });
-
                 
                 rotationAnimation.KeyFrames.Add(new LinearDoubleKeyFrame
                 {
@@ -107,10 +102,7 @@ namespace GraphicalPlotter
             TranslateWheel.BeginAnimation(TranslateTransform.XProperty, xAnimation);
             TranslateWheel.BeginAnimation(TranslateTransform.YProperty, yAnimation);
             RotateWheel.BeginAnimation(RotateTransform.AngleProperty, rotationAnimation);
-            SteeringWheelImage.BeginAnimation(UIElement.OpacityProperty, opacityAnimation); // Start the opacity animation
-
-            
-
+            SteeringWheelImage.BeginAnimation(UIElement.OpacityProperty, opacityAnimation); // Start the opacity animation            
         }
 
         //// TODO right now when the user is zooming but moves out of the window to release the button, there is no zooming but the blue rectangle remains, 
@@ -170,16 +162,11 @@ namespace GraphicalPlotter
         /// </summary>
         /// <param name="sender"> The sender of the event.</param>
         /// <param name="eventArgs"> The event arguments of the event.</param>
-
-
-
         private void Canvas_ZoomEnd(object sender, MouseButtonEventArgs eventArgs)
         {
             CanvasZoomEventArguments zoomEndEventArgs = new CanvasZoomEventArguments(eventArgs.GetPosition(PlotterCanvas));
             this.OnCanvasZoomEnd(this, zoomEndEventArgs);
             ZoomSelectionRectangle.Visibility = Visibility.Hidden;
         }
-
-
     }
 }

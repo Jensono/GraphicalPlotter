@@ -65,7 +65,7 @@ namespace GraphicalPlotter
         }
 
         /// <summary>
-        /// This method returns the derivate of the polynomial compount.
+        /// This method returns the derivate of the polynomial compound.
         /// </summary>
         /// <returns> The derivate of the function of the polynomial as a new polynomial function.</returns>
         public override FunctionParts GetDerivativeOfFunction()

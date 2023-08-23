@@ -86,6 +86,10 @@ namespace GraphicalPlotter
             }
         }
 
+        /// <summary>
+        /// Gets or sets the brush width of the function.
+        /// </summary>
+        /// <value> The brush width of the the function.</value>
         public int BrushWidth
         {
             get
@@ -98,8 +102,7 @@ namespace GraphicalPlotter
                 if (value > 0 && value < 100)
                 {
                     this.brushWidth = value;
-                }
-               
+                }               
             }
         }
     }

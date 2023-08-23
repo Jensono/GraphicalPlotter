@@ -111,9 +111,6 @@ namespace GraphicalPlotter
             {
                 MessageBox.Show("Overwritting the file failed because it is read only! Try with a diffrent File name and/or location! No save was created!");
             }
-
-
-
         }
 
         //// TODO the setting to default values should happen wherever tis method is called not inside the method. If it directly sets the values to default values the name is misleading and two functions are combined in one

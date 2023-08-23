@@ -179,7 +179,6 @@ namespace GraphicalPlotter
 
             set
             {
-
                 if (this.brushWidth != value)
                 {
                     if (value > 0 && value < 100)
@@ -193,9 +192,6 @@ namespace GraphicalPlotter
 
                         this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.BrushWidth)));
                     }
-
-
-
                 }
             }
         }

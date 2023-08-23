@@ -35,17 +35,17 @@ namespace GraphicalPlotter
             return this.ConstantMultiplier / (Math.Cos(this.DegreeMultiplier * angle) * Math.Cos(this.DegreeMultiplier * angle));
         }
 
-
         /// <summary>
-        /// This method returns the derivate of the tanget derivate
+        /// This method returns the derivate of the tangent derivate.
         /// </summary>
-        /// <returns> A new tanget derivate derivate object, with which one calculate the derivate of the tangent derivate.</returns>
+        /// <returns> A new tangent derivate derivate object, with which one calculate the derivate of the tangent derivate.</returns>
         public override FunctionParts GetDerivativeOfFunction()
         {
             return new TangentDerivateDerivate(2 * this.DegreeMultiplier * this.ConstantMultiplier, this.DegreeMultiplier);
         }
 
         // please dont use this right now it will fail to save the function in its whole
+
         /// <summary>
         /// Returns the mathematical symbol for the tangent function.
         /// </summary>
@@ -54,7 +54,5 @@ namespace GraphicalPlotter
         {
             return "x/cos^2";
         }
-
-
     }
 }
