@@ -147,6 +147,12 @@ namespace GraphicalPlotter
             return drawingPathsForFunction;
         }
 
+        /// <summary>
+        /// This method converts a function view model into a list of doubles that represent the y values on that section of the graph.
+        /// The doubles are not bound to a max value so the returned list will always be the same size as the number of points given.
+        /// </summary>
+        /// <param name="function"> The function for which to generate the y values.</param>
+        /// <returns> The list of double values that reprent the y values for the function.</returns>
         public List<double> ConvertFunctionViewModelIntoListOfYValuesWithoutBounds(GraphicalFunctionViewModel function)
         {
             //// TODO there definitly is a way to parrallise this, i just need to use something with a set index like an array instead of the list, try it out! should speed up performance at least by the inverse of the number of cpu cores.

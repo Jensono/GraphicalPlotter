@@ -58,7 +58,10 @@ namespace GraphicalPlotter
         /// <returns> A string that show the mathematical function.</returns>
         public abstract string GetFunctionName();
 
-
+        /// <summary>
+        /// This method is used to get the derivate of a given function. This must be calculatable.
+        /// </summary>
+        /// <returns></returns>
         public abstract FunctionParts GetDerivativeOfFunction();
     }
 }

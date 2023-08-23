@@ -55,10 +55,10 @@ namespace GraphicalPlotter
         public event EventHandler<CanvasZoomEventArguments> OnCanvasZoomEnd;
 
         /// <summary>
-        /// This method
+        /// This method is triggered when an Steering Wheel Animation Event is raised. It creates keyframes for all of the points on the animation and adds them to double animation using key frame objects. That are then executed.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="eventArgs"></param>
+        /// <param name="sender"> The sender of the event.</param>
+        /// <param name="eventArgs"> The event arguments for the method that are send with the event  </param>
         public void OnStartSteeringWheelAnimation(object sender, SteeringWheelStartAnimationEventArguments eventArgs)
         {
             var animationPoints = eventArgs.AnimationPoints;

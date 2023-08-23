@@ -101,7 +101,10 @@ namespace GraphicalPlotter
         /// <returns> The mathematical symbol for the Calculation Part.</returns>
         public abstract string GetFunctionCalling();
 
-
+        /// <summary>
+        /// This method is used to return the derivate of a given trigonometric function.
+        /// </summary>
+        /// <returns></returns>
         public override abstract FunctionParts GetDerivativeOfFunction();
     }
 }

@@ -354,7 +354,10 @@ namespace GraphicalPlotter
             return returnstring;
         }
 
-
+        /// <summary>
+        /// This method returns the derivate of a given function.
+        /// </summary>
+        /// <returns> The derivate of the function.</returns>
         public GraphicalFunction GetDerivateOfFunction()
         {
             List<FunctionParts> derivateParts = new List<FunctionParts>();

@@ -41,7 +41,9 @@ namespace GraphicalPlotter
         }
 
         
-
+        /// <summary>
+        /// Gets or sets the curvature on a point.
+        /// </summary>
         public double DegreeCurvatureOnPoint 
         {
             get 

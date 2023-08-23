@@ -131,7 +131,12 @@ namespace GraphicalPlotter
         }
 
        
-
+        /// <summary>
+        /// This method generates a list of normalised values for a given list of doubles. The absolute biggest value will represent the maximum of 90 degrees.
+        /// The value in the returned list will go from -90 to 90 degrees and represent rotation for another object.
+        /// </summary>
+        /// <param name="curvatureOnPoints"> The orignal list of double values for a rotation that wasnt normalised</param>
+        /// <returns> A normalised list of doubles that only contains value from -90 to 90.</returns>
         private List<double> GenerateNormalisedTurnsForCurvatureList(List<double> curvatureOnPoints)
         {
             // first find the biggest value in the list, as an abosulte value , we will use this value as an anchor for the 90 degreee rotation.

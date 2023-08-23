@@ -64,6 +64,10 @@ namespace GraphicalPlotter
             return this.ConstantMultiplier * Math.Pow(baseValue, this.ExponentDegree);
         }
 
+        /// <summary>
+        /// This method returns the derivate of the polynomial compount.
+        /// </summary>
+        /// <returns> The derivate of the function of the polynomial as a new polynomial function.</returns>
         public override FunctionParts GetDerivativeOfFunction()
         {
             if (this.ExponentDegree == 0)
