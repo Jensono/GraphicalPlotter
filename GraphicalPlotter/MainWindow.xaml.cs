@@ -39,6 +39,16 @@ namespace GraphicalPlotter
             {
                 viewModel.AnimationPointsGenerated += this.OnStartSteeringWheelAnimation;
             }
+
+            // to hide the wheel in the beginning - i could not do it by simply setting the visibility, i guess that is some animation knowhow i will never understand.
+            DoubleAnimationUsingKeyFrames hiddeWheelInBeginning = new DoubleAnimationUsingKeyFrames();
+            hiddeWheelInBeginning.KeyFrames.Add(new LinearDoubleKeyFrame
+            {
+                KeyTime = TimeSpan.FromMilliseconds(0),
+                Value = 0 // 1 for visible, 0 for hidden
+            });
+
+            SteeringWheelImage.BeginAnimation(UIElement.OpacityProperty, hiddeWheelInBeginning);
         }
 
         /// <summary>

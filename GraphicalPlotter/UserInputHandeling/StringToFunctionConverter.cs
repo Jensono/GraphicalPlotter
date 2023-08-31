@@ -38,6 +38,12 @@ namespace GraphicalPlotter
         {
             List<FunctionParts> functionsCombined;
 
+            if (input == string.Empty)
+            {
+                graphicalFunction = null;
+                return false;
+            }
+
             if (this.TryParseStringToFunctionPartsList(input, out functionsCombined))
             {
                 graphicalFunction = new GraphicalFunction(functionsCombined, Colors.Black, 1);
