@@ -28,5 +28,34 @@ GraphicalPlotter is a WPF-based Function Plotter that offers a plethora of featu
 
 ## Preview
 
-![Function Plotter Preview 1](path_to_image_1.png)
-![Function Plotter Preview 2](path_to_image_2.png)
+### Displaying Normal Functions
+![Displaying normal functions](https://github.com/Jensono/GraphicalPlotter/assets/121871613/b97ea63c-ac25-4b9c-aa5b-2a82cbb753d3)
+
+### Displaying More Complex Functions
+![Displaying more complex functions](https://github.com/Jensono/GraphicalPlotter/assets/121871613/736c3314-7c3c-4406-98da-8f165bf312cd)
+
+### Wheel Animation for Function Curvature
+![Wheel Animation for function curvature](https://github.com/Jensono/GraphicalPlotter/assets/121871613/660d509a-41bc-4190-898d-f846ea045a42)
+
+## How to Input Functions
+
+For **polynomials**, use the following format:
+`( a3 * x^3 + a2 * x^2 + a1 * x + a0 )`
+
+For **trigonometric functions**, the following formats are supported:
+- `( a * sin(b * x) + c)`
+- `(  a * cos(b * x) + c)`
+- `( a * tan(b * x) + c)`
+
+Different function types, such as sin, cos, tan, and polynomial, can be subtracted and added to each other. However, they cannot be divided or multiplied. 
+
+**Example of a valid function:** 
+`x^5 + cos(x)`
+
+**Example of an invalid function:** 
+`x^2 * 5 * sin(x)`
+
+When hovering over the the function insert field there is also a tooltip explaining this concept
+
+
+
